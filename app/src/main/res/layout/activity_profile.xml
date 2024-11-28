@@ -1,270 +1,207 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="#F5F5F5"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center">
 
-        <!-- Header Section -->
+        <!-- Profile Picture Section -->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@color/gray">
+            android:layout_height="wrap_content"
+            android:gravity="center">
 
             <ImageView
-                android:id="@+id/profileImage"
+                android:id="@+id/profile_image"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
-                android:src="@drawable/sunny_24px"
+                android:src="@drawable/profile_placeholder"
                 android:background="@drawable/circle_background"
                 android:contentDescription="Profile Image" />
 
             <ImageView
-                android:id="@+id/editProfileIcon"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_below="@id/profileImage"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="-20dp"
+                android:id="@+id/edit_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:src="@drawable/ic_edit"
-                android:background="@drawable/circle_background"
-                android:contentDescription="Edit Profile Icon" />
+                android:layout_alignBottom="@id/profile_image"
+                android:layout_alignEnd="@id/profile_image"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/circle_background_white"
+                android:padding="4dp" />
         </RelativeLayout>
 
-        <!-- Profile Info -->
+        <!-- Profile Information -->
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Puerto Rico"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/profile_email_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="youremail@domain.com | +01 234 567 89"
+            android:textSize="14sp"
+            android:textColor="#808080"
+            android:layout_marginTop="8dp" />
+
+        <!-- Profile Actions -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="@drawable/card_background"
             android:padding="16dp"
-            android:gravity="center_horizontal">
+            android:layout_marginTop="16dp">
 
-            <TextView
-                android:id="@+id/profileName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Puerto Rico"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/profileEmailPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="youremail@domain.com | +01 234 567 89"
-                android:textSize="14sp"
-                android:textColor="@color/gray" />
-        </LinearLayout>
-
-        <!-- Profile Options -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:background="@drawable/card_background">
-
-            <!-- Edit Profile -->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp">
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_edit"
-                    android:layout_alignParentStart="true" />
+                    android:src="@drawable/ic_account_circle" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/profileImage"
-                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:paddingStart="16dp"
                     android:text="Edit profile information"
                     android:textSize="16sp"
-                    android:textColor="@color/black" />
+                    android:textColor="#000000" />
+            </LinearLayout>
 
-                <TextView
-                    android:id="@+id/editProfileInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text=">"
-                    android:textSize="16sp"
-                    android:textColor="@color/gray" />
-            </RelativeLayout>
-
-            <!-- Notifications -->
-            <RelativeLayout
+            <!-- Notification Section -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp">
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_notifications"
-                    android:layout_alignParentStart="true" />
+                    android:src="@drawable/ic_notifications" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/profileImage"
-                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:paddingStart="16dp"
                     android:text="Notifications"
                     android:textSize="16sp"
-                    android:textColor="@color/black" />
+                    android:textColor="#000000" />
 
-                <TextView
-                    android:id="@+id/notificationsToggle"
+                <Switch
+                    android:id="@+id/switch_notifications"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="ON"
-                    android:textSize="16sp"
-                    android:textColor="@color/primary_color" />
-            </RelativeLayout>
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
-            <!-- Language -->
-            <RelativeLayout
+            <!-- Language Section -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp">
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_language"
-                    android:layout_alignParentStart="true" />
+                    android:src="@drawable/ic_language" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/profileImage"
-                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:paddingStart="16dp"
                     android:text="Language"
                     android:textSize="16sp"
-                    android:textColor="@color/black" />
+                    android:textColor="#000000" />
 
                 <TextView
-                    android:id="@+id/languageToggle"
+                    android:id="@+id/text_language"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
                     android:text="English"
                     android:textSize="16sp"
-                    android:textColor="@color/primary_color" />
-            </RelativeLayout>
+                    android:textColor="#0000FF" />
+            </LinearLayout>
         </LinearLayout>
 
+        <!-- Footer Options -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:background="@drawable/card_background">
+            android:layout_marginTop="16dp"
+            android:background="@drawable/card_background"
+            android:padding="16dp">
 
-            <!-- Edit Profile -->
-            <RelativeLayout
+            <TextView
+                android:id="@+id/help_support"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp">
+                android:padding="8dp"
+                android:text="Help Support"
+                android:textSize="16sp"
+                android:textColor="#000000" />
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_edit"
-                    android:layout_alignParentStart="true" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/profileImage"
-                    android:layout_marginStart="12dp"
-                    android:text="Edit profile information"
-                    android:textSize="16sp"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/editProfileInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text=">"
-                    android:textSize="16sp"
-                    android:textColor="@color/gray" />
-            </RelativeLayout>
-
-            <!-- Notifications -->
-            <RelativeLayout
+            <TextView
+                android:id="@+id/contact_us"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp">
+                android:padding="8dp"
+                android:text="Contact us"
+                android:textSize="16sp"
+                android:textColor="#000000" />
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_notifications"
-                    android:layout_alignParentStart="true" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/profileImage"
-                    android:layout_marginStart="12dp"
-                    android:text="Notifications"
-                    android:textSize="16sp"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/notificationsToggle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="ON"
-                    android:textSize="16sp"
-                    android:textColor="@color/primary_color" />
-            </RelativeLayout>
-
-            <!-- Language -->
-            <RelativeLayout
+            <TextView
+                android:id="@+id/privacy_policy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp">
+                android:padding="8dp"
+                android:text="Privacy policy"
+                android:textSize="16sp"
+                android:textColor="#000000" />
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_language"
-                    android:layout_alignParentStart="true" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/profileImage"
-                    android:layout_marginStart="12dp"
-                    android:text="Language"
-                    android:textSize="16sp"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/languageToggle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:text="English"
-                    android:textSize="16sp"
-                    android:textColor="@color/primary_color" />
-            </RelativeLayout>
+            <TextView
+                android:id="@+id/review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="Review"
+                android:textSize="16sp"
+                android:textColor="#000000" />
         </LinearLayout>
+
+        <Button
+            android:id="@+id/logout_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Log out"
+            android:textColor="#FF0000"
+            android:background="@drawable/card_background"
+            android:layout_marginTop="16dp" />
     </LinearLayout>
 </ScrollView>

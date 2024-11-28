@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/notifications_24px" />
+                    android:src="@drawable/ic_notifications" />
 
             </RelativeLayout>
 
@@ -117,7 +117,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginTop="8dp"
-                tools:listitem="@layout/food_item_layout" />
+                tools:listitem="@layout/item_food" />
 
             <!-- Drink List Section -->
             <TextView
@@ -133,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginTop="8dp"
-                tools:listitem="@layout/drink_item_layout" />
+                tools:listitem="@layout/item_food" />
 
         </LinearLayout>
     </ScrollView>
