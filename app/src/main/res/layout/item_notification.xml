@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <!-- Icon -->
+    <ImageView
+        android:id="@+id/notificationIcon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/sunny_24px"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="Notification Icon" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/notificationTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Meet Kai Cenat On 12th Nov"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/notificationIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp" />
+
+    <!-- Date -->
+    <TextView
+        android:id="@+id/notificationDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="12/3/2024"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Status (e.g., Approved, Canceled) -->
+    <TextView
+        android:id="@+id/notificationStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Approved"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/notificationTitle"
+        app:layout_constraintStart_toEndOf="@id/notificationIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="4dp" />
+
+    <!-- Details -->
+    <TextView
+        android:id="@+id/notificationDetails"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Time 20:00, Number of Guests: 6"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/notificationStatus"
+        app:layout_constraintStart_toEndOf="@id/notificationIcon"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="4dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

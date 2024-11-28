@@ -9,9 +9,9 @@
     tools:context=".ui.EventActivity">
 
     <!-- Title -->
-    <CalendarView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+<!--    <CalendarView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"/>-->
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
@@ -56,7 +56,7 @@
                     android:id="@+id/prevMonthButton"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_left"
+                    android:src="@drawable/arrow_back_ios_24px"
                     android:contentDescription="Previous Month" />
 
                 <TextView
@@ -74,7 +74,7 @@
                     android:id="@+id/nextMonthButton"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_right"
+                    android:src="@drawable/arrow_forward_ios_24px"
                     android:contentDescription="Next Month" />
             </LinearLayout>
 
@@ -100,8 +100,6 @@
         app:layout_constraintTop_toBottomOf="@id/calendarCard"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-
 
     <!-- Event List RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
