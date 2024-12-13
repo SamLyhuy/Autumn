@@ -11,7 +11,7 @@ import kh.edu.rupp.ite.autumn.ui.element.fragment.BookingFragment
 import kh.edu.rupp.ite.autumn.ui.element.fragment.EventFragment
 import kh.edu.rupp.ite.autumn.ui.element.fragment.HomeFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupBottomNavBar() {
         // Listen for bottom navigation selections
-        binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            handleOnNavigationItemSelected(item)
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            handleOnNavigationItemSelected(it)
         }
     }
 
@@ -72,4 +72,6 @@ class MainActivity : AppCompatActivity() {
         activeFragment = fragment
         fragmentTransaction.commit()
     }
+
+
 }
