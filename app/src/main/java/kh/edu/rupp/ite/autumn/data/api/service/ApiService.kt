@@ -7,6 +7,6 @@ import retrofit2.http.GET
 
 interface ApiService {
 
-    @GET("posts")
-    suspend fun loadTest(): List<ApiResponse<Comment>>
+    @GET("/api/type/1")
+    suspend fun loadTest(): ApiResponse<List<Comment>>
 }

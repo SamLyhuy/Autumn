@@ -2,6 +2,5 @@ package kh.edu.rupp.ite.autumn.data.model
 
 data class Comment(
     val id: Int,
-    val author: String,
-    val text: String
+    val name: String
 )

@@ -20,6 +20,7 @@ class EventAdapter: Adapter<EventViewHolder>() {
 
 
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ItemFoodBinding.inflate(layoutInflater, parent, false)
@@ -44,7 +45,7 @@ class EventViewHolder(private val binding: ItemFoodBinding): ViewHolder(binding.
 
     fun bind(comment: Comment) {
         //Picasso.get().load(comment.id).into(binding.drinkName)
-        binding.drinkName.text = comment.text
+        binding.drinkName.text = comment.name
     }
 
 

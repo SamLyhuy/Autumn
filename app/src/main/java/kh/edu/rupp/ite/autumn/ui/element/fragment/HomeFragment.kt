@@ -2,6 +2,7 @@ package kh.edu.rupp.ite.autumn.ui.element.fragment
 
 import android.os.Binder
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,22 +48,29 @@ class HomeFragment: BaseFragment() {
     }
 
     private fun handleState(state: ApiState<Comment>) {
-        when(state.state) {
-            State.loading -> {showLoading()}
-            State.success -> {
-                hideLoading()
-                showHomeData(state.data!!)
+        viewModel.homeData.observe(viewLifecycleOwner) { state ->
+            when (state.state) {
+                State.loading -> { showLoading() }
+                State.success -> {
+                    hideLoading()
+                    val data = state.data
+                    Log.d("HomeData", "Data Loaded: $data")
+                    if (data != null) {
+                        showHomeData(data)  // Show the data in the adapter
+                    }
+                }
+                State.error -> {
+                    hideLoading()
+                    Log.e("HomeData", "Error: ${state.message}")
+                    showAlert("Error", state.message ?: "Unexpected Error")
+                }
+                else -> {}
             }
-            State.error -> {
-                hideLoading()
-                showAlert("Error", state.message ?: "Unexpected Error")
-
-            }
-            else -> {}
         }
+
     }
 
-    private fun showHomeData(Comment: Comment){
+    private fun showHomeData(comment: List<Comment>){
         val itemFoodLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         val itemFoodAdapter = EventAdapter()
         binding.popularFoodRecycler.apply {
