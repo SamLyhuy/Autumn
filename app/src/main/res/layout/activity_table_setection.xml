@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Back Icon and Title -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_arrow_back"
+                android:contentDescription="Back Icon" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Booking a Table"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Stage Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_gravity="center"
+            android:background="@color/light_gray"
+            android:padding="8dp"
+            android:text="Stage"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <!-- Table Grid -->
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:alignmentMode="alignMargins"
+            android:columnCount="4"
+            android:rowCount="1"
+            android:padding="10dp"
+            android:gravity="center_horizontal">
+
+            <!-- Table Items -->
+            <View
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/black"
+                android:layout_marginEnd="8dp" />
+            <View
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/black"
+                android:layout_marginEnd="8dp" ></View>
+            <View
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/black"
+                android:layout_marginEnd="8dp" />
+            <View
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@color/black" />
+
+        </GridLayout>
+
+
+        <!-- Legend -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Available"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:layout_marginEnd="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Unavailable"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:layout_marginEnd="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your selected"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Time Selection -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Select Time"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:columnCount="4"
+            android:rowCount="2"
+            android:padding="8dp">
+
+            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="17:00" />
+            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="17:30" />
+            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="18:00" />
+            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="18:30" />
+            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="19:00" />
+            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="19:30" />
+            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="20:00" />
+            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="20:30" />
+
+        </GridLayout>
+
+        <!-- Date Selection -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Date"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="8dp">
+
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fri\n03" android:background="@color/cyan" android:layout_marginEnd="8dp" />
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sat\n03" android:layout_marginEnd="8dp" />
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sun\n03" android:layout_marginEnd="8dp" />
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mon\n03" android:layout_marginEnd="8dp" />
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tue\n03" android:layout_marginEnd="8dp" />
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Wed\n03" />
+        </LinearLayout>
+
+        <!-- Confirm Button -->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@color/cyan"
+            android:text="Confirm"
+            android:textColor="@color/white"
+            android:drawableStart="@drawable/ic_confirm" />
+
+    </LinearLayout>
+
+</ScrollView>

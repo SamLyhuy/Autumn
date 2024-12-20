@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Autumn</string>
+
+    <string name="not_log_in">Please log in account</string>
+    <string name="log_in">Log In</string>
+    <string name="invalid_input"> Invalid Input</string>
+    <string name="fill_username_password">Please entry Username and Password</string>
 </resources>

@@ -6,20 +6,10 @@ data class ApiResponse<T>(
     val statusCode: Int,
     val message  : String,
     val data: T?
-//    val id: Int,
-//    val title: String,
-//    val content: String,
-//    val author: String,
-//    val timestamp: String,
-//    val likes: Int,
-//    val comments: List<Comment>
-) {
-//    fun isSuccess(): Boolean {
-//        return statusCode == AppConstants.API_STATUS_SUCCESS
-//    }
 
-//    fun isSuccess(): Boolean {
-//        // For example, consider a response successful if the 'id' is valid
-//        return id > 0
-//    }
+) {
+    fun isSuccess(): Boolean {
+        return statusCode == AppConstants.API_STATUS_SUCCESS
+    }
+
 }

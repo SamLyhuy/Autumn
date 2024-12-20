@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5"
     android:padding="16dp">
 
     <LinearLayout
+        android:id="@+id/lytAccount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:visibility="gone">
 
         <!-- Profile Picture Section -->
         <RelativeLayout
@@ -204,4 +206,27 @@
             android:background="@drawable/card_background"
             android:layout_marginTop="16dp" />
     </LinearLayout>
-</ScrollView>
+
+    <LinearLayout
+        android:id="@+id/lytLogIn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/not_log_in"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/log_in"/>
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

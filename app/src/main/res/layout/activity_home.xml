@@ -113,11 +113,12 @@
                 android:layout_marginTop="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/popularFoodRecycler"
+                android:id="@+id/foodListRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="8dp"
-                tools:listitem="@layout/item_food" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:listitem="@layout/item_food"/>
+
 
             <!-- Drink List Section -->
             <TextView

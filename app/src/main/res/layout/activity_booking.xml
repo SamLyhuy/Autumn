@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android/tools"
+    xmlns:tools2="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -12,7 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="20dp">
+        android:paddingLeft="20dp"
+        tools2:ignore="MissingConstraints">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -56,7 +58,7 @@
             android:paddingEnd="16dp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/currentBookingRecycler"
+            android:id="@+id/currentBooking"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="8dp"
@@ -74,7 +76,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/black"
-            app:layout_constraintTop_toBottomOf="@id/currentBookingRecycler"
+            app:layout_constraintTop_toBottomOf="@id/currentBooking"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:paddingStart="16dp"
@@ -82,7 +84,7 @@
             android:layout_marginTop="16dp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/historyBookingRecycler"
+            android:id="@+id/historyBooking"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="8dp"

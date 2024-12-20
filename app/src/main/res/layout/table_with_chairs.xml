@@ -1,0 +1,48 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="77pt"
+    android:layout_height="48pt"
+    android:layout_gravity=""
+    android:background="@color/black">
+
+    <!-- Table (center) -->
+    <View
+        android:id="@+id/table_body"
+        android:layout_width="37pt"
+        android:layout_height="48pt"
+        android:background="#E9EEF3"
+        android:layout_gravity="center"
+        android:elevation="4dp" />
+
+    <!-- Top left chair -->
+    <View
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="top|start"
+        android:layout_margin="4dp"
+        android:background="@drawable/table_with_chairs" />
+
+    <!-- Top right chair -->
+    <View
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="4dp"
+        android:background="@drawable/circle_gray" />
+
+    <!-- Bottom left chair -->
+    <View
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="4dp"
+        android:background="@drawable/circle_gray" />
+
+    <!-- Bottom right chair -->
+    <View
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="4dp"
+        android:background="@drawable/circle_gray" />
+
+</FrameLayout>

@@ -1,0 +1,35 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="800dp"
+    android:height="600dp"
+    android:viewportWidth="200"
+    android:viewportHeight="100">
+
+    <!-- Group to apply rotation -->
+    <group
+        android:rotation="90"
+        android:pivotX="75"
+        android:pivotY="75"
+
+        >
+
+        <!-- Chair Backrest -->
+        <path
+            android:fillColor="#8B4513"
+            android:pathData="M20,15h60a5,5 0 0 1 5,5v40a5,5 0 0 1 -5,5h-60a5,5 0 0 1 -5,-5v-40a5,5 0 0 1 5,-5z" />
+
+        <!-- Chair Seat -->
+        <path
+            android:fillColor="#A0522D"
+            android:pathData="M15,60h70a5,5 0 0 1 5,5v15a5,5 0 0 1 -5,5h-70a5,5 0 0 1 -5,-5v-15a5,5 0 0 1 5,-5z" />
+
+        <!-- Left Chair Leg -->
+        <path
+            android:fillColor="@color/black"
+            android:pathData="M20,5h10v10h-10z" />
+
+        <!-- Right Chair Leg -->
+        <path
+            android:fillColor="@color/black"
+            android:pathData="M70,5h10v10h-10z" />
+    </group>
+</vector>

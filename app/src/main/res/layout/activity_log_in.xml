@@ -59,7 +59,7 @@
 
         <!-- Email Field -->
         <EditText
-            android:id="@+id/emailField"
+            android:id="@+id/edtUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Your email"
@@ -80,7 +80,7 @@
             android:padding="12dp">
 
             <EditText
-                android:id="@+id/passwordField"
+                android:id="@+id/edtPassword"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -101,7 +101,7 @@
 
         <!-- Sign In Button -->
         <Button
-            android:id="@+id/signInButton"
+            android:id="@+id/btnLogIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/teal"
