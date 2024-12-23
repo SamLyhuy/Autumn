@@ -6,7 +6,9 @@ import androidx.activity.viewModels
 import kh.edu.rupp.ite.autumn.data.model.ApiState
 import kh.edu.rupp.ite.autumn.data.model.Category
 import kh.edu.rupp.ite.autumn.data.model.LogInResponse
+import kh.edu.rupp.ite.autumn.data.model.LogInState
 import kh.edu.rupp.ite.autumn.data.model.State
+import kh.edu.rupp.ite.autumn.data.model.StateLogIn
 import kh.edu.rupp.ite.autumn.databinding.ActivityLogInBinding
 import kh.edu.rupp.ite.autumn.global.AppPref
 import kh.edu.rupp.ite.autumn.ui.viewmodel.LogInViewModel
@@ -46,35 +48,49 @@ class LogInActivity: BaseActivity() {
 
     private fun onLogInButtonClick() {
 
-        val username = binding.edtUsername.text.toString().trim()
+        val email = binding.edtUsername.text.toString().trim()
         val password = binding.edtPassword.text.toString().trim()
+        Log.d("LogInActivity", "Email entered: $email")
+        Log.d("LogInActivity", "Password entered: $password")
 
-        if( username.isEmpty() || password.isEmpty()) {
+        if( email.isEmpty() || password.isEmpty()) {
             showAlert("Invalid Input", "Please entry Username and Password")
             return
         }
 
-        viewModel.login(username, password)
+        viewModel.login(email, password)
 
     }
 
-    private fun handleState(state: ApiState<LogInResponse>) {
+    private fun handleState(state: LogInState) {
         when (state.state) {
-            State.loading -> showLoading()
-            State.success -> {
-                //AppPref.get().setLoggedIn(this, true)
-                AppPref.get().storeProfile(this, state.data!!.profile)
-                // store token
-                AppEncryptedPref.get().storeToken(this, state.data.token)
+            StateLogIn.loading -> {
+                Log.d("LogInActivity", "Login started...")
+                showLoading()
+            }
+            StateLogIn.success -> {
+                Log.d("LogInActivity", "Login successful")
+                Log.d("LogInActivity", "Login Token: ${state.token}")
+
+                // Store token securely
+                AppEncryptedPref.get().storeToken(this, state.token ?: "")
+
+
                 setResult(RESULT_OK)
                 finish()
             }
-            State.error -> {
+            StateLogIn.error -> {
+                Log.e("LogInActivity", "Login failed: ${state.message}")
                 hideLoading()
                 showAlert("Error", state.message ?: "Unexpected Error!")
             }
-            else -> {}
+            else -> {
+                Log.d("LogInActivity", "Unhandled state: ${state.state}")
+            }
         }
     }
 
 }
+
+//AppPref.get().setLoggedIn(this, true)
+//AppPref.get().storeProfile(this, state.data!!.profile)

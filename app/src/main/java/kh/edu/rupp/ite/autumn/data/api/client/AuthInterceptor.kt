@@ -9,17 +9,16 @@ import okhttp3.Response
 class AuthInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val token = AppEncryptedPref.get().getToken(App.get())
-        Log.d("Auth", "intercept: $token")
+        Log.d("AuthInterceptor", "receive: $token")
         if(token == null) {
             return chain.proceed(chain.request())
         } else {
-            Log.d("Auth", "intercept got: $token")
+            Log.d("AuthInterceptor", "include token")
             val request = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer $token")
                 .build()
             return chain.proceed(request)
         }
-
     }
-
 }
+

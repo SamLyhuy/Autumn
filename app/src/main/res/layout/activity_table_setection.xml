@@ -158,7 +158,7 @@
             android:gravity="center_horizontal"
             android:layout_marginTop="8dp">
 
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fri\n03" android:background="@color/cyan" android:layout_marginEnd="8dp" />
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fri\n03" android:background="@color/error_red" android:layout_marginEnd="8dp" />
             <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sat\n03" android:layout_marginEnd="8dp" />
             <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sun\n03" android:layout_marginEnd="8dp" />
             <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mon\n03" android:layout_marginEnd="8dp" />
@@ -171,10 +171,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:background="@color/cyan"
+            android:background="@color/error_red"
             android:text="Confirm"
             android:textColor="@color/white"
-            android:drawableStart="@drawable/ic_confirm" />
+            android:drawableStart="@drawable/card_background" />
 
     </LinearLayout>
 

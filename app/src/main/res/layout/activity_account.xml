@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <!-- Profile Picture Section -->
         <RelativeLayout
@@ -198,7 +198,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/logout_button"
+            android:id="@+id/btnLogOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Log out"

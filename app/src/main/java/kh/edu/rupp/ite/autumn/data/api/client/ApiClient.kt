@@ -15,13 +15,14 @@ class ApiClient private constructor(){
 
     private val httpClient = OkHttpClient.Builder()
         .addInterceptor(AuthInterceptor())
-        .addInterceptor(logInterceptor)
+        //.addInterceptor(logInterceptor)
         .build()
 
 
 
     private val retrofit = Retrofit.Builder()
                 .baseUrl(AppConstants.API_BASE_URL)
+                .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
