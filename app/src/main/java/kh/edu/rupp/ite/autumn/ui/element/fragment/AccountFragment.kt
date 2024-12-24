@@ -3,31 +3,27 @@ package kh.edu.rupp.ite.autumn.ui.element.fragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Binder
 import android.os.Bundle
-import android.util.JsonToken
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.squareup.picasso.Picasso
+import androidx.lifecycle.lifecycleScope
+import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
 import kh.edu.rupp.ite.autumn.data.model.Profile
 import kh.edu.rupp.ite.autumn.databinding.ActivityAccountBinding
-import kh.edu.rupp.ite.autumn.databinding.ActivityHomeBinding
-import kh.edu.rupp.ite.autumn.databinding.ItemFoodBinding
 import kh.edu.rupp.ite.autumn.global.AppPref
 import kh.edu.rupp.ite.autumn.ui.element.activity.LogInActivity
 import kh.edu.rupp.ite.visitme.global.AppEncryptedPref
+import kotlinx.coroutines.launch
 
 
 class AccountFragment: Fragment() {
 
-   private lateinit var binding: ActivityAccountBinding
+    private lateinit var binding: ActivityAccountBinding
 
 //   private val activityLogInResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
 //       if(it.resultCode == Activity.RESULT_OK) {
@@ -42,9 +38,9 @@ class AccountFragment: Fragment() {
     private val activityLogInResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == Activity.RESULT_OK) {
             val token = AppEncryptedPref.get().getToken(requireContext())
-            Log.d("AuthInterceptor", "Token after login: $token")  // Token should now be stored properly
+            Log.d("AccountFragment", "Stored token: $token")
             if (token != null) {
-                showProfileTest()
+                fetchUserInfo()
             }
         }
     }
@@ -65,35 +61,58 @@ class AccountFragment: Fragment() {
 
         setUpUi()
         setListener()
+    }
 
+    private fun fetchUserInfo() {
+        val token = AppEncryptedPref.get().getToken(requireContext())
+
+        if (token == null) {
+            Log.e("AccountFragment", "Token is null. Cannot fetch user info.")
+            showLogInButton()
+            return
+        }
+
+        lifecycleScope.launch {
+            try {
+                val response = ApiClient.get().apiService.getUserInfo("Bearer $token")
+                Log.d("AccountFragment", "User found")
+                val userProfile = response.data?.data
+                if (userProfile != null) {
+                    // Store the fetched profile data in SharedPreferences
+                    AppPref.get().storeProfile(requireContext(), userProfile)
+                    showProfile(userProfile)
+                } else {
+                    Log.e("AccountFragment", "No user profile data found.")
+                    showLogInButton()
+                }
+            } catch (e: Exception) {
+                Log.e("AccountFragment", "Exception: ${e.message}")
+                showLogInButton()
+            }
+
+        }
 
     }
+
+
 
     private fun setUpUi(){
         //val profile = AppPref.get().getProfile(requireContext())
         val token = AppEncryptedPref.get().getToken((requireContext()))
 
-        Log.d("LogInActivity", "Profile: $token")
+        Log.d("AccountFragment", "Profile: $token")
 
         if (token == null) {
             showLogInButton()
         } else {
-            showProfileTest()
+            fetchUserInfo()
         }
-
-//        if(AppPref.get().isLoggedIn(requireContext())) {
-//            showAccount()
-//        }else {
-//            showLogInButton()
-//        }
     }
 
     private fun setListener(){
         binding.btnLogIn.setOnClickListener { onLogInButtonClick() }
         binding.btnLogOut.setOnClickListener { onLogOutButtonClick()}
     }
-
-
 
     private fun onLogInButtonClick(){
         val intent = Intent(requireContext(), LogInActivity::class.java)
@@ -106,7 +125,7 @@ class AccountFragment: Fragment() {
         AppEncryptedPref.get().clearToken(requireContext())
 
         val token = AppEncryptedPref.get().getToken(requireContext())
-        Log.d("Logout", "Token after logout: $token")  // This should log null or an empty value
+        Log.d("AccountFragment", "Token after logout: $token")  // This should log null or an empty value
 
 
         // Clear other user data (if necessary)
@@ -118,32 +137,28 @@ class AccountFragment: Fragment() {
         requireContext().startActivity(intent)
     }
 
-
-
-
     private fun showProfile(profile: Profile) {
-        binding.lytAccount.isVisible = false
-        binding.lytLogIn.isVisible = true
-
-        //binding.profileName.text = profile.fullname()
-        //Picasso.get().load(profile.coverImage).into(binding.profileImage)
-    }
-
-    private fun showProfileTest() {
         binding.lytAccount.isVisible = true
         binding.lytLogIn.isVisible = false
 
+        binding.profileName.text = profile.name
+        binding.profileEmailPhone.text = profile.email_phone_number()
 
-        //binding.profileName.text = profile.fullname()
-        //Picasso.get().load(profile.coverImage).into(binding.profileImage)
     }
+
+//    private fun showProfileTest() {
+//        binding.lytAccount.isVisible = true
+//        binding.lytLogIn.isVisible = false
+//
+//        binding.profileName.text = profile.fullname()
+//        Picasso.get().load(profile.coverImage).into(binding.profileImage)
+//    }
 
 
     private fun showLogInButton(){
         binding.lytAccount.isVisible = false
         binding.lytLogIn.isVisible = true
-
-
+        Log.d("AccountFragment", "Displayed login button due to missing profile.")
     }
 
 }

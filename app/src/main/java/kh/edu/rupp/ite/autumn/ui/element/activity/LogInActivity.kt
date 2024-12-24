@@ -75,7 +75,6 @@ class LogInActivity: BaseActivity() {
                 // Store token securely
                 AppEncryptedPref.get().storeToken(this, state.token ?: "")
 
-
                 setResult(RESULT_OK)
                 finish()
             }

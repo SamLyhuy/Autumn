@@ -80,11 +80,13 @@
                 android:textStyle="bold"
                 android:layout_marginTop="16dp" />
 
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/eventsSlider"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/up_coming_events"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="8dp" />
+                android:layout_height="187dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="centerCrop"
+                tools:listitem="@layout/item_specials_today" />
 
             <!-- Today's Specials Section -->
             <TextView
@@ -95,13 +97,13 @@
                 android:textStyle="bold"
                 android:layout_marginTop="16dp" />
 
-            <ImageView
-                android:id="@+id/specialsImage"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/specials_today"
                 android:layout_width="match_parent"
-                android:layout_height="120dp"
+                android:layout_height="187dp"
                 android:layout_marginTop="8dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/specials_placeholder" />
+                tools:listitem="@layout/item_specials_today" />
 
             <!-- Popular Food Section -->
             <TextView
@@ -115,8 +117,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/foodListRecycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_height="100dp"
+                android:layout_marginTop="8dp"
                 tools:listitem="@layout/item_food"/>
 
 

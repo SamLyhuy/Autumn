@@ -25,18 +25,6 @@ class AppPref private constructor(){
     }
 
 
-//    fun isLoggedIn(context: Context): Boolean {
-//
-//        return getPref(context).getBoolean(KEY_IS_LOGGED_IN, false)
-//
-//    }
-//
-//    fun setLoggedIn(context: Context, value: Boolean){
-//
-//        getPref(context).edit().putBoolean(KEY_IS_LOGGED_IN, value).apply()
-//
-//    }
-
     private fun getPref(context: Context): SharedPreferences {
 
         return context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
