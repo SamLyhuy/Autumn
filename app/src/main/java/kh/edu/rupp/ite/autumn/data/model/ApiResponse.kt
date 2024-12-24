@@ -9,7 +9,7 @@ data class ApiResponse<T>(
 
 ) {
     fun isSuccess(): Boolean {
-        return statusCode == AppConstants.API_STATUS_SUCCESS
+        return message == AppConstants.API_STATUS_SUCCESS
     }
 
 }

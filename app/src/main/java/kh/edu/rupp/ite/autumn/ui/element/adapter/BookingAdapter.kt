@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import kh.edu.rupp.ite.autumn.data.model.Category
+import kh.edu.rupp.ite.autumn.data.model.EventData
 import kh.edu.rupp.ite.autumn.databinding.ItemBookingBinding
 
 class BookingAdapter: Adapter<BookingViewHolder>(){
 
-    private var data = emptyList<Category>()
+    private var data = emptyList<EventData>()
 
-    fun setData(data: List<Category>){
+    fun setData(data: List<EventData>){
         this.data = data
         notifyDataSetChanged()
         Log.d("BookingAdapter", "Data updated, size: ${data.size}")
@@ -41,9 +41,9 @@ class BookingAdapter: Adapter<BookingViewHolder>(){
 class BookingViewHolder(private val binding: ItemBookingBinding): ViewHolder(binding.root) {
 
     // Bind a single category to the UI
-    fun bind(category: Category) {
-        binding.statusText.text = category.name
-        Log.d("EventViewHolder", "Category bound: ${category.name}")
+    fun bind(eventData: EventData) {
+        binding.statusText.text = eventData.name
+        Log.d("EventViewHolder", "Category bound: ${eventData.name}")
     }
 
 }

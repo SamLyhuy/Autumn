@@ -3,14 +3,9 @@ package kh.edu.rupp.ite.autumn.ui.element.activity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import kh.edu.rupp.ite.autumn.data.model.ApiState
-import kh.edu.rupp.ite.autumn.data.model.Category
-import kh.edu.rupp.ite.autumn.data.model.LogInResponse
 import kh.edu.rupp.ite.autumn.data.model.LogInState
-import kh.edu.rupp.ite.autumn.data.model.State
 import kh.edu.rupp.ite.autumn.data.model.StateLogIn
 import kh.edu.rupp.ite.autumn.databinding.ActivityLogInBinding
-import kh.edu.rupp.ite.autumn.global.AppPref
 import kh.edu.rupp.ite.autumn.ui.viewmodel.LogInViewModel
 import kh.edu.rupp.ite.visitme.global.AppEncryptedPref
 

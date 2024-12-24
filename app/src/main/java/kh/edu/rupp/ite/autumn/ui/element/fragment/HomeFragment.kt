@@ -1,5 +1,6 @@
 package kh.edu.rupp.ite.autumn.ui.element.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,8 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import kh.edu.rupp.ite.autumn.R
 import kh.edu.rupp.ite.autumn.data.model.ApiState
-import kh.edu.rupp.ite.autumn.data.model.Category
+import kh.edu.rupp.ite.autumn.data.model.EventData
 import kh.edu.rupp.ite.autumn.data.model.State
 import kh.edu.rupp.ite.autumn.databinding.ActivityHomeBinding
 import kh.edu.rupp.ite.autumn.ui.element.adapter.EventAdapter
@@ -47,7 +49,7 @@ class HomeFragment: BaseFragment() {
     }
 
     // Handle different states of the API call (loading, success, error)
-    private fun handleState(state: ApiState<List<Category>>) {
+    private fun handleState(state: ApiState<List<EventData>>) {
         when (state.state) {
             State.loading -> {
                 // Show a loading indicator
@@ -58,7 +60,7 @@ class HomeFragment: BaseFragment() {
                 // Hide the loading indicator and show the data
                 hideLoading()
 //                val data = state.data
-//                Log.d("HomeFragment", "State: Success, Data: $data")
+                Log.d("HomeFragment", "State: Success, Data: ")
 //                if (data != null) {
 //                    showHomeData(data)
 //                }
@@ -77,17 +79,36 @@ class HomeFragment: BaseFragment() {
     }
 
     // Display the list of categories using a RecyclerView
-    private fun showHomeData(categories: List<Category>) {
+    private fun showHomeData(eventData: List<EventData>) {
         // Set up the RecyclerView with a horizontal layout
-        val itemFoodLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val itemFoodAdapter = EventAdapter()
-        itemFoodAdapter.setData(categories) // Pass Category list to the adapter
+        val itemEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        //val itemEventAdapter = EventAdapter()
+        val itemEventAdapter = EventAdapter { event ->
+            openEventDetail(event) // When an item is clicked, open the detail view
+        }
+        itemEventAdapter.setData(eventData) // Pass Category list to the adapter
 
         // Bind the RecyclerView to the adapter and layout manager
-        binding.foodListRecycler.apply {
-            adapter = itemFoodAdapter
-            layoutManager = itemFoodLayoutManager
+        binding.specialsToday.apply {
+            adapter = itemEventAdapter
+            layoutManager = itemEventLayoutManager
         }
+    }
+
+    private fun openEventDetail(eventData: EventData){
+        if (eventData != null){
+            val bundle = Bundle().apply {
+                putParcelable("event_data", eventData)
+            }
+            val fragment = EventDetailFragment().apply { arguments = bundle }
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.eventListRecycler, fragment)
+                .addToBackStack(null)
+                .commit()
+        } else {
+            Log.e("HomeFragment", "Event data is null!")
+        }
+
     }
 }
 

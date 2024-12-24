@@ -5,18 +5,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
 import kh.edu.rupp.ite.autumn.data.model.ApiState
-import kh.edu.rupp.ite.autumn.data.model.Category
+import kh.edu.rupp.ite.autumn.data.model.EventData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class BookingViewModel: ViewModel() {
 
-    private val _bookingData = MutableLiveData<ApiState<List<Category>>>()
+    private val _bookingData = MutableLiveData<ApiState<List<EventData>>>()
     val bookingData get() = _bookingData
 
     fun loadBooking() {
-        var apiState = ApiState.loading<List<Category>>()
+        var apiState = ApiState.loading<List<EventData>>()
         _bookingData.postValue(apiState)
 
         viewModelScope.launch {

@@ -1,6 +1,5 @@
 package kh.edu.rupp.ite.autumn.ui.element.fragment
 
-import android.os.Binder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,13 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import kh.edu.rupp.ite.autumn.data.model.ApiState
-import kh.edu.rupp.ite.autumn.data.model.Category
+import kh.edu.rupp.ite.autumn.data.model.EventData
 import kh.edu.rupp.ite.autumn.data.model.State
 import kh.edu.rupp.ite.autumn.databinding.ActivityBookingBinding
-import kh.edu.rupp.ite.autumn.databinding.ActivityHomeBinding
-import kh.edu.rupp.ite.autumn.databinding.ItemFoodBinding
 import kh.edu.rupp.ite.autumn.ui.element.adapter.BookingAdapter
-import kh.edu.rupp.ite.autumn.ui.element.adapter.EventAdapter
 import kh.edu.rupp.ite.autumn.ui.viewmodel.BookingViewModel
 
 
@@ -60,7 +56,7 @@ class BookingFragment: Fragment() {
         }
     }
 
-    private fun handleState(state: ApiState<List<Category>>) {
+    private fun handleState(state: ApiState<List<EventData>>) {
         when(state.state) {
             State.success -> { showBooking(state.data!!)}
             State.error -> {}
@@ -68,7 +64,7 @@ class BookingFragment: Fragment() {
         }
     }
 
-    private fun showBooking(categories: List<Category>) {
+    private fun showBooking(categories: List<EventData>) {
         // Set up the RecyclerView with a horizontal layout
         val itemBookingLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val itemBookingAdapter = BookingAdapter()

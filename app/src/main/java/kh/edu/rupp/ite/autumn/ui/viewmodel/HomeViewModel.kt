@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
 import kh.edu.rupp.ite.autumn.data.model.ApiState
-import kh.edu.rupp.ite.autumn.data.model.Category
+import kh.edu.rupp.ite.autumn.data.model.EventData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -14,13 +14,13 @@ import kotlinx.coroutines.withContext
 class HomeViewModel: ViewModel() {
 
     // LiveData to hold the API state, including loading, success, and error states
-    private val _homeData = MutableLiveData<ApiState<List<Category>>>()
+    private val _homeData = MutableLiveData<ApiState<List<EventData>>>()
     val homeData get() = _homeData
 
     // Function to load home data from the API
     fun loadingHomeData() {
         // Set the state to loading and notify observers
-        var apiState = ApiState.loading<List<Category>>()
+        var apiState = ApiState.loading<List<EventData>>()
         _homeData.postValue(apiState)
         Log.d("HomeViewModel", "Loading home data...")
 
@@ -28,7 +28,7 @@ class HomeViewModel: ViewModel() {
         viewModelScope.launch {
             try {
                 // Perform the API call using the ApiClient
-                val response = ApiClient.get().apiService.loadTest()
+                val response = ApiClient.get().apiService.loadEvent()
                 Log.d("HomeViewModel", "API Response: ${response}")
 
                 // Check if the API response is successful

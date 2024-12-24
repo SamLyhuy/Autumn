@@ -51,7 +51,7 @@ class AccountFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = ActivityAccountBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -107,6 +107,18 @@ class AccountFragment: Fragment() {
         } else {
             fetchUserInfo()
         }
+
+//        val cachedProfile = AppPref.get().getProfile(requireContext())
+//
+//        if (token == null) {
+//            showLogInButton()
+//        } else {
+//            if (cachedProfile != null) {
+//                showProfile(cachedProfile)
+//            }
+//            // Fetch fresh user info in the background
+//            fetchUserInfo()
+//        }
     }
 
     private fun setListener(){
