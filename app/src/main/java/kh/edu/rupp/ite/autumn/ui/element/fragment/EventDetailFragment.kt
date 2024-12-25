@@ -1,24 +1,36 @@
-package kh.edu.rupp.ite.autumn.ui.element.fragment
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kh.edu.rupp.ite.autumn.data.model.EventData
 import kh.edu.rupp.ite.autumn.databinding.DetailEventBinding
+import kh.edu.rupp.ite.autumn.ui.element.fragment.BaseFragment
 
-class EventDetailFragment :BaseFragment() {
+class EventDetailFragment : BaseFragment() {
+
+    private lateinit var binding: DetailEventBinding
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val binding = DetailEventBinding.inflate(inflater, container, false)
-        val eventData = arguments?.getParcelable<EventData>("event_data")
+    ): View {
+        binding = DetailEventBinding.inflate(inflater, container, false)
 
-        binding.textEventName.text = eventData?.name
-        binding.textEventDescription.text = eventData?.description
+        // Retrieve arguments
+        arguments?.getParcelable<EventData>("event_data")?.let { eventData ->
+            binding.textEventName.text = eventData.name
+            // Use Picasso or another library to load the image if needed
+            // Picasso.get().load(eventData.thumbail).into(binding.imageViewThumbnail)
+        }
 
         return binding.root
+    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Set up the back button click listener
+        binding.btnBack.setOnClickListener {
+            parentFragmentManager.popBackStack() // Pops the current fragment and returns to the previous one
+        }
     }
 }

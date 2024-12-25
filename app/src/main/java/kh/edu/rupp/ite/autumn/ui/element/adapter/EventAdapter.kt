@@ -11,7 +11,9 @@ import kh.edu.rupp.ite.autumn.databinding.ItemEventBinding
 import kh.edu.rupp.ite.autumn.databinding.ItemFoodBinding
 import kh.edu.rupp.ite.autumn.databinding.ItemSpecialsTodayBinding
 
-class EventAdapter(private val onClick: (EventData) -> Unit) : Adapter<EventViewHolder>() {
+class EventAdapter(
+    private val onClick: (EventData) -> Unit
+) : Adapter<EventViewHolder>() {
 
     // Dataset for the adapter
     private var data = emptyList<EventData>()
@@ -54,7 +56,9 @@ class EventViewHolder(
         Log.d("EventAdapter", "Category bound: ${eventData.name}")
         binding.textTest.text = eventData.name
         //Picasso.get().load(eventData.thumbail).into(binding.eventImg)
+//        binding.root.setOnClickListener { onClick(eventData) }
         binding.root.setOnClickListener { onClick(eventData) }
+        Log.d("EventAdapter", "Clicked action done")
 
     }
 }
