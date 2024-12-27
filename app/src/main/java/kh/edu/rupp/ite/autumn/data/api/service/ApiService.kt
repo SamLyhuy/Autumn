@@ -3,8 +3,10 @@ package kh.edu.rupp.ite.autumn.data.api.service
 import kh.edu.rupp.ite.autumn.data.model.ApiResponse
 import kh.edu.rupp.ite.autumn.data.model.EventData
 import kh.edu.rupp.ite.autumn.data.model.LogInResponse
+import kh.edu.rupp.ite.autumn.data.model.PostEventRequest
 import kh.edu.rupp.ite.autumn.data.model.UserDataProfile
 import kh.edu.rupp.ite.autumn.data.model.UserInfoResponse
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -18,6 +20,12 @@ interface ApiService {
 
     @GET("/user/login")
     suspend fun loadBooking(): ApiResponse<List<EventData>>
+
+    @POST("events")
+    fun postEvent(
+        @Header("Authorization") token: String,
+        @Body event: PostEventRequest
+    ): ApiResponse<EventData>
 
     @POST("/user/info")
     suspend fun getUserInfo(@Header("Authorization") token: String): UserInfoResponse<UserDataProfile>

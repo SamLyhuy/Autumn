@@ -25,15 +25,6 @@ class AccountFragment: Fragment() {
 
     private lateinit var binding: ActivityAccountBinding
 
-//   private val activityLogInResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-//       if(it.resultCode == Activity.RESULT_OK) {
-//
-//           val profile = AppPref.get().getProfile(requireContext())
-//           showProfile(profile!!)
-//
-//
-//       }
-//   }
 
     private val activityLogInResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if (it.resultCode == Activity.RESULT_OK) {
@@ -95,7 +86,6 @@ class AccountFragment: Fragment() {
     }
 
 
-
     private fun setUpUi(){
         //val profile = AppPref.get().getProfile(requireContext())
         val token = AppEncryptedPref.get().getToken((requireContext()))
@@ -108,17 +98,6 @@ class AccountFragment: Fragment() {
             fetchUserInfo()
         }
 
-//        val cachedProfile = AppPref.get().getProfile(requireContext())
-//
-//        if (token == null) {
-//            showLogInButton()
-//        } else {
-//            if (cachedProfile != null) {
-//                showProfile(cachedProfile)
-//            }
-//            // Fetch fresh user info in the background
-//            fetchUserInfo()
-//        }
     }
 
     private fun setListener(){
@@ -157,14 +136,6 @@ class AccountFragment: Fragment() {
         binding.profileEmailPhone.text = profile.email_phone_number()
 
     }
-
-//    private fun showProfileTest() {
-//        binding.lytAccount.isVisible = true
-//        binding.lytLogIn.isVisible = false
-//
-//        binding.profileName.text = profile.fullname()
-//        Picasso.get().load(profile.coverImage).into(binding.profileImage)
-//    }
 
 
     private fun showLogInButton(){

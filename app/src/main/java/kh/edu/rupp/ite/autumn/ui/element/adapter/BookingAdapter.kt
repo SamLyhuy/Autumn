@@ -31,7 +31,7 @@ class BookingAdapter: Adapter<BookingViewHolder>(){
     override fun onBindViewHolder(holder: BookingViewHolder, position: Int) {
         val booking = data[position]
         holder.bind(booking)
-        Log.d("BookingAdapter", "Binding data at position: $position, Category: ${booking.name}")
+        //Log.d("BookingAdapter", "Binding data at position: $position, Category: ${booking.name}")
 
     }
 
@@ -42,8 +42,8 @@ class BookingViewHolder(private val binding: ItemBookingBinding): ViewHolder(bin
 
     // Bind a single category to the UI
     fun bind(eventData: EventData) {
-        binding.statusText.text = eventData.name
-        Log.d("EventViewHolder", "Category bound: ${eventData.name}")
+//        binding.statusText.text = eventData.name
+//        Log.d("EventViewHolder", "Category bound: ${eventData.name}")
     }
 
 }
