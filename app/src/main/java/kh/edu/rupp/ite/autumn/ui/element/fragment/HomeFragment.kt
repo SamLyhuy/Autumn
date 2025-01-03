@@ -72,7 +72,7 @@ class HomeFragment: BaseFragment() {
         }
 
 
-        binding.btnCreateNewEvent.setOnClickListener {
+        binding.btnCreateNewEventTest.setOnClickListener {
             navigateToEventFormFragment()
         }
 
@@ -126,6 +126,7 @@ class HomeFragment: BaseFragment() {
 
         //val isSpecialList = eventData.get().event_info.map { it.isSpecial }
 
+        // Enrich and filter the special events
         val enrichedSpecialEvents = eventData.flatMap { event ->
             event.event_info.filter { it.isSpecial }.map { eventInfo ->
                 EnrichedEventInfo(eventInfo, event.date)
@@ -134,6 +135,8 @@ class HomeFragment: BaseFragment() {
 
         Log.d("HomeFragment", "Enriched special events: ${enrichedSpecialEvents}")
 
+        // Sort the events by event.date in ascending order
+        val sortedSpecialEvents = enrichedSpecialEvents.sortedBy { it.date }
 
         val itemEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
@@ -143,7 +146,7 @@ class HomeFragment: BaseFragment() {
         }
 
 
-        itemEventAdapter.setData(enrichedSpecialEvents) // Pass Category list to the adapter
+        itemEventAdapter.setData(sortedSpecialEvents) // Pass Category list to the adapter
 
         // Bind the RecyclerView to the adapter and layout manager
         binding.upComingEvents.apply {

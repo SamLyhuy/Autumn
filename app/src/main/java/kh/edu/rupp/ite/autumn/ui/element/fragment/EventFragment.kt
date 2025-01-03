@@ -11,10 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kh.edu.rupp.ite.autumn.R
+import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
 import kh.edu.rupp.ite.autumn.data.model.ApiState
 import kh.edu.rupp.ite.autumn.data.model.EventData
 import kh.edu.rupp.ite.autumn.data.model.EventInfo
@@ -25,6 +29,8 @@ import kh.edu.rupp.ite.autumn.databinding.ItemFoodBinding
 import kh.edu.rupp.ite.autumn.ui.element.adapter.EventAdapter
 import kh.edu.rupp.ite.autumn.ui.element.adapter.SelectedEventAdapter
 import kh.edu.rupp.ite.autumn.ui.viewmodel.HomeViewModel
+import kh.edu.rupp.ite.visitme.global.AppEncryptedPref
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 
@@ -41,7 +47,8 @@ class EventFragment: BaseFragment() {
 
     private var isInitialDataLoaded = false
 
-    private var currentSelectedDate: Long = 0
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
 
 
 
@@ -65,6 +72,8 @@ class EventFragment: BaseFragment() {
 
         viewModel.loadingHomeData()
 
+        checkUserRole()
+
         calendarViewUser = view.findViewById(R.id.calendarViewUser)
         SelectedDateUser = view.findViewById(R.id.SelectedDateUser)
 
@@ -74,6 +83,63 @@ class EventFragment: BaseFragment() {
         }
 
 
+        binding.btnCreateNewEvent.setOnClickListener {
+            navigateToEventFormFragment()
+        }
+
+
+    }
+
+    private fun navigateToEventFormFragment() {
+        val eventFormFragment = EventFormFragment()
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.event, eventFormFragment)  // Replace container with EventFormFragment
+            .addToBackStack(null)  // Add to back stack so user can navigate back
+            .commit()
+    }
+
+
+    private fun showUserView(){
+        binding.btnCreateNewEvent.isVisible = false
+
+
+    }
+
+    private fun showAdminView(){
+        binding.btnCreateNewEvent.isVisible = true
+
+    }
+
+    private fun checkUserRole() {
+        val token = AppEncryptedPref.get().getToken(requireContext())
+        Log.d("HomeFragment", "Token is checking: $token")
+
+        if (token == null) {
+            Log.e("HomeFragment", "Token is null.")
+            showUserView()
+            return
+        }
+
+        lifecycleScope.launch {
+            try {
+                val response = ApiClient.get().apiService.getUserInfo("Bearer $token")
+                Log.d("HomeFragment", "API Response: $response")
+                val userProfile = response.data?.data
+                Log.d("HomeFragment", "User Profile: $userProfile")
+
+                if (userProfile?.role.equals("admin", ignoreCase = true)) {
+                    showAdminView()
+                    Log.d("HomeFragment", "Admin view displayed.")
+                } else {
+                    showUserView()
+                    Log.d("HomeFragment", "User view displayed. Role: ${userProfile?.role}")
+                }
+            } catch (e: Exception) {
+                Log.e("HomeFragment", "Exception: ${e.message}")
+                showUserView()
+            }
+        }
     }
 
     private fun updateSelectedDate(year: Int, month: Int, dayOfMonth: Int) {
@@ -136,6 +202,10 @@ class EventFragment: BaseFragment() {
                 hideLoading()
 
                 Log.d("EventFragment", "State: Success, Data: ${state.data}")
+
+                swipeRefreshLayout.isRefreshing = false
+
+                
 
                 //showHomeData(state.data!!)
 
@@ -219,10 +289,17 @@ class EventFragment: BaseFragment() {
     }
 
     private fun setupListener() {
-
+        swipeRefreshLayout.setOnRefreshListener {
+            refreshData()  // Refresh data on swipe
+        }
     }
 
     private fun setupUi() {
+        // Initialize SwipeRefreshLayout properly
+        swipeRefreshLayout = binding.swipeRefreshLayout  // This references the SwipeRefreshLayout
+    }
 
+    private fun refreshData() {
+        viewModel.loadingHomeData() // Trigger data reload
     }
 }

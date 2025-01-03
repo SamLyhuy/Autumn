@@ -11,7 +11,7 @@ data class EventInfo (
     val description: String,
     val isSpecial: Boolean,
     val thumbnail: String?,
-    val _id: String,
+    val _id: String?,
 
 ): Parcelable
 

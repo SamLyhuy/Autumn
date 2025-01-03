@@ -21,10 +21,10 @@ interface ApiService {
     @GET("/user/login")
     suspend fun loadBooking(): ApiResponse<List<EventData>>
 
-    @POST("events")
-    fun postEvent(
+    @POST("/event")
+    suspend fun postEvent(
         @Header("Authorization") token: String,
-        @Body event: PostEventRequest
+        @Body request: PostEventRequest
     ): ApiResponse<EventData>
 
     @POST("/user/info")

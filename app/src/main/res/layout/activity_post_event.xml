@@ -1,49 +1,61 @@
-<!-- fragment_event_form.xml -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/white">
 
-    <EditText
-        android:id="@+id/etNameEvent"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Event Name" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <EditText
-        android:id="@+id/etDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Event Date" />
+        <EditText
+            android:id="@+id/etNameEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Event Name" />
 
-    <EditText
-        android:id="@+id/etTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Event Time" />
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Event Date"
+            android:background="@drawable/circle_gray"
+            android:padding="12dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black" />
 
-    <EditText
-        android:id="@+id/etDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Event Description" />
+        <EditText
+            android:id="@+id/etTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Event Time" />
 
-    <EditText
-        android:id="@+id/etThumbnail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Thumbnail URL" />
+        <EditText
+            android:id="@+id/etDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Event Description" />
 
-    <Switch
-        android:id="@+id/switchIsSpecial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Special Event" />
+        <Button
+            android:id="@+id/btnThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Thumbnail" />
 
-    <Button
-        android:id="@+id/btnSubmitEvent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit Event" />
-</LinearLayout>
+        <Switch
+            android:id="@+id/switchIsSpecial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Special Event" />
+
+        <Button
+            android:id="@+id/btnSubmitEvent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit Event" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -85,6 +85,3 @@ class LogInActivity: BaseActivity() {
     }
 
 }
-
-//AppPref.get().setLoggedIn(this, true)
-//AppPref.get().storeProfile(this, state.data!!.profile)

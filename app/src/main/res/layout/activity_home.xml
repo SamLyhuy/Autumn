@@ -168,7 +168,7 @@
 
         <!-- Create New Event button -->
         <Button
-            android:id="@+id/btnCreateNewEvent"
+            android:id="@+id/btnCreateNewEventTest"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create New Event"
