@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#F5F5F5"
     android:padding="16dp"
-    android:id="@+id/main">
+    android:id="@+id/home">
 
     <ScrollView
         android:id="@+id/userView"
@@ -84,7 +84,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/upComingEvents"
                 android:layout_width="match_parent"
-                android:layout_height="187dp"
+                android:layout_height="250dp"
                 android:layout_marginTop="8dp"
                 android:scaleType="centerCrop"
                 tools:listitem="@layout/item_specials_today" />

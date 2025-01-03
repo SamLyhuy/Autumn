@@ -166,7 +166,7 @@ class HomeFragment: BaseFragment() {
 
         // Navigate to EventDetailFragment
         parentFragmentManager.beginTransaction()
-            .replace(R.id.main, fragment) // Replace with your container ID
+            .replace(R.id.home, fragment) // Replace with your container ID
             .addToBackStack(null)
             .commit()
     }
@@ -176,7 +176,7 @@ class HomeFragment: BaseFragment() {
         val eventFormFragment = EventFormFragment()
 
         parentFragmentManager.beginTransaction()
-            .replace(R.id.main, eventFormFragment)  // Replace container with EventFormFragment
+            .replace(R.id.home, eventFormFragment)  // Replace container with EventFormFragment
             .addToBackStack(null)  // Add to back stack so user can navigate back
             .commit()
     }

@@ -1,4 +1,5 @@
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +11,8 @@ import kh.edu.rupp.ite.autumn.ui.element.fragment.BaseFragment
 class EventDetailFragment : BaseFragment() {
 
     private lateinit var binding: DetailEventBinding
-    private lateinit var eventInfo: EventInfo
-    private lateinit var eventDate: String
+    private var eventInfo: EventInfo? = null
+    private var eventDate: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,26 +20,31 @@ class EventDetailFragment : BaseFragment() {
     ): View {
         binding = DetailEventBinding.inflate(inflater, container, false)
 
-        // Retrieve arguments
-        arguments?.getParcelable<EventData>("event_data")?.let { eventData ->
-//            binding.textEventName.text = eventData.date
-//            binding.textEventDescription.text = eventData.date
-            // Use Picasso or another library to load the image if needed
-            // Picasso.get().load(eventData.thumbail).into(binding.imageViewThumbnail)
+        // Retrieve arguments safely
+        val eventData = arguments?.getParcelable<EventData>("event_data")
+        eventInfo = arguments?.getParcelable("event_info")
+        eventDate = arguments?.getString("event_date")
 
-            val args = requireArguments()
-            eventInfo = args.getParcelable("event_info")!!
-            eventDate = args.getString("event_date")!!
-        }
+        // Debugging logs
+        //Log.d("EventDetailFragment", "EventData: $eventData")
+        Log.d("EventDetailFragment", "EventInfo: $eventInfo")
+        Log.d("EventDetailFragment", "EventDate: $eventDate")
 
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Set up the back button click listener
+        // Populate UI with data
+        binding.eventName.text = eventInfo?.name ?: "No event info available"
+        binding.eventName.text = eventInfo?.name ?: "No event info available"
+        binding.eventDescription.text = eventDate ?: "No date provided"
+
+        // Back button logic
         binding.btnBack.setOnClickListener {
-            parentFragmentManager.popBackStack() // Pops the current fragment and returns to the previous one
+            parentFragmentManager.popBackStack()
         }
     }
 }
+

@@ -11,7 +11,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="-136dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <ImageView
             android:id="@+id/eventImage"
@@ -20,31 +22,36 @@
             android:scaleType="centerCrop" />
 
         <TextView
-            android:id="@+id/textEventName"
+            android:id="@+id/eventName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="8dp"
             android:text="Event Name"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:paddingTop="8dp" />
+            android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textEventDescription"
+            android:id="@+id/eventDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Event Description"
-            android:paddingTop="4dp" />
+            android:paddingTop="4dp"
+            android:text="Event Description" />
+        <TextView
+            android:id="@+id/isSpecial"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:text="isSpecial" />
+
         <Button
             android:id="@+id/btnBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Back"
-            android:layout_gravity="center" />
-
+            android:layout_gravity="center"
+            android:text="Back" />
 
 
     </LinearLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
