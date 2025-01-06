@@ -34,7 +34,8 @@ class HomeViewModel: ViewModel() {
                 // Check if the API response is successful
                 if (response.isSuccess()) {
                     // Update the state with the successful data
-                    apiState = ApiState.success(response.data ?: emptyList())
+                    //apiState = ApiState.success(response.data!!) // use when data 100% not null , data not list type
+                    apiState = ApiState.success(response.data ?: emptyList()) // use when data can be null , data list type
                     Log.d("HomeViewModel", "Data fetched successfully: ${response.data}")
                 } else {
                     // Update the state with an error message from the API
