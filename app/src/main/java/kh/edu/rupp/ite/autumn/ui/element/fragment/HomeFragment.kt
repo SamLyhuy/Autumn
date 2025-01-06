@@ -3,6 +3,7 @@ package kh.edu.rupp.ite.autumn.ui.element.fragment
 import EventDetailFragment
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +27,7 @@ import kh.edu.rupp.ite.autumn.ui.element.adapter.EventAdapter
 import kh.edu.rupp.ite.autumn.ui.viewmodel.HomeViewModel
 import kh.edu.rupp.ite.visitme.global.AppEncryptedPref
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.Locale
 
 class HomeFragment: BaseFragment() {
@@ -49,6 +52,7 @@ class HomeFragment: BaseFragment() {
     }
 
     // Initialize UI and observe ViewModel data after the view is created
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -78,6 +82,7 @@ class HomeFragment: BaseFragment() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupObserver(){
         viewModel.homeData.observe(viewLifecycleOwner) { state ->
             handleState(state)
@@ -91,6 +96,7 @@ class HomeFragment: BaseFragment() {
     }
 
     // Handle different states of the API call (loading, success, error)
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun handleState(state: ApiState<List<EventData>>) {
         when (state.state) {
             State.loading -> {
@@ -104,7 +110,8 @@ class HomeFragment: BaseFragment() {
 
                 Log.d("HomeFragment", "State: Success, Data: ${state.data}")
 
-                showHomeData(state.data!!)
+                specialEvent(state.data!!)
+                todayEvent(state.data!!)
             }
             State.error -> {
                 // Hide the loading indicator and show an error alert
@@ -118,13 +125,60 @@ class HomeFragment: BaseFragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun todayEvent(eventData: List<EventData>) {
+
+        val today = LocalDate.now().toString() // Today's date in yyyy-MM-dd format
+        Log.d("HomeFragment", "Today's date: $today")
+
+        val enrichedTodayEvents = eventData.flatMap { event ->
+
+            try {
+                if (event.date == today) {
+                    event.event_info.map { eventInfo ->
+                        EnrichedEventInfo(eventInfo, event.date)
+                    }
+                } else {
+                    emptyList()
+                }
+            } catch (e: Exception) {
+                Log.e("HomeFragment", "Error processing event: ${event.date}", e)
+                emptyList()
+            }
+        }
+
+        Log.d("HomeFragment", "Today's enriched events: $enrichedTodayEvents")
+
+        if (enrichedTodayEvents.isEmpty()) {
+            binding.noEventsTextView.apply {
+                text = "No events for to day"
+                visibility = View.VISIBLE
+            }
+            binding.upComingEvents.visibility = View.GONE
+        } else {
+            binding.noEventsTextView.visibility = View.GONE
+            binding.upComingEvents.visibility = View.VISIBLE
+
+            val itemTodayEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            val itemTodayEventAdapter = EventAdapter { enrichedEventInfo ->
+                openEventDetailFragment(enrichedEventInfo)
+            }
+
+            itemTodayEventAdapter.setData(enrichedTodayEvents)
+
+            binding.specialsToday.apply {
+                adapter = itemTodayEventAdapter
+                layoutManager = itemTodayEventLayoutManager
+            }
+
+        }
+
+
+
+    }
+
     // Display the list of categories using a RecyclerView
-    private fun showHomeData(eventData: List<EventData>) {
-        // Set up the RecyclerView with a horizontal layout
-
-        Log.d("HomeFragment", "Start passing all data to adapter, Data: ${eventData}")
-
-        //val isSpecialList = eventData.get().event_info.map { it.isSpecial }
+    private fun specialEvent(eventData: List<EventData>) {
 
         // Enrich and filter the special events
         val enrichedSpecialEvents = eventData.flatMap { event ->
@@ -137,22 +191,20 @@ class HomeFragment: BaseFragment() {
 
         // Sort the events by event.date in ascending order
         val sortedSpecialEvents = enrichedSpecialEvents.sortedBy { it.date }
-
-        val itemEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-//      val itemEventAdapter = EventAdapter()
-        val itemEventAdapter = EventAdapter { enrichedEventInfo  ->
+        val itemSpecialEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val itemSpecialEventAdapter = EventAdapter { enrichedEventInfo  ->
             openEventDetailFragment(enrichedEventInfo ) // When an item is clicked, open the detail view
         }
 
-
-        itemEventAdapter.setData(sortedSpecialEvents) // Pass Category list to the adapter
+        itemSpecialEventAdapter.setData(sortedSpecialEvents) // Pass Category list to the adapter
 
         // Bind the RecyclerView to the adapter and layout manager
         binding.upComingEvents.apply {
-            adapter = itemEventAdapter
-            layoutManager = itemEventLayoutManager
+            adapter = itemSpecialEventAdapter
+            layoutManager = itemSpecialEventLayoutManager
         }
+
+
     }
 
     private fun openEventDetailFragment(enrichedEventInfo: EnrichedEventInfo) {

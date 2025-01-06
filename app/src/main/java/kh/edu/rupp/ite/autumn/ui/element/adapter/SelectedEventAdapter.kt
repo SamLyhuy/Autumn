@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.autumn.R
 import kh.edu.rupp.ite.autumn.data.model.EnrichedEventInfo
 import kh.edu.rupp.ite.autumn.data.model.EventData
@@ -52,6 +53,7 @@ class EventSelectedViewHolder(
     fun bind(eventInfo: EventInfo) {
 
         binding.eventTitle.text = eventInfo.name
+        Picasso.get().load(eventInfo.thumbnail).into(binding.eventImage)
 
         binding.root.setOnClickListener{ onClick(eventInfo)}
         Log.d("SelectedEventAdapter", "Clicked action done")

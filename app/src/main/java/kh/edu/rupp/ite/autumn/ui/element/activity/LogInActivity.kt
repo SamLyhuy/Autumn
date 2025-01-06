@@ -6,12 +6,14 @@ import androidx.activity.viewModels
 import kh.edu.rupp.ite.autumn.data.model.LogInState
 import kh.edu.rupp.ite.autumn.data.model.StateLogIn
 import kh.edu.rupp.ite.autumn.databinding.ActivityLogInBinding
+import kh.edu.rupp.ite.autumn.databinding.ActivitySignupBinding
 import kh.edu.rupp.ite.autumn.ui.viewmodel.LogInViewModel
 import kh.edu.rupp.ite.visitme.global.AppEncryptedPref
 
 class LogInActivity: BaseActivity() {
 
-    private lateinit var binding: ActivityLogInBinding
+    private lateinit var bindingLogIn: ActivityLogInBinding
+    private lateinit var bindingSignup: ActivitySignupBinding
 
     private val viewModel by viewModels<LogInViewModel>()
 
@@ -26,12 +28,12 @@ class LogInActivity: BaseActivity() {
 
 
     private fun setupUi() {
-        binding = ActivityLogInBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        bindingLogIn = ActivityLogInBinding.inflate(layoutInflater)
+        setContentView(bindingLogIn.root)
     }
 
     private fun setUpListener() {
-        binding.btnLogIn.setOnClickListener { onLogInButtonClick() }
+        bindingLogIn.btnLogIn.setOnClickListener { onLogInButtonClick() }
     }
 
     private fun setObserver() {
@@ -43,8 +45,8 @@ class LogInActivity: BaseActivity() {
 
     private fun onLogInButtonClick() {
 
-        val email = binding.edtUsername.text.toString().trim()
-        val password = binding.edtPassword.text.toString().trim()
+        val email = bindingLogIn.edtUsername.text.toString().trim()
+        val password = bindingLogIn.edtPassword.text.toString().trim()
         Log.d("LogInActivity", "Email entered: $email")
         Log.d("LogInActivity", "Password entered: $password")
 

@@ -3,6 +3,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.autumn.data.model.EventData
 import kh.edu.rupp.ite.autumn.data.model.EventInfo
 import kh.edu.rupp.ite.autumn.databinding.DetailEventBinding
@@ -37,6 +38,7 @@ class EventDetailFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Populate UI with data
+        Picasso.get().load(eventInfo?.thumbnail).into(binding.eventImage)
         binding.eventName.text = eventInfo?.name ?: "No event info available"
         binding.eventName.text = eventInfo?.name ?: "No event info available"
         binding.eventDescription.text = eventDate ?: "No date provided"

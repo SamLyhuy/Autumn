@@ -90,12 +90,26 @@
                 tools:listitem="@layout/item_specials_today" />
 
             <!-- Today's Specials Section -->
+
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Today's Specials"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:layout_marginTop="16dp" />
+
+            <TextView
+                android:id="@+id/noEventsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No events for today"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:visibility="visible"
+                android:layout_gravity="center"
+                android:textStyle="italic"
                 android:layout_marginTop="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView

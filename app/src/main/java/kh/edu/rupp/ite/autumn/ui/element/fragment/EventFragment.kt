@@ -60,19 +60,23 @@ class EventFragment: BaseFragment() {
         binding = ActivityEventBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
+    override fun onResume() {
+        super.onResume()
+        refreshUserRole() // Refresh role and data when the fragment resumes
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("EventFragment", "onViewCreated called")
-
+        checkUserRole()
         setupUi()
         setupListener()
         setupObserver()
 
-        viewModel.loadingHomeData()
 
-        checkUserRole()
+
+
 
         calendarViewUser = view.findViewById(R.id.calendarViewUser)
         SelectedDateUser = view.findViewById(R.id.SelectedDateUser)
@@ -99,6 +103,12 @@ class EventFragment: BaseFragment() {
             .commit()
     }
 
+    private fun refreshUserRole() {
+        checkUserRole() // Re-check the user's role
+        viewModel.loadingHomeData() // Trigger a reload of home data
+    }
+
+
 
     private fun showUserView(){
         binding.btnCreateNewEvent.isVisible = false
@@ -113,10 +123,10 @@ class EventFragment: BaseFragment() {
 
     private fun checkUserRole() {
         val token = AppEncryptedPref.get().getToken(requireContext())
-        Log.d("HomeFragment", "Token is checking: $token")
+        Log.d("EventFragment", "Token is checking: $token")
 
         if (token == null) {
-            Log.e("HomeFragment", "Token is null.")
+            Log.e("EventFragment", "Token is null.")
             showUserView()
             return
         }
@@ -124,19 +134,19 @@ class EventFragment: BaseFragment() {
         lifecycleScope.launch {
             try {
                 val response = ApiClient.get().apiService.getUserInfo("Bearer $token")
-                Log.d("HomeFragment", "API Response: $response")
+                Log.d("EventFragment", "API Response: $response")
                 val userProfile = response.data?.data
-                Log.d("HomeFragment", "User Profile: $userProfile")
+                Log.d("EventFragment", "User Profile: $userProfile")
 
                 if (userProfile?.role.equals("admin", ignoreCase = true)) {
                     showAdminView()
-                    Log.d("HomeFragment", "Admin view displayed.")
+                    Log.d("EventFragment", "Admin view displayed.")
                 } else {
                     showUserView()
-                    Log.d("HomeFragment", "User view displayed. Role: ${userProfile?.role}")
+                    Log.d("EventFragment", "User view displayed. Role: ${userProfile?.role}")
                 }
             } catch (e: Exception) {
-                Log.e("HomeFragment", "Exception: ${e.message}")
+                Log.e("EventFragment", "Exception: ${e.message}")
                 showUserView()
             }
         }
@@ -149,6 +159,7 @@ class EventFragment: BaseFragment() {
         }
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         formattedDate = dateFormat.format(selectedDate.time)
+        Log.e("EventFragment", "Exception: ${dateFormat}")
 
         SelectedDateUser.text = "Date: $formattedDate"
 
@@ -290,6 +301,7 @@ class EventFragment: BaseFragment() {
 
     private fun setupListener() {
         swipeRefreshLayout.setOnRefreshListener {
+            refreshUserRole()
             refreshData()  // Refresh data on swipe
         }
     }
