@@ -111,6 +111,7 @@ class AccountFragment: Fragment() {
 
     }
 
+
     private fun onLogOutButtonClick() {
         // Clear the token
         AppEncryptedPref.get().clearToken(requireContext())

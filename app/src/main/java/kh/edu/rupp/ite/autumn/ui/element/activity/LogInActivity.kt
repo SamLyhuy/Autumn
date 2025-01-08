@@ -1,19 +1,20 @@
 package kh.edu.rupp.ite.autumn.ui.element.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.core.content.ContentProviderCompat.requireContext
 import kh.edu.rupp.ite.autumn.data.model.LogInState
 import kh.edu.rupp.ite.autumn.data.model.StateLogIn
 import kh.edu.rupp.ite.autumn.databinding.ActivityLogInBinding
-import kh.edu.rupp.ite.autumn.databinding.ActivitySignupBinding
 import kh.edu.rupp.ite.autumn.ui.viewmodel.LogInViewModel
 import kh.edu.rupp.ite.visitme.global.AppEncryptedPref
 
 class LogInActivity: BaseActivity() {
 
-    private lateinit var bindingLogIn: ActivityLogInBinding
-    private lateinit var bindingSignup: ActivitySignupBinding
+    private lateinit var binding: ActivityLogInBinding
+
 
     private val viewModel by viewModels<LogInViewModel>()
 
@@ -28,12 +29,22 @@ class LogInActivity: BaseActivity() {
 
 
     private fun setupUi() {
-        bindingLogIn = ActivityLogInBinding.inflate(layoutInflater)
-        setContentView(bindingLogIn.root)
+        binding = ActivityLogInBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     private fun setUpListener() {
-        bindingLogIn.btnLogIn.setOnClickListener { onLogInButtonClick() }
+        binding.btnLogIn.setOnClickListener { onLogInButtonClick() }
+        binding.tabRegister.setOnClickListener{
+            Log.d("LogInActivity", "Register tab clicked")
+            onSignUpButtonClick() }
+
+
+    }
+
+    private fun onSignUpButtonClick() {
+        val intent = Intent(this, SignUpActivity::class.java)
+        startActivity(intent)
     }
 
     private fun setObserver() {
@@ -45,8 +56,8 @@ class LogInActivity: BaseActivity() {
 
     private fun onLogInButtonClick() {
 
-        val email = bindingLogIn.edtUsername.text.toString().trim()
-        val password = bindingLogIn.edtPassword.text.toString().trim()
+        val email = binding.edtUsername.text.toString().trim()
+        val password = binding.edtPassword.text.toString().trim()
         Log.d("LogInActivity", "Email entered: $email")
         Log.d("LogInActivity", "Password entered: $password")
 

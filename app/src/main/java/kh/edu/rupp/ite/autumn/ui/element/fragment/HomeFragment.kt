@@ -111,7 +111,8 @@ class HomeFragment: BaseFragment() {
                 Log.d("HomeFragment", "State: Success, Data: ${state.data}")
 
                 specialEvent(state.data!!)
-                todayEvent(state.data!!)
+
+                todayEvent(state.data)
             }
             State.error -> {
                 // Hide the loading indicator and show an error alert
@@ -129,6 +130,8 @@ class HomeFragment: BaseFragment() {
     private fun todayEvent(eventData: List<EventData>) {
 
         val today = LocalDate.now().toString() // Today's date in yyyy-MM-dd format
+
+        //val today = "2025-01-11"
         Log.d("HomeFragment", "Today's date: $today")
 
         val enrichedTodayEvents = eventData.flatMap { event ->
@@ -154,11 +157,8 @@ class HomeFragment: BaseFragment() {
                 text = "No events for to day"
                 visibility = View.VISIBLE
             }
-            binding.upComingEvents.visibility = View.GONE
         } else {
             binding.noEventsTextView.visibility = View.GONE
-            binding.upComingEvents.visibility = View.VISIBLE
-
             val itemTodayEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             val itemTodayEventAdapter = EventAdapter { enrichedEventInfo ->
                 openEventDetailFragment(enrichedEventInfo)

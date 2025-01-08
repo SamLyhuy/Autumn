@@ -35,9 +35,8 @@ interface ApiService {
     @POST("/user/login")
     suspend fun login(@Field("email") email: String, @Field("password") password: String): LogInResponse
 
-    @FormUrlEncoded
     @POST("/user")
-    suspend fun register(@Body request: RegisterData): LogInResponse
+    suspend fun register(@Body request: RegisterData): ApiResponse<RegisterData>
 
 
 

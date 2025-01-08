@@ -5,5 +5,5 @@ data class RegisterData(
     val email: String,
     val phonenumber: String,
     val password: String,
-    val profile: String,
+    //val profile: String?,
 )

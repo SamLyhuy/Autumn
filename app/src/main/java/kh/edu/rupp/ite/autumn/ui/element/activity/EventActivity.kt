@@ -46,13 +46,6 @@ class EventActivity: BaseActivity() {
         }
     }
 
-//    private fun onCreateEventButtonClick(){
-//
-//        val date =
-//    }
-
-
-
     private fun handleState(state: ApiState<EventData>) {
         when (state.state) {
             State.loading ->{

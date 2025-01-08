@@ -11,5 +11,8 @@ data class ApiResponse<T>(
     fun isSuccess(): Boolean {
         return message == AppConstants.API_STATUS_SUCCESS
     }
+    fun isSuccessSignUp(): Boolean {
+        return message == AppConstants.API_STATUS_SUCCESS_SIGNUP
+    }
 
 }

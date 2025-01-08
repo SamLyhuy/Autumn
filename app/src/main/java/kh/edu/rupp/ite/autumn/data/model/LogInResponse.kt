@@ -4,4 +4,5 @@ data class LogInResponse (
     val message: String,
     val token: String,
     //val data: Profile?,
-)
+) {
+}
