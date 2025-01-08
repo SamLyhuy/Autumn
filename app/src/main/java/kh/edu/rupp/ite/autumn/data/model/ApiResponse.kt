@@ -5,6 +5,7 @@ import kh.edu.rupp.ite.autumn.global.AppConstants
 data class ApiResponse<T>(
     val statusCode: Int,
     val message  : String,
+    val token: String?,
     val data: T?
 
 ) {

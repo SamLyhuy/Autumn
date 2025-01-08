@@ -23,11 +23,11 @@ class SignUpViewModel: ViewModel() {
 
                 Log.d("SignUpViewModel",  "response: ${response}")
 
+
                 if (response.isSuccessSignUp()) {
-                    _registerData.postValue(ApiState.success(response.data!!))
+                    _registerData.postValue(ApiState.success(response.data!!, response.token))
                     Log.d("SignUpViewModel", "${response.message}")
                     Log.d("SignUpViewModel", "${response.data}")
-
 
                 } else {
                     _registerData.postValue(ApiState.error(response.message))

@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:id="@+id/logInActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/formContainer"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp"
-        android:gravity="center_horizontal">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp">
 
         <!-- App Title -->
         <TextView
-            android:id="@+id/appTitle"
+            android:id="@+id/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Easy Chill"
+            android:text="Autumn"
+            android:textColor="@color/teal"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="@color/teal"
-            android:layout_marginBottom="16dp" />
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp" />
 
         <!-- Tab Layout -->
         <LinearLayout
@@ -123,6 +132,7 @@
             android:text="Other sign-in options"
             android:textSize="14sp"
             android:textColor="@color/gray"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="24dp" />
 
         <LinearLayout
@@ -157,4 +167,5 @@
                 android:contentDescription="Apple Sign In" />
         </LinearLayout>
     </LinearLayout>
-</ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import kh.edu.rupp.ite.autumn.R
 import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
 import kh.edu.rupp.ite.autumn.data.model.Profile
 import kh.edu.rupp.ite.autumn.databinding.ActivityAccountBinding
@@ -35,6 +36,7 @@ class AccountFragment: Fragment() {
             }
         }
     }
+
 
 
 
@@ -108,7 +110,6 @@ class AccountFragment: Fragment() {
     private fun onLogInButtonClick(){
         val intent = Intent(requireContext(), LogInActivity::class.java)
         activityLogInResult.launch(intent)
-
     }
 
 

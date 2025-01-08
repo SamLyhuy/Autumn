@@ -1,8 +1,10 @@
 package kh.edu.rupp.ite.autumn.ui.element.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContentProviderCompat.requireContext
 import kh.edu.rupp.ite.autumn.data.model.LogInState
@@ -17,6 +19,19 @@ class LogInActivity: BaseActivity() {
 
 
     private val viewModel by viewModels<LogInViewModel>()
+
+
+    private val activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            val navigateTo = it.data?.getStringExtra("navigateTo")
+            if (navigateTo == "AccountFragment") {
+                // Notify AccountFragment to refresh
+                setResult(Activity.RESULT_OK, it.data)
+                finish() // Close LogInActivity
+            }
+        }
+    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,32 +49,30 @@ class LogInActivity: BaseActivity() {
     }
 
     private fun setUpListener() {
-        binding.btnLogIn.setOnClickListener { onLogInButtonClick() }
+        binding.btnLogIn.setOnClickListener {
+            onLogInButtonClick()
+        }
         binding.tabRegister.setOnClickListener{
-            Log.d("LogInActivity", "Register tab clicked")
-            onSignUpButtonClick() }
-
-
+            onSignUpButtonClick()
+        }
     }
-
-    private fun onSignUpButtonClick() {
-        val intent = Intent(this, SignUpActivity::class.java)
-        startActivity(intent)
-    }
-
     private fun setObserver() {
         viewModel.logInData.observe(this) {
             handleState(it)
         }
-
     }
+    private fun onSignUpButtonClick() {
+        val intent = Intent(this, SignUpActivity::class.java)
+        //startActivity(intent)
+        activityResultLauncher.launch(intent)
+    }
+
+
 
     private fun onLogInButtonClick() {
 
         val email = binding.edtUsername.text.toString().trim()
         val password = binding.edtPassword.text.toString().trim()
-        Log.d("LogInActivity", "Email entered: $email")
-        Log.d("LogInActivity", "Password entered: $password")
 
         if( email.isEmpty() || password.isEmpty()) {
             showAlert("Invalid Input", "Please entry Username and Password")
