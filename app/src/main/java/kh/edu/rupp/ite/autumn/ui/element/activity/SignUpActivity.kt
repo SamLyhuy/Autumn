@@ -52,6 +52,7 @@ class SignUpActivity: BaseActivity() {
     private fun onLogInButtonClick() {
         val intent = Intent(this, LogInActivity::class.java)
         startActivity(intent)
+        finish()
     }
 
 
