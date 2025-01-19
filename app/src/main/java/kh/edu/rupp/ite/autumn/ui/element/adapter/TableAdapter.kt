@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kh.edu.rupp.ite.autumn.data.model.EventData
 import kh.edu.rupp.ite.autumn.databinding.ItemBookingBinding
 
-class BookingAdapter: Adapter<BookingViewHolder>(){
+class TableAdapter: Adapter<BookingViewHolder>(){
 
     private var data = emptyList<EventData>()
 

@@ -8,17 +8,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import kh.edu.rupp.ite.autumn.R
 import kh.edu.rupp.ite.autumn.data.model.ApiState
 import kh.edu.rupp.ite.autumn.data.model.EventData
 import kh.edu.rupp.ite.autumn.data.model.State
 import kh.edu.rupp.ite.autumn.databinding.ActivityBookingBinding
-import kh.edu.rupp.ite.autumn.ui.element.adapter.BookingAdapter
-import kh.edu.rupp.ite.autumn.ui.viewmodel.BookingViewModel
+import kh.edu.rupp.ite.autumn.ui.element.adapter.TableAdapter
+import kh.edu.rupp.ite.autumn.ui.viewmodel.TableViewModel
 
 
 class BookingFragment: Fragment() {
 
-    private val viewModel by viewModels<BookingViewModel>()
+    private val viewModel by viewModels<TableViewModel>()
 
     private lateinit var binding: ActivityBookingBinding
 
@@ -39,7 +40,6 @@ class BookingFragment: Fragment() {
         setupUi()
         setupListener()
         setupObserver()
-        viewModel.loadBooking()
     }
 
     private fun setupUi(){
@@ -47,13 +47,23 @@ class BookingFragment: Fragment() {
     }
 
     private fun setupListener(){
-
+        binding.addBookingButton.setOnClickListener{
+            navigateToTableBookingFragment()
+        }
     }
 
     private fun setupObserver(){
-        viewModel.bookingData.observe(viewLifecycleOwner) { state ->
-            handleState(state)
-        }
+//        viewModel.loadingTableData().observe(viewLifecycleOwner) { state ->
+//            handleState(state)
+//        }
+    }
+    private fun navigateToTableBookingFragment() {
+        val tableBookingFragment = TableBookingFragment()
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.booking, tableBookingFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private fun handleState(state: ApiState<List<EventData>>) {
@@ -67,7 +77,7 @@ class BookingFragment: Fragment() {
     private fun showBooking(categories: List<EventData>) {
         // Set up the RecyclerView with a horizontal layout
         val itemBookingLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        val itemBookingAdapter = BookingAdapter()
+        val itemBookingAdapter = TableAdapter()
         itemBookingAdapter.setData(categories) // Pass Category list to the adapter
 
         // Bind the RecyclerView to the adapter and layout manager

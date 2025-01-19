@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:id="@+id/tableForm">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,8 +37,8 @@
 
         <!-- Stage Label -->
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="170dp"
+            android:layout_height="57dp"
             android:layout_marginTop="24dp"
             android:layout_gravity="center"
             android:background="@color/light_gray"
@@ -45,38 +47,277 @@
             android:textColor="@color/black"
             android:textSize="16sp" />
 
-        <!-- Table Grid -->
         <GridLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="16dp"
+            android:layout_height="wrap_content"
+            android:rowCount="4"
+            android:columnCount="5"
             android:alignmentMode="alignMargins"
-            android:columnCount="4"
-            android:rowCount="1"
-            android:padding="10dp"
-            android:gravity="center_horizontal">
+            android:layout_gravity="center"
+            >
 
-            <!-- Table Items -->
             <View
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@color/black"
-                android:layout_marginEnd="8dp" />
-            <View
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@color/black"
-                android:layout_marginEnd="8dp" ></View>
-            <View
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@color/black"
-                android:layout_marginEnd="8dp" />
-            <View
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:background="@color/black" />
+                android:id="@+id/table_A1"
+                android:layout_width="77dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/four_seat_available" />
 
+            <View
+                android:layout_width="35dp"
+                android:layout_height="10dp" />
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rowCount="2"
+                android:columnCount="3"
+                >
+
+                <View
+                    android:id="@+id/table_B1"
+                    android:layout_width="77dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/two_seat_available" />
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="2dp"
+                    />
+                <View
+                    android:id="@+id/table_B2"
+                    android:layout_width="77dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/two_seat_available" />
+                <View
+                    android:id="@+id/table_B3"
+                    android:layout_width="77dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/two_seat_available" />
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="2dp"
+                    />
+                <View
+                    android:id="@+id/table_B4"
+                    android:layout_width="77dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/two_seat_available" />
+            </GridLayout>
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="10dp" />
+
+            <View
+                android:id="@+id/table_A2"
+                android:layout_width="77dp"
+                android:layout_height="48dp"
+                android:background="@drawable/four_seat_available"
+                android:layout_gravity="center_vertical"/>
+        </GridLayout>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:rowCount="4"
+            android:columnCount="5"
+            android:alignmentMode="alignMargins"
+            android:layout_gravity="center"
+            >
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rowCount="2"
+                android:columnCount="2">
+
+                <View
+                    android:id="@+id/table_A3"
+                    android:layout_width="77dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/four_seat_available" />
+
+                <View
+                    android:layout_width="35dp"
+                    android:layout_height="10dp" />
+
+                <View
+                    android:id="@+id/table_A4"
+                    android:layout_width="77dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/four_seat_available" />
+
+            </GridLayout>
+
+
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rowCount="2"
+                android:columnCount="3"
+                >
+
+                <View
+                    android:id="@+id/table_B5"
+                    android:layout_width="77dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/two_seat_available" />
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="2dp"
+                    />
+                <View
+                    android:id="@+id/table_B6"
+                    android:layout_width="77dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/two_seat_available" />
+                <View
+                    android:id="@+id/table_C1"
+                    android:layout_width="77dp"
+                    android:layout_height="72dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/six_seat_available" />
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="2dp"
+                    />
+                <View
+                    android:id="@+id/table_C2"
+                    android:layout_width="77dp"
+                    android:layout_height="72dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/six_seat_available" />
+            </GridLayout>
+
+            <View
+                android:layout_width="35dp"
+                android:layout_height="10dp" />
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="1"
+                android:rowCount="5">
+
+                <View
+                    android:id="@+id/table_A5"
+                    android:layout_width="77dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/four_seat_available" />
+
+                <View
+                    android:id="@+id/table_A6"
+                    android:layout_width="77dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/four_seat_available" />
+
+            </GridLayout>
+        </GridLayout>
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:rowCount="4"
+            android:columnCount="5"
+            android:alignmentMode="alignMargins"
+            android:layout_gravity="center"
+            >
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rowCount="2"
+                android:columnCount="5">
+
+                <View
+                    android:layout_width="11dp"
+                    android:layout_height="10dp" />
+
+                <View
+                    android:id="@+id/table_B7"
+                    android:layout_width="24dp"
+                    android:layout_height="77dp"
+                    android:background="@drawable/two_seat_vt_available" />
+
+                <View
+                    android:layout_width="5dp"
+                    android:layout_height="10dp" />
+
+                <View
+                    android:id="@+id/table_B8"
+                    android:layout_width="24dp"
+                    android:layout_height="77dp"
+                    android:background="@drawable/two_seat_vt_available" />
+
+                <View
+                    android:layout_width="30dp"
+                    android:layout_height="10dp" />
+
+            </GridLayout>
+
+
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rowCount="2"
+                android:columnCount="3"
+                >
+
+                <View
+                    android:id="@+id/table_D1"
+                    android:layout_width="96dp"
+                    android:layout_height="77dp"
+                    android:background="@drawable/eight_seat_available" />
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="2dp"
+                    />
+                <View
+                    android:id="@+id/table_D2"
+                    android:layout_width="96dp"
+                    android:layout_height="77dp"
+                    android:background="@drawable/eight_seat_available" />
+            </GridLayout>
+
+            <View
+                android:layout_width="27dp"
+                android:layout_height="10dp" />
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rowCount="2"
+                android:columnCount="4">
+
+                <View
+                    android:id="@+id/table_B9"
+                    android:layout_width="24dp"
+                    android:layout_height="77dp"
+                    android:background="@drawable/two_seat_vt_available" />
+
+                <View
+                    android:layout_width="5dp"
+                    android:layout_height="10dp" />
+
+                <View
+                    android:id="@+id/table_B10"
+                    android:layout_width="24dp"
+                    android:layout_height="77dp"
+                    android:background="@drawable/two_seat_vt_available" />
+
+                <View
+                    android:layout_width="11dp"
+                    android:layout_height="10dp" />
+
+            </GridLayout>
         </GridLayout>
 
 
@@ -86,88 +327,88 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
-            android:gravity="center_horizontal">
+            android:gravity="end">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Available"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:layout_marginEnd="16dp" />
+                android:orientation="horizontal">
 
-            <TextView
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:background="@drawable/ic_available"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/available"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:textSize="12dp"
+                    android:layout_marginEnd="6dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Unavailable"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:layout_marginEnd="16dp" />
+                android:orientation="horizontal">
 
-            <TextView
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:background="@drawable/ic_unavailable"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/unavailable"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:textSize="12dp"
+                    android:layout_marginEnd="6dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Your selected"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:background="@drawable/ic_selected"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/selected"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:textSize="12dp"
+                    />
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
-        <!-- Time Selection -->
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Select Time"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <GridLayout
+            android:id="@+id/tvDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:columnCount="4"
-            android:rowCount="2"
-            android:padding="8dp">
+            android:hint="Event Date"
+            android:background="@drawable/circle_gray"
+            android:padding="12dp"
+            android:gravity="center_vertical"
+            android:textColor="@color/black" />
 
-            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="17:00" />
-            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="17:30" />
-            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="18:00" />
-            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="18:30" />
-            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="19:00" />
-            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="19:30" />
-            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="20:00" />
-            <Button android:layout_width="80dp" android:layout_height="40dp" android:text="20:30" />
-
-        </GridLayout>
-
-        <!-- Date Selection -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Date"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="8dp">
-
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fri\n03" android:background="@color/error_red" android:layout_marginEnd="8dp" />
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sat\n03" android:layout_marginEnd="8dp" />
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Sun\n03" android:layout_marginEnd="8dp" />
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mon\n03" android:layout_marginEnd="8dp" />
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Tue\n03" android:layout_marginEnd="8dp" />
-            <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Wed\n03" />
-        </LinearLayout>
 
         <!-- Confirm Button -->
         <Button
+            android:id="@+id/btnSubmitBooking"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -178,4 +419,4 @@
 
     </LinearLayout>
 
-</ScrollView>
+</FrameLayout>

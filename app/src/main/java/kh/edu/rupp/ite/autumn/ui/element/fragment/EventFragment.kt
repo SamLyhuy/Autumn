@@ -53,7 +53,8 @@ class EventFragment: BaseFragment() {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         Log.d("EventFragment", "onCreateView called")
@@ -74,10 +75,6 @@ class EventFragment: BaseFragment() {
         setupListener()
         setupObserver()
 
-
-
-
-
         calendarViewUser = view.findViewById(R.id.calendarViewUser)
         SelectedDateUser = view.findViewById(R.id.SelectedDateUser)
 
@@ -87,9 +84,7 @@ class EventFragment: BaseFragment() {
         }
 
 
-        binding.btnCreateNewEvent.setOnClickListener {
-            navigateToEventFormFragment()
-        }
+
 
 
     }
@@ -303,6 +298,9 @@ class EventFragment: BaseFragment() {
         swipeRefreshLayout.setOnRefreshListener {
             refreshUserRole()
             refreshData()  // Refresh data on swipe
+        }
+        binding.btnCreateNewEvent.setOnClickListener {
+            navigateToEventFormFragment()
         }
     }
 

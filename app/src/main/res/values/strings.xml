@@ -5,4 +5,7 @@
     <string name="log_in">Log In</string>
     <string name="invalid_input"> Invalid Input</string>
     <string name="fill_username_password">Please entry Username and Password</string>
+    <string name="selected">Selected</string>
+    <string name="unavailable">Unavailable</string>
+    <string name="available">Available</string>
 </resources>

@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:id="@+id/booking"
     tools:context=".ui.BookingActivity">
 
     <LinearLayout
@@ -39,7 +40,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:contentDescription="Add Booking"
-                android:src="@drawable/sunny_24px" />
+                android:src="@drawable/ic_add" />
         </RelativeLayout>
 
         <!-- Current Booking Section -->

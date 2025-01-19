@@ -21,6 +21,7 @@ class BookingViewModel: ViewModel() {
 
         viewModelScope.launch {
             try {
+                val test = "test"
                 val response = ApiClient.get().apiService.loadBooking()
 
                 if(response.isSuccess()) {
