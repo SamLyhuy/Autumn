@@ -1,36 +1,45 @@
 package kh.edu.rupp.ite.autumn.ui.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
 import kh.edu.rupp.ite.autumn.data.model.ApiState
 import kh.edu.rupp.ite.autumn.data.model.EventData
+import kh.edu.rupp.ite.autumn.data.model.PostEventRequest
+import kh.edu.rupp.ite.autumn.data.model.TableData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class BookingViewModel: ViewModel() {
 
-    private val _bookingData = MutableLiveData<ApiState<List<EventData>>>()
+    private val _bookingData = MutableLiveData<ApiState<TableData>>()
     val bookingData get() = _bookingData
 
-    fun loadBooking() {
-        var apiState = ApiState.loading<List<EventData>>()
+    fun booking(token: String, tableData: TableData) {
+        Log.d("BookingViewModel", "Booking method called")
+        var apiState = ApiState.loading<TableData>()
         _bookingData.postValue(apiState)
 
         viewModelScope.launch {
             try {
-                val test = "test"
-                val response = ApiClient.get().apiService.loadBooking()
+                Log.d("BookingViewModel", "Calling API with data: $tableData")
+                Log.d("BookingViewModel", "Calling API with token: $token")
+                val response = ApiClient.get().apiService.booking("Bearer $token", tableData)
 
-                if(response.isSuccess()) {
-                    ApiState.success(response.data)
+                if (response.isSuccessBooking()) {
+                    Log.d("BookingViewModel", "Booking successful: ${response.data}")
+                    apiState = ApiState.success(response.data!!)  // Ensure you check for nullability
                 } else {
-                    ApiState.error(response.message)
+                    Log.e("BookingViewModel", "Booking failed: ${response.message}")
+                    apiState = ApiState.error(response.message)
                 }
+
             } catch (ex: Exception) {
-                ApiState.error(ex.message)
+                Log.e("BookingViewModel", "Exception occurred: ${ex.message}")
+                apiState = ApiState.error(ex.message)
             }
 
             withContext(Dispatchers.Main) {
@@ -38,6 +47,7 @@ class BookingViewModel: ViewModel() {
             }
         }
     }
+
 
 
 

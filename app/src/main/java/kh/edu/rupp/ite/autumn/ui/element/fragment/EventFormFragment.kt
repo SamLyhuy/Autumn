@@ -47,23 +47,26 @@ class EventFormFragment : BaseFragment() {
     }
 
 
+    private fun onClickDate() {
+        val calendar = Calendar.getInstance()
+        val datePicker = DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                // Format year, month, and day with zero-padding
+                val formattedDate = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
+                binding.tvDate.text = formattedDate
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePicker.show()
+    }
+
     private fun setUpListener() {
         binding.tvDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val datePicker = DatePickerDialog(
-                requireContext(),
-                { _, year, month, dayOfMonth ->
-                    // Format year, month, and day with zero-padding
-                    val formattedDate = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
-                    binding.tvDate.text = formattedDate
-                },
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)
-            )
-            datePicker.show()
+            onClickDate()
         }
-
 
         binding.btnThumbnail.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)

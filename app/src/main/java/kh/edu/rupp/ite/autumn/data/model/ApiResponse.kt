@@ -15,6 +15,10 @@ data class ApiResponse<T>(
     fun isSuccessFetchTable(): Boolean {
         return message == AppConstants.API_STATUS_SUCCESS_TABLE
     }
+
+    fun isSuccessBooking(): Boolean {
+        return message == AppConstants.API_STATUS_SUCCESS_BOOKING
+    }
     fun isSuccessSignUp(): Boolean {
         return message == AppConstants.API_STATUS_SUCCESS_SIGNUP
     }

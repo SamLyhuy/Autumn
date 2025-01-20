@@ -21,8 +21,9 @@ interface ApiService {
     @GET("/event")
     suspend fun loadEvent(): ApiResponse<List<EventData>>
 
-    @GET("/event")
-    suspend fun loadBooking(): ApiResponse<List<EventData>>
+    @POST("/booking")
+    suspend fun booking(@Header("Authorization") token: String,
+                            @Body request: TableData): ApiResponse<TableData>
 
     @GET("/booking")
     suspend fun loadTable(@Query("date") date: String): ApiResponse<List<TableData>>
