@@ -54,7 +54,8 @@ class EventSelectedViewHolder(
 
         binding.eventTitle.text = eventInfo.name
         Picasso.get().load(eventInfo.thumbnail).into(binding.eventImage)
-
+        binding.eventTime.text = eventInfo.time
+        binding.eventDescription.text = eventInfo.description
         binding.root.setOnClickListener{ onClick(eventInfo)}
         Log.d("SelectedEventAdapter", "Clicked action done")
 

@@ -4,6 +4,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="primary">#70B9BE</color>
+    <color name="second_primary">#0A2533</color>
+
+
+
     <!-- Custom Colors -->
     <color name="teal">#FF4DB6AC</color> <!-- Teal color for buttons and accents -->
     <color name="gray">#FF9E9E9E</color> <!-- Medium gray for text or placeholders -->

@@ -7,8 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import kh.edu.rupp.ite.autumn.R
+import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
 import kh.edu.rupp.ite.autumn.data.model.ApiState
 import kh.edu.rupp.ite.autumn.data.model.BookingInfo
 import kh.edu.rupp.ite.autumn.data.model.State
@@ -18,6 +21,7 @@ import kh.edu.rupp.ite.autumn.databinding.ActivityTableSetectionBinding
 import kh.edu.rupp.ite.autumn.ui.viewmodel.BookingViewModel
 import kh.edu.rupp.ite.autumn.ui.viewmodel.TableViewModel
 import kh.edu.rupp.ite.visitme.global.AppEncryptedPref
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class TableBookingFragment : BaseFragment() {
@@ -42,9 +46,12 @@ class TableBookingFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         setupUi()
         setupListener()
         setupObserver()
+
+
     }
 
     private fun setupUi() {
@@ -86,6 +93,8 @@ class TableBookingFragment : BaseFragment() {
         )
         datePicker.show()
     }
+
+
 
 
 
@@ -195,7 +204,8 @@ class TableBookingFragment : BaseFragment() {
             }
             State.success -> {
                 hideLoading()
-// Fetch table data again after successful booking
+                Toast.makeText(context, "Booking successful!", Toast.LENGTH_SHORT).show()
+                // Fetch table data again after successful booking
                 val selectedDate = binding.tvDate.text.toString()
                 fetchTableData(selectedDate)
                 Log.d("TableBookingFragment", "State: Success, Data: ${state.data}")
@@ -221,12 +231,12 @@ class TableBookingFragment : BaseFragment() {
                 hideLoading()
                 showTable(state.data ?: emptyList())
                 Log.d("TableBookingFragment", "State: Success, Data: ${state.data}")
+
             }
             State.error -> {
                 hideLoading()
                 showTable(state.data ?: emptyList())
                 Log.e("TableBookingFragment", "State: Error, Message: ${state.message}")
-                showAlert("TableBookingFragment", state.message ?: "Unexpected Error")
             }
             else -> {
                 showTable(state.data ?: emptyList())
@@ -239,7 +249,7 @@ class TableBookingFragment : BaseFragment() {
     private fun showTable(tableDataList: List<TableData>) {
         Log.d("TableBookingFragment", "Displaying table data: $tableDataList")
 
-        // Step 1: Define the master list of all table IDs
+        // Define the master list of all table IDs
         val allTableIds = listOf(
             "table_A1", "table_A2", "table_A3", "table_A4", "table_A5", "table_A6",
             "table_B1", "table_B2", "table_B3", "table_B4", "table_B5", "table_B6",

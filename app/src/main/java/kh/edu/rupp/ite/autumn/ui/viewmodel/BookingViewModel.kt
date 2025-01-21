@@ -1,6 +1,7 @@
 package kh.edu.rupp.ite.autumn.ui.viewmodel
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,6 +32,7 @@ class BookingViewModel: ViewModel() {
 
                 if (response.isSuccessBooking()) {
                     Log.d("BookingViewModel", "Booking successful: ${response.data}")
+
                     apiState = ApiState.success(response.data!!)  // Ensure you check for nullability
                 } else {
                     Log.e("BookingViewModel", "Booking failed: ${response.message}")

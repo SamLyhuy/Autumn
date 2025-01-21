@@ -16,6 +16,15 @@ data class ApiResponse<T>(
         return message == AppConstants.API_STATUS_SUCCESS_TABLE
     }
 
+    fun isSuccessCreateEvent(): Boolean {
+        return message == AppConstants.API_STATUS_SUCCESS_CREATE_EVENT
+    }
+
+
+    fun isSuccessFetchFood(): Boolean {
+        return message == AppConstants.API_STATUS_SUCCESS_FOOD
+    }
+
     fun isSuccessBooking(): Boolean {
         return message == AppConstants.API_STATUS_SUCCESS_BOOKING
     }

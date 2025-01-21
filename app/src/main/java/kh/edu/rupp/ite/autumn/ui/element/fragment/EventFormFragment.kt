@@ -27,8 +27,8 @@ class EventFormFragment : BaseFragment() {
     private lateinit var binding: ActivityPostEventBinding
     private val viewModel by viewModels<EventViewModel>()
 
-    private var selectedThumbnailUri: Uri? = null
-    private val IMAGE_PICK_CODE = 1001
+//    private var selectedThumbnailUri: Uri? = null
+//    private val IMAGE_PICK_CODE = 1001
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +47,7 @@ class EventFormFragment : BaseFragment() {
     }
 
 
+    // Selected Date
     private fun onClickDate() {
         val calendar = Calendar.getInstance()
         val datePicker = DatePickerDialog(
@@ -68,10 +69,14 @@ class EventFormFragment : BaseFragment() {
             onClickDate()
         }
 
-        binding.btnThumbnail.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, IMAGE_PICK_CODE)
+//        binding.btnThumbnail.setOnClickListener {
+//            val intent = Intent(Intent.ACTION_PICK)
+//            intent.type = "image/*"
+//            startActivityForResult(intent, IMAGE_PICK_CODE)
+//        }
+
+        binding.btnBack.setOnClickListener{
+            navigateBack()
         }
 
         binding.btnSubmitEvent.setOnClickListener {
@@ -79,16 +84,18 @@ class EventFormFragment : BaseFragment() {
         }
     }
 
+    // Navigates back to the previous fragment
     private fun navigateBack() {
-        // Use the appropriate navigation method for your project
-        parentFragmentManager.popBackStack() // Navigates back to the previous fragment
+        parentFragmentManager.popBackStack()
     }
 
     private fun onEventButtonClick() {
+
         val date = binding.tvDate.text.toString().trim()
         val name = binding.etNameEvent.text.toString().trim()
         val time = binding.etTime.text.toString().trim()
         val description = binding.etDescription.text.toString().trim()
+        val thumbnail = binding.btnThumbnail.text.toString().trim()
         val isSpecial = binding.switchIsSpecial.isChecked
 
         Log.d("EventFormFragment", "Got: $date, $name, $time, $description, $isSpecial")
@@ -99,13 +106,15 @@ class EventFormFragment : BaseFragment() {
 //            return
 //        }
 
+        // Prepare Data
         val postEventRequest = PostEventRequest(
             date = date,
             event_info = listOf(
-                EventInfo(name, time, description, isSpecial, selectedThumbnailUri.toString(), null)
+                EventInfo(name, time, description, isSpecial, thumbnail, null)
             )
         )
 
+        // Get Token
         val token = AppEncryptedPref.get().getToken(requireContext())
 
         if (token.isNullOrEmpty()) {
@@ -113,8 +122,12 @@ class EventFormFragment : BaseFragment() {
             return
         }
 
+        // Pass data to viewModel
         viewModel.postEvent(token, postEventRequest)
+
     }
+
+
 
     private fun setObserver() {
         viewModel.eventData.observe(viewLifecycleOwner) {
@@ -125,17 +138,16 @@ class EventFormFragment : BaseFragment() {
     private fun handleState(state: ApiState<EventData>) {
         when (state.state) {
             State.loading -> {
-                // Show loading UI
                 Log.d("EventFormFragment", "Loading...")
             }
             State.success -> {
+                Log.d("EventFormFragment", "Success Response: ${state.data}")
                 Toast.makeText(requireContext(), "Event submitted successfully!", Toast.LENGTH_SHORT).show()
-                Log.d("EventFormFragment", "Success: ${state.message}")
                 navigateBack()
             }
             State.error -> {
+                Log.e("EventFormFragment", "Error Response: ${state.message}")
                 Toast.makeText(requireContext(), "Error: ${state.message}", Toast.LENGTH_SHORT).show()
-                Log.e("EventFormFragment", "Error: ${state.message}")
             }
             else -> {
                 Log.w("EventFormFragment", "Unhandled state: ${state.state}")
@@ -143,11 +155,5 @@ class EventFormFragment : BaseFragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_PICK_CODE && resultCode == Activity.RESULT_OK) {
-            selectedThumbnailUri = data?.data
-            binding.btnThumbnail.text = "Thumbnail Selected"
-        }
-    }
+
 }

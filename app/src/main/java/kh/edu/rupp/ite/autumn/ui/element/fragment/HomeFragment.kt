@@ -21,25 +21,27 @@ import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
 import kh.edu.rupp.ite.autumn.data.model.ApiState
 import kh.edu.rupp.ite.autumn.data.model.EnrichedEventInfo
 import kh.edu.rupp.ite.autumn.data.model.EventData
+import kh.edu.rupp.ite.autumn.data.model.FoodData
 import kh.edu.rupp.ite.autumn.data.model.State
 import kh.edu.rupp.ite.autumn.databinding.ActivityHomeBinding
 import kh.edu.rupp.ite.autumn.ui.element.adapter.EventAdapter
+import kh.edu.rupp.ite.autumn.ui.element.adapter.FoodAdapter
+import kh.edu.rupp.ite.autumn.ui.viewmodel.FoodViewModel
 import kh.edu.rupp.ite.autumn.ui.viewmodel.HomeViewModel
 import kh.edu.rupp.ite.visitme.global.AppEncryptedPref
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Locale
 
+// Fragment that handles the Home screen UI and data interactions
 class HomeFragment: BaseFragment() {
 
-    // Instantiate the ViewModel using the viewModels delegate
-    private val viewModel by viewModels<HomeViewModel>()
+    // ViewModels for loading home and food data
+    private val homeViewModel by viewModels<HomeViewModel>()
+    private val foodViewModel by viewModels<FoodViewModel>()
 
     // Binding object for accessing views in the layout
     private lateinit var binding: ActivityHomeBinding
-
-    private lateinit var calendarView: CalendarView
-    private lateinit var tvSelectedDate: TextView
 
     // Inflate the layout for the fragment
     override fun onCreateView(
@@ -58,197 +60,45 @@ class HomeFragment: BaseFragment() {
 
         Log.d("HomeFragment", "onViewCreated called")
 
+        // Set up the UI, listeners, and observers
         setupUi()
         setupListener()
         setupObserver()
 
-        viewModel.loadingHomeData()
-
+        // Check user role and load data
         checkUserRole()
-
-
-        calendarView = view.findViewById(R.id.calendarView)
-        tvSelectedDate = view.findViewById(R.id.tvSelectedDate)
-
-        // Set listener for when a date is selected
-        calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-            updateSelectedDate(year, month, dayOfMonth)
-        }
-
-
-        binding.btnCreateNewEventTest.setOnClickListener {
-            navigateToEventFormFragment()
-        }
-
+        homeViewModel.loadingHomeData()
+        foodViewModel.loadingFoodData("food")
+        foodViewModel.loadingFoodData("drink")
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setupObserver(){
-        viewModel.homeData.observe(viewLifecycleOwner) { state ->
-            handleState(state)
-        }
-    }
-
-    private fun setupListener() {
-    }
-
+    // Set up the initial UI elements (to be defined later)
     private fun setupUi() {
+        // UI setup can be added here if needed
     }
 
-    // Handle different states of the API call (loading, success, error)
+    // Set up listeners for any UI interactions (to be defined later)
+    private fun setupListener() {
+        // Listener setup can be added here if needed
+    }
+
+    // Set up observers to watch for data changes from ViewModel
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun handleState(state: ApiState<List<EventData>>) {
-        when (state.state) {
-            State.loading -> {
-                // Show a loading indicator
-                showLoading()
-                Log.d("HomeFragment", "State: Loading")
-            }
-            State.success -> {
-                // Hide the loading indicator and show the data
-                hideLoading()
+    private fun setupObserver() {
+        homeViewModel.homeData.observe(viewLifecycleOwner) { state ->
+            handleStateEvent(state)
+        }
 
-                Log.d("HomeFragment", "State: Success, Data: ${state.data}")
+        foodViewModel.foodData.observe(viewLifecycleOwner) { state ->
+            handleStateFood(state)
+        }
 
-                specialEvent(state.data!!)
-
-                todayEvent(state.data)
-            }
-            State.error -> {
-                // Hide the loading indicator and show an error alert
-                hideLoading()
-                Log.e("HomeFragment", "State: Error, Message: ${state.message}")
-                showAlert("Error", state.message ?: "Unexpected Error")
-            }
-            else -> {
-                Log.w("HomeFragment", "Unhandled state: ${state.state}")
-            }
+        foodViewModel.drinkData.observe(viewLifecycleOwner) { state ->
+            handleStateDrink(state)
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun todayEvent(eventData: List<EventData>) {
-
-        val today = LocalDate.now().toString() // Today's date in yyyy-MM-dd format
-
-        //val today = "2025-01-11"
-        Log.d("HomeFragment", "Today's date: $today")
-
-        val enrichedTodayEvents = eventData.flatMap { event ->
-
-            try {
-                if (event.date == today) {
-                    event.event_info.map { eventInfo ->
-                        EnrichedEventInfo(eventInfo, event.date)
-                    }
-                } else {
-                    emptyList()
-                }
-            } catch (e: Exception) {
-                Log.e("HomeFragment", "Error processing event: ${event.date}", e)
-                emptyList()
-            }
-        }
-
-        Log.d("HomeFragment", "Today's enriched events: $enrichedTodayEvents")
-
-        if (enrichedTodayEvents.isEmpty()) {
-            binding.noEventsTextView.apply {
-                text = "No events for to day"
-                visibility = View.VISIBLE
-            }
-        } else {
-            binding.noEventsTextView.visibility = View.GONE
-            val itemTodayEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            val itemTodayEventAdapter = EventAdapter { enrichedEventInfo ->
-                openEventDetailFragment(enrichedEventInfo)
-            }
-
-            itemTodayEventAdapter.setData(enrichedTodayEvents)
-
-            binding.specialsToday.apply {
-                adapter = itemTodayEventAdapter
-                layoutManager = itemTodayEventLayoutManager
-            }
-
-        }
-
-
-
-    }
-
-    // Display the list of categories using a RecyclerView
-    private fun specialEvent(eventData: List<EventData>) {
-
-        // Enrich and filter the special events
-        val enrichedSpecialEvents = eventData.flatMap { event ->
-            event.event_info.filter { it.isSpecial }.map { eventInfo ->
-                EnrichedEventInfo(eventInfo, event.date)
-            }
-        }
-
-        Log.d("HomeFragment", "Enriched special events: ${enrichedSpecialEvents}")
-
-        // Sort the events by event.date in ascending order
-        val sortedSpecialEvents = enrichedSpecialEvents.sortedBy { it.date }
-        val itemSpecialEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val itemSpecialEventAdapter = EventAdapter { enrichedEventInfo  ->
-            openEventDetailFragment(enrichedEventInfo ) // When an item is clicked, open the detail view
-        }
-
-        itemSpecialEventAdapter.setData(sortedSpecialEvents) // Pass Category list to the adapter
-
-        // Bind the RecyclerView to the adapter and layout manager
-        binding.upComingEvents.apply {
-            adapter = itemSpecialEventAdapter
-            layoutManager = itemSpecialEventLayoutManager
-        }
-
-
-    }
-
-    private fun openEventDetailFragment(enrichedEventInfo: EnrichedEventInfo) {
-
-        // Pass the clicked event data to the EventDetailFragment
-        val bundle = Bundle().apply {
-            putParcelable("event_info", enrichedEventInfo.eventInfo)
-            putString("event_date", enrichedEventInfo.date)
-        }
-
-        val fragment = EventDetailFragment().apply {
-            arguments = bundle
-        }
-
-        // Navigate to EventDetailFragment
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.home, fragment) // Replace with your container ID
-            .addToBackStack(null)
-            .commit()
-    }
-
-
-    private fun navigateToEventFormFragment() {
-        val eventFormFragment = EventFormFragment()
-
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.home, eventFormFragment)  // Replace container with EventFormFragment
-            .addToBackStack(null)  // Add to back stack so user can navigate back
-            .commit()
-    }
-
-
-    private fun showUserView(){
-        binding.adminView.isVisible = false
-        binding.userView.isVisible = true
-
-    }
-
-    private fun showAdminView(){
-        binding.adminView.isVisible = true
-        binding.userView.isVisible = false
-
-    }
-
+    // Check user role and determine whether to show admin or user view
     private fun checkUserRole() {
         val token = AppEncryptedPref.get().getToken(requireContext())
         Log.d("HomeFragment", "Token is checking: $token")
@@ -280,21 +130,182 @@ class HomeFragment: BaseFragment() {
         }
     }
 
-    private fun updateSelectedDate(year: Int, month: Int, dayOfMonth: Int) {
-        val selectedDate = Calendar.getInstance().apply {
-            set(year, month, dayOfMonth)
+    // Handle state changes for food data (loading, success, error)
+    private fun handleStateFood(state: ApiState<List<FoodData>>) {
+        when (state.state) {
+            State.loading -> showLoading()
+            State.success -> {
+                hideLoading()
+                populateFoodList(state.data ?: emptyList())
+            }
+            State.error -> {
+                hideLoading()
+                showAlert("Error", state.message ?: "Unexpected error")
+            }
+            State.none -> TODO()
         }
-
-        // Format the date as desired
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val formattedDate = dateFormat.format(selectedDate.time)
-
-        // Update the TextView with the formatted date
-        tvSelectedDate.text = "Date: $formattedDate"
     }
 
+    // Handle state changes for drink data (loading, success, error)
+    private fun handleStateDrink(state: ApiState<List<FoodData>>) {
+        when (state.state) {
+            State.loading -> showLoading()
+            State.success -> {
+                hideLoading()
+                populateDrinkList(state.data ?: emptyList())
+            }
+            State.error -> {
+                hideLoading()
+                showAlert("Error", state.message ?: "Unexpected error")
+            }
+            State.none -> TODO()
+        }
+    }
 
+    // Populate the list of food items in the RecyclerView
+    private fun populateFoodList(foodData: List<FoodData>) {
+        val foodListLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val foodAdapter = FoodAdapter()
+        foodAdapter.setData(foodData)
+        binding.foodListRecycler.apply {
+            adapter = foodAdapter
+            layoutManager = foodListLayoutManager
+        }
+    }
+
+    // Populate the list of drink items in the RecyclerView
+    private fun populateDrinkList(drinkData: List<FoodData>) {
+        val drinkListLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val drinkAdapter = FoodAdapter()
+        drinkAdapter.setData(drinkData)
+        binding.drinkListRecycler.apply {
+            adapter = drinkAdapter
+            layoutManager = drinkListLayoutManager
+        }
+    }
+
+    // Handle different states of the event data (loading, success, error)
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun handleStateEvent(state: ApiState<List<EventData>>) {
+        when (state.state) {
+            State.loading -> {
+                showLoading()
+                Log.d("HomeFragment", "State: Loading")
+            }
+            State.success -> {
+                hideLoading()
+                Log.d("HomeFragment", "State: Success, Data: ${state.data}")
+                specialEvent(state.data!!)
+                todayEvent(state.data)
+            }
+            State.error -> {
+                hideLoading()
+                Log.e("HomeFragment", "State: Error, Message: ${state.message}")
+                showAlert("Error", state.message ?: "Unexpected Error")
+            }
+            else -> {
+                Log.w("HomeFragment", "Unhandled state: ${state.state}")
+            }
+        }
+    }
+
+    // Show today's events in the RecyclerView
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun todayEvent(eventData: List<EventData>) {
+        val today = LocalDate.now().toString() // Today's date in yyyy-MM-dd format
+        Log.d("HomeFragment", "Today's date: $today")
+
+        // Map to get only Event Today
+        val enrichedTodayEvents = eventData.flatMap { event ->
+            try {
+                if (event.date == today) {
+                    event.event_info.map { eventInfo ->
+                        EnrichedEventInfo(eventInfo, event.date)
+                    }
+                } else {
+                    emptyList()
+                }
+            } catch (e: Exception) {
+                Log.e("HomeFragment", "Error processing event: ${event.date}", e)
+                emptyList()
+            }
+        }
+
+        Log.d("HomeFragment", "Today's enriched events: $enrichedTodayEvents")
+
+        // Handle if No Event Today
+        if (enrichedTodayEvents.isEmpty()) {
+            binding.noEventsTextView.apply {
+                text = "No events for today"
+                visibility = View.VISIBLE
+            }
+        } else {
+            binding.noEventsTextView.visibility = View.GONE
+            val itemTodayEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            val itemTodayEventAdapter = EventAdapter { enrichedEventInfo ->
+                openEventDetailFragment(enrichedEventInfo)
+            }
+
+            itemTodayEventAdapter.setData(enrichedTodayEvents)
+
+            binding.specialsToday.apply {
+                adapter = itemTodayEventAdapter
+                layoutManager = itemTodayEventLayoutManager
+            }
+        }
+    }
+
+    // Show upcoming special events in the RecyclerView
+    private fun specialEvent(eventData: List<EventData>) {
+
+        // Map to get only IsSpecial Event
+        val enrichedSpecialEvents = eventData.flatMap { event ->
+            event.event_info.filter { it.isSpecial }.map { eventInfo ->
+                EnrichedEventInfo(eventInfo, event.date)
+            }
+        }
+
+        Log.d("HomeFragment", "Enriched special events: $enrichedSpecialEvents")
+
+        val sortedSpecialEvents = enrichedSpecialEvents.sortedBy { it.date }
+        val itemSpecialEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val itemSpecialEventAdapter = EventAdapter { enrichedEventInfo ->
+            openEventDetailFragment(enrichedEventInfo)
+        }
+
+        itemSpecialEventAdapter.setData(sortedSpecialEvents)
+
+        binding.upComingEvents.apply {
+            adapter = itemSpecialEventAdapter
+            layoutManager = itemSpecialEventLayoutManager
+        }
+    }
+
+    // Open the detailed view of an event when clicked
+    private fun openEventDetailFragment(enrichedEventInfo: EnrichedEventInfo) {
+        val bundle = Bundle().apply {
+            putParcelable("event_info", enrichedEventInfo.eventInfo)
+            putString("event_date", enrichedEventInfo.date)
+        }
+
+        val fragment = EventDetailFragment().apply {
+            arguments = bundle
+        }
+
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.home, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    // Show or hide views for user or admin based on role
+    private fun showUserView() {
+        binding.btnCreateNewFood.isVisible = false
+        binding.btnCreateNewDrink.isVisible = false
+    }
+
+    private fun showAdminView() {
+        binding.btnCreateNewFood.isVisible = true
+        binding.btnCreateNewDrink.isVisible = true
+    }
 }
-
-
-

@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/home"
-        android:icon="@drawable/ic_apple"
+        android:icon="@drawable/ic_menu_home"
         android:title="Home"
         android:contentDescription="Home" />
     <item
         android:id="@+id/booking"
-        android:icon="@drawable/ic_arrow_back"
+        android:icon="@drawable/ic_menu_booking"
         android:title="Booking"
         android:contentDescription="Booking" />
     <item
         android:id="@+id/event"
-        android:icon="@drawable/ic_apple"
+        android:icon="@drawable/ic_menu_event"
         android:title="Event"
         android:contentDescription="Event" />
     <item
         android:id="@+id/account"
-        android:icon="@drawable/ic_account_circle"
+        android:icon="@drawable/ic_menu_profile"
         android:title="Account"
         android:contentDescription="Account" />
 </menu>

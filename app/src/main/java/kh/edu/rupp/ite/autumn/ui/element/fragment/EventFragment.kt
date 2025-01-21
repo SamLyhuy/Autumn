@@ -3,7 +3,6 @@ package kh.edu.rupp.ite.autumn.ui.element.fragment
 import EventDetailFragment
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
-import android.os.Binder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,24 +32,18 @@ import kh.edu.rupp.ite.visitme.global.AppEncryptedPref
 import kotlinx.coroutines.launch
 import java.util.Locale
 
+class EventFragment : BaseFragment() {
 
-class EventFragment: BaseFragment() {
-
+    // ViewModel and binding initialization
     private val viewModel by viewModels<HomeViewModel>()
-
     private lateinit var binding: ActivityEventBinding
 
+    // UI elements
     private lateinit var calendarViewUser: CalendarView
-    private lateinit var SelectedDateUser: TextView
-
+    private lateinit var selectedDateUser: TextView
     private var formattedDate: String? = null
-
     private var isInitialDataLoaded = false
-
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
-
-
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,62 +54,33 @@ class EventFragment: BaseFragment() {
         binding = ActivityEventBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
+
+    // Refreshes user role and data when the fragment resumes.
     override fun onResume() {
         super.onResume()
         refreshUserRole() // Refresh role and data when the fragment resumes
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("EventFragment", "onViewCreated called")
+
         checkUserRole()
         setupUi()
         setupListener()
         setupObserver()
 
+        // Calendar setup for date selection
         calendarViewUser = view.findViewById(R.id.calendarViewUser)
-        SelectedDateUser = view.findViewById(R.id.SelectedDateUser)
-
-
-        calendarViewUser.setOnDateChangeListener{ _, year, month, dayOfMonth ->
+        selectedDateUser = view.findViewById(R.id.SelectedDateUser)
+        calendarViewUser.setOnDateChangeListener { _, year, month, dayOfMonth ->
             updateSelectedDate(year, month, dayOfMonth)
         }
-
-
-
-
-
     }
 
-    private fun navigateToEventFormFragment() {
-        val eventFormFragment = EventFormFragment()
-
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.event, eventFormFragment)  // Replace container with EventFormFragment
-            .addToBackStack(null)  // Add to back stack so user can navigate back
-            .commit()
-    }
-
-    private fun refreshUserRole() {
-        checkUserRole() // Re-check the user's role
-        viewModel.loadingHomeData() // Trigger a reload of home data
-    }
-
-
-
-    private fun showUserView(){
-        binding.btnCreateNewEvent.isVisible = false
-
-
-    }
-
-    private fun showAdminView(){
-        binding.btnCreateNewEvent.isVisible = true
-
-    }
-
+    // Checks the user's role and adjusts the UI accordingly.
     private fun checkUserRole() {
+
+        // Get token
         val token = AppEncryptedPref.get().getToken(requireContext())
         Log.d("EventFragment", "Token is checking: $token")
 
@@ -147,34 +111,23 @@ class EventFragment: BaseFragment() {
         }
     }
 
-    private fun updateSelectedDate(year: Int, month: Int, dayOfMonth: Int) {
-
-        val selectedDate = Calendar.getInstance().apply {
-            set(year, month, dayOfMonth)
-        }
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        formattedDate = dateFormat.format(selectedDate.time)
-        Log.e("EventFragment", "Exception: ${dateFormat}")
-
-        SelectedDateUser.text = "Date: $formattedDate"
-
-        // Filter EventData objects by the selected date and extract EventInfo
-
-        viewModel.homeData.value?.let { state  ->
-            if(state.state == State.success && state.data != null) {
-                val filteredEventInfo = state.data
-                    .filter { it.date == formattedDate }
-                    .flatMap { it.event_info }
-
-                Log.d("EventFragment", "Filtered EventInfo for date $formattedDate: $filteredEventInfo")
-
-                showHomeData(filteredEventInfo)
-
-            }
-        }
-
+    // Initializes the user interface elements, including SwipeRefreshLayout.
+    private fun setupUi() {
+        swipeRefreshLayout = binding.swipeRefreshLayout // Initialize SwipeRefreshLayout properly
     }
 
+    // Sets up listeners for UI elements, including swipe-to-refresh and event creation button.
+    private fun setupListener() {
+        swipeRefreshLayout.setOnRefreshListener {
+            refreshUserRole()
+            refreshData()  // Refresh data on swipe
+        }
+        binding.btnCreateNewEvent.setOnClickListener {
+            navigateToEventFormFragment()
+        }
+    }
+
+    // Sets up the observer for the home data live data to handle UI updates.
     private fun setupObserver() {
         viewModel.homeData.observe(viewLifecycleOwner) { state ->
             handleState(state)
@@ -188,16 +141,44 @@ class EventFragment: BaseFragment() {
                 val month = today.get(Calendar.MONTH)
                 val dayOfMonth = today.get(Calendar.DAY_OF_MONTH)
 
-
                 updateSelectedDate(year, month, dayOfMonth)
             }
         }
     }
 
 
-    private fun handleState(state: ApiState<List<EventData>>) {
+    // Refreshes user role and triggers a data reload.
+    private fun refreshUserRole() {
+        checkUserRole() // Re-check the user's role
+        viewModel.loadingHomeData() // Trigger a reload of home data
+    }
 
-        when( state.state){
+    // Updates the displayed date when the user selects a new date on the calendar.
+    private fun updateSelectedDate(year: Int, month: Int, dayOfMonth: Int) {
+        val selectedDate = Calendar.getInstance().apply {
+            set(year, month, dayOfMonth)
+        }
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        formattedDate = dateFormat.format(selectedDate.time)
+        Log.e("EventFragment", "Exception: ${dateFormat}")
+
+        selectedDateUser.text = "$formattedDate"
+
+        // Filter EventData objects by the selected date and extract EventInfo
+        viewModel.homeData.value?.let { state ->
+            if (state.state == State.success && state.data != null) {
+                val filteredEventInfo = state.data
+                    .filter { it.date == formattedDate }
+                    .flatMap { it.event_info }
+
+                Log.d("EventFragment", "Filtered EventInfo for date $formattedDate: $filteredEventInfo")
+                showHomeData(filteredEventInfo)
+            }
+        }
+    }
+
+    private fun handleState(state: ApiState<List<EventData>>) {
+        when (state.state) {
             State.loading -> {
                 // Show a loading indicator
                 showLoading()
@@ -206,27 +187,8 @@ class EventFragment: BaseFragment() {
             State.success -> {
                 // Hide the loading indicator and show the data
                 hideLoading()
-
                 Log.d("EventFragment", "State: Success, Data: ${state.data}")
-
                 swipeRefreshLayout.isRefreshing = false
-
-                
-
-                //showHomeData(state.data!!)
-
-
-//                state.data?.let { eventData ->
-//                    val selectedDateText = SelectedDateUser.text.toString()
-//                    if (selectedDateText.startsWith("Date: ")) {
-//                        val selectedDate = selectedDateText.removePrefix("Date: ").trim()
-//                        val filteredEventInfo = eventData
-//                            .filter { it.date == selectedDate } // Filter by selected date
-//                            .flatMap { it.event_info } // Extract EventInfo
-//
-//                        Log.d("EventFragment", "Filtered EventInfo for date $selectedDate: $filteredEventInfo")
-//                        showHomeData(filteredEventInfo)
-
             }
             State.error -> {
                 // Hide the loading indicator and show an error alert
@@ -238,32 +200,15 @@ class EventFragment: BaseFragment() {
                 Log.w("EventFragment", "Unhandled state: ${state.state}")
             }
         }
-
-
-
     }
 
+    // Displays home data in the UI by passing it to the adapter for the recycler view.
     private fun showHomeData(eventInfo: List<EventInfo>) {
-
         Log.d("EventFragment", "Start passing all data to adapter, Data: ${eventInfo}")
 
-        //val eventInfoList = eventData.flatMap { it.event_info }
-
-        //Log.d("EventFragment", "Start passing only event_info to adapter, Data: ${eventInfoList}")
-
-
-
-
-
-
-
-        //val itemEventAdapter = SelectedEventAdapter()
-
-        val itemEventAdapter =SelectedEventAdapter { eventInfo ->
-            openEventDetailFragment (eventInfo)
+        val itemEventAdapter = SelectedEventAdapter { eventInfo ->
+            openEventDetailFragment(eventInfo)
         }
-
-
 
         val itemEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
@@ -272,12 +217,10 @@ class EventFragment: BaseFragment() {
             adapter = itemEventAdapter
             layoutManager = itemEventLayoutManager
         }
-
-
     }
 
+    // Opens the EventDetailFragment to display detailed information about the selected event.
     private fun openEventDetailFragment(eventInfo: EventInfo) {
-
         val bundle = Bundle().apply {
             putParcelable("event_info", eventInfo)
             putString("event_date", formattedDate)
@@ -291,25 +234,30 @@ class EventFragment: BaseFragment() {
             .replace(R.id.event, fragment)
             .addToBackStack(null)
             .commit()
-
     }
 
-    private fun setupListener() {
-        swipeRefreshLayout.setOnRefreshListener {
-            refreshUserRole()
-            refreshData()  // Refresh data on swipe
-        }
-        binding.btnCreateNewEvent.setOnClickListener {
-            navigateToEventFormFragment()
-        }
-    }
 
-    private fun setupUi() {
-        // Initialize SwipeRefreshLayout properly
-        swipeRefreshLayout = binding.swipeRefreshLayout  // This references the SwipeRefreshLayout
-    }
-
+    // Reload of home data.
     private fun refreshData() {
         viewModel.loadingHomeData() // Trigger data reload
+    }
+
+    // Navigates to the event form fragment to create a new event.
+    private fun navigateToEventFormFragment() {
+        val eventFormFragment = EventFormFragment()
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.event, eventFormFragment)  // Replace container with EventFormFragment
+            .addToBackStack(null)  // Add to back stack so user can navigate back
+            .commit()
+    }
+
+    // showing admin-specific controls.
+    private fun showAdminView() {
+        binding.btnCreateNewEvent.isVisible = true
+    }
+
+    // showing user-specific controls.
+    private fun showUserView() {
+        binding.btnCreateNewEvent.isVisible = false
     }
 }

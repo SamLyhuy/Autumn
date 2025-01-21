@@ -2,6 +2,7 @@ package kh.edu.rupp.ite.autumn.data.api.service
 
 import kh.edu.rupp.ite.autumn.data.model.ApiResponse
 import kh.edu.rupp.ite.autumn.data.model.EventData
+import kh.edu.rupp.ite.autumn.data.model.FoodData
 import kh.edu.rupp.ite.autumn.data.model.LogInResponse
 import kh.edu.rupp.ite.autumn.data.model.PostEventRequest
 import kh.edu.rupp.ite.autumn.data.model.RegisterData
@@ -27,6 +28,9 @@ interface ApiService {
 
     @GET("/booking")
     suspend fun loadTable(@Query("date") date: String): ApiResponse<List<TableData>>
+
+    @GET("/food")
+    suspend fun loadfood(@Query("type") type: String): ApiResponse<List<FoodData>>
 
     @POST("/event")
     suspend fun postEvent(

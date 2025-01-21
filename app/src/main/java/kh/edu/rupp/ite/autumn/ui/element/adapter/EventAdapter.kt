@@ -70,7 +70,6 @@ class EventViewHolder(
         Log.d("EventAdapter", "Category bound: ${eventData.date}")
         binding.textTest.text = eventData.date
         Picasso.get().load(eventData.eventInfo.thumbnail).into(binding.eventImg)
-//        binding.root.setOnClickListener { onClick(eventData) }
         binding.root.setOnClickListener { onClick(eventData) }
         Log.d("EventAdapter", "Clicked action done")
 

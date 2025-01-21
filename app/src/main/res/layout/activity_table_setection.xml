@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     android:background="@color/white"
     android:padding="16dp"
     android:id="@+id/tableForm">
@@ -37,16 +37,25 @@
         </LinearLayout>
 
         <!-- Stage Label -->
-        <TextView
+        <RelativeLayout
             android:layout_width="170dp"
             android:layout_height="57dp"
             android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
             android:layout_gravity="center"
             android:background="@color/light_gray"
-            android:padding="8dp"
-            android:text="Stage"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stage"
+                android:textSize="16dp"
+                android:layout_centerInParent="true"
+                />
+
+        </RelativeLayout>
+
+
 
         <GridLayout
             android:layout_width="match_parent"
@@ -235,31 +244,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:rowCount="2"
-                android:columnCount="5">
-
-                <View
-                    android:layout_width="11dp"
-                    android:layout_height="10dp" />
+                android:columnCount="2"
+                android:layout_gravity="center">
 
                 <View
                     android:id="@+id/table_B7"
-                    android:layout_width="24dp"
-                    android:layout_height="77dp"
-                    android:background="@drawable/two_seat_vt_available" />
+                    android:layout_width="77dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/two_seat_available" />
 
                 <View
-                    android:layout_width="5dp"
+                    android:layout_width="15dp"
                     android:layout_height="10dp" />
 
                 <View
                     android:id="@+id/table_B8"
-                    android:layout_width="24dp"
-                    android:layout_height="77dp"
-                    android:background="@drawable/two_seat_vt_available" />
-
-                <View
-                    android:layout_width="30dp"
-                    android:layout_height="10dp" />
+                    android:layout_width="77dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/two_seat_available" />
 
             </GridLayout>
 
@@ -289,34 +292,29 @@
             </GridLayout>
 
             <View
-                android:layout_width="27dp"
+                android:layout_width="15dp"
                 android:layout_height="10dp" />
 
             <GridLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:rowCount="2"
-                android:columnCount="4">
+                android:columnCount="1"
+                android:layout_gravity="center">
 
                 <View
                     android:id="@+id/table_B9"
-                    android:layout_width="24dp"
-                    android:layout_height="77dp"
-                    android:background="@drawable/two_seat_vt_available" />
+                    android:layout_width="77dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/two_seat_available" />
 
-                <View
-                    android:layout_width="5dp"
-                    android:layout_height="10dp" />
 
                 <View
                     android:id="@+id/table_B10"
-                    android:layout_width="24dp"
-                    android:layout_height="77dp"
-                    android:background="@drawable/two_seat_vt_available" />
-
-                <View
-                    android:layout_width="11dp"
-                    android:layout_height="10dp" />
+                    android:layout_width="77dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/two_seat_available" />
 
             </GridLayout>
         </GridLayout>
@@ -416,7 +414,8 @@
             android:background="@color/error_red"
             android:text="Confirm"
             android:textColor="@color/white"
-            android:drawableStart="@drawable/card_background" />
+            android:drawableStart="@drawable/card_background"
+            android:visibility="visible"/>
 
     </LinearLayout>
 

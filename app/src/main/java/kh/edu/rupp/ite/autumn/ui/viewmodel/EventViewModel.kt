@@ -22,8 +22,7 @@ class EventViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = ApiClient.get().apiService.postEvent("Bearer $token", postEventRequest)
-
-                if (response.isSuccess()) {
+                if (response.isSuccessCreateEvent()) {
                     _eventData.postValue(ApiState.success(response.data!!))
                 } else {
                     _eventData.postValue(ApiState.error(response.message))

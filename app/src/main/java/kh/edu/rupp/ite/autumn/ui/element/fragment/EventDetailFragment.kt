@@ -22,12 +22,10 @@ class EventDetailFragment : BaseFragment() {
         binding = DetailEventBinding.inflate(inflater, container, false)
 
         // Retrieve arguments safely
-        val eventData = arguments?.getParcelable<EventData>("event_data")
         eventInfo = arguments?.getParcelable("event_info")
         eventDate = arguments?.getString("event_date")
 
         // Debugging logs
-        //Log.d("EventDetailFragment", "EventData: $eventData")
         Log.d("EventDetailFragment", "EventInfo: $eventInfo")
         Log.d("EventDetailFragment", "EventDate: $eventDate")
 
@@ -40,8 +38,8 @@ class EventDetailFragment : BaseFragment() {
         // Populate UI with data
         Picasso.get().load(eventInfo?.thumbnail).into(binding.eventImage)
         binding.eventName.text = eventInfo?.name ?: "No event info available"
-        binding.eventName.text = eventInfo?.name ?: "No event info available"
-        binding.eventDescription.text = eventDate ?: "No date provided"
+        binding.eventDescription.text = eventInfo?.description ?: "No event info available"
+        binding.eventTime.text = eventInfo?.time ?: "No date provided"
 
         // Back button logic
         binding.btnBack.setOnClickListener {

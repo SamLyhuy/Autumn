@@ -249,34 +249,34 @@
                     android:src="@drawable/ic_arrow_forward" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:padding="8dp">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:padding="8dp">-->
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_language" />
+<!--                <ImageView-->
+<!--                    android:layout_width="24dp"-->
+<!--                    android:layout_height="24dp"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:src="@drawable/ic_language" />-->
 
-                <TextView
-                    android:id="@+id/review"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:padding="8dp"
-                    android:text="Review"
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/review"-->
+<!--                    android:layout_width="0dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:padding="8dp"-->
+<!--                    android:text="Review"-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:textSize="16sp" />-->
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_forward" />
-            </LinearLayout>
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:src="@drawable/ic_arrow_forward" />-->
+<!--            </LinearLayout>-->
 
 
         </LinearLayout>
@@ -285,7 +285,7 @@
             android:id="@+id/btnLogOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Log out"
+            android:text="@string/log_out"
             android:textColor="#FF0000"
             android:background="@drawable/card_background"
             android:layout_marginTop="16dp" />

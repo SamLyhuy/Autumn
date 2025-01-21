@@ -8,4 +8,5 @@
     <string name="selected">Selected</string>
     <string name="unavailable">Unavailable</string>
     <string name="available">Available</string>
+    <string name="log_out">Log out</string>
 </resources>

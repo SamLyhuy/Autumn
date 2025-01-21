@@ -28,4 +28,6 @@ open class BaseActivity: AppCompatActivity() {
         dialog.show()
     }
 
+
+
 }

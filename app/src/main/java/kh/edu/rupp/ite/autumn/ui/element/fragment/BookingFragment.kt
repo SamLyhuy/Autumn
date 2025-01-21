@@ -57,6 +57,8 @@ class BookingFragment: Fragment() {
 //            handleState(state)
 //        }
     }
+
+    // Navigate to TableBookingFragment
     private fun navigateToTableBookingFragment() {
         val tableBookingFragment = TableBookingFragment()
 
@@ -75,6 +77,7 @@ class BookingFragment: Fragment() {
     }
 
     private fun showBooking(categories: List<EventData>) {
+
         // Set up the RecyclerView with a horizontal layout
         val itemBookingLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         val itemBookingAdapter = TableAdapter()
