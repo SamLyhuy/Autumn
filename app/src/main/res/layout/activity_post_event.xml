@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
                 android:background="@drawable/circle_gray"
-                android:drawableStart="@drawable/sunny_24px"
+                android:drawableStart="@drawable/ic_calender"
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
                 android:hint="Event Date"
@@ -117,8 +117,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
+                android:minHeight="48dp"
                 android:padding="8dp"
-                android:text="Mark as Special Event" />
+                android:text="Special" />
 
             <!-- Submit Event Button -->
             <Button
