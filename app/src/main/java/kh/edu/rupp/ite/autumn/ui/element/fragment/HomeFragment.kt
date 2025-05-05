@@ -79,7 +79,9 @@ class HomeFragment: BaseFragment() {
 
     // Set up listeners for any UI interactions (to be defined later)
     private fun setupListener() {
-        // Listener setup can be added here if needed
+        binding.btnOpenChat.setOnClickListener {
+            openChat()
+        }
     }
 
     // Set up observers to watch for data changes from ViewModel
@@ -294,6 +296,14 @@ class HomeFragment: BaseFragment() {
 
         parentFragmentManager.beginTransaction()
             .replace(R.id.home, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun openChat() {
+        parentFragmentManager
+            .beginTransaction()
+            .replace(R.id.home, ChatBotFragment())
             .addToBackStack(null)
             .commit()
     }
