@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Your existing app theme styles might be here -->
+
+    <!-- Chat bubble text style for user messages -->
+    <style name="ChatBubble.User">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- Chat bubble text style for bot messages -->
+    <style name="ChatBubble.Bot">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="ChatBubble">StyleUser</style>
+
+</resources>
