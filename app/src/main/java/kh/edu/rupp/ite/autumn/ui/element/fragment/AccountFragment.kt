@@ -57,19 +57,21 @@ class AccountFragment: Fragment() {
     }
 
     private fun fetchUserInfo() {
-        val token = AppEncryptedPref.get().getToken(requireContext())
 
+        val token = AppEncryptedPref.get().getToken(requireContext())
         if (token == null) {
             Log.e("AccountFragment", "Token is null. Cannot fetch user info.")
             showLogInButton()
             return
         }
-
+        // Get User Info
         lifecycleScope.launch {
             try {
+                // pass token to viewModel to get User Info
                 val response = ApiClient.get().apiService.getUserInfo("Bearer $token")
                 Log.d("AccountFragment", "User found")
                 val userProfile = response.data?.data
+
                 if (userProfile != null) {
                     // Store the fetched profile data in SharedPreferences
                     AppPref.get().storeProfile(requireContext(), userProfile)
