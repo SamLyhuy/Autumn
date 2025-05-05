@@ -31,10 +31,18 @@ class ChatBotFragment : BaseFragment() {
     }
 
     private fun setObserver() {
-        TODO("Not yet implemented")
+        // Placeholder: Add real LiveData observer logic here later
+        // Example: viewModel.someData.observe(viewLifecycleOwner) { /* handle data */ }
+        println("Observer set")
     }
 
     private fun setUpListener() {
-        TODO("Not yet implemented")
+        // Placeholder: Add real listener logic here later
+        // Example: binding.sendButton.setOnClickListener { sendMessage() }
+        println("Listener set")
+        binding.toolbar.setNavigationOnClickListener {
+            parentFragmentManager.popBackStack() // Go back to HomeFragment
+        }
     }
+
 }
