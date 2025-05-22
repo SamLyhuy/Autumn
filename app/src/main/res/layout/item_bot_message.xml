@@ -1,9 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/botMessageText"
-    style="@style/ChatBubble.Bot"
-    android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_bot_bubble"
-    android:padding="12dp"
-    android:textColor="@android:color/black" />
+    android:padding="8dp"
+    android:orientation="vertical"
+    android:gravity="start">
+
+    <!-- Optional thumbnail -->
+    <ImageView
+        android:id="@+id/botMessageImage"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:visibility="gone"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/botMessageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bot_bubble"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+</LinearLayout>

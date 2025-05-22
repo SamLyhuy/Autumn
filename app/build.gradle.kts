@@ -64,6 +64,10 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     //implementation("com.prolificinteractive:material-calendarview:1.4.3")
 //    implementation ("")
+    // Glide for image loading
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
+
+
 
 
 }

@@ -1,6 +1,8 @@
 package kh.edu.rupp.ite.autumn.data.api.service
 
 import kh.edu.rupp.ite.autumn.data.model.ApiResponse
+import kh.edu.rupp.ite.autumn.data.model.ChatRequest
+import kh.edu.rupp.ite.autumn.data.model.ChatResponse
 import kh.edu.rupp.ite.autumn.data.model.EventData
 import kh.edu.rupp.ite.autumn.data.model.FoodData
 import kh.edu.rupp.ite.autumn.data.model.LogInResponse
@@ -47,5 +49,8 @@ interface ApiService {
 
     @POST("/user")
     suspend fun register(@Body request: RegisterData): ApiResponse<RegisterData>
+
+    @POST("/ai/chat")
+    suspend fun chatAI(@Body request: ChatRequest): ApiResponse<List<FoodData>>
 
 }
