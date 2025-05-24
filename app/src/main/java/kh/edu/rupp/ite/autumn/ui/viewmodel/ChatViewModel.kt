@@ -43,6 +43,7 @@ class ChatViewModel : ViewModel() {
                 val response = ApiClient.get().apiService.chatAI(message)
                 if (response.data != null) {
                     apiState = ApiState.success(response.data)
+                    Log.e("ChatViewModel", "Error fetching data: ${response.message}")
                     Log.d("ChatViewModel", "Data fetched successfully: ${response.data}")
                 } else {
                     apiState = ApiState.error(response.message)

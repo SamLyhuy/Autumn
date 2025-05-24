@@ -32,6 +32,7 @@ import kh.edu.rupp.ite.visitme.global.AppEncryptedPref
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Locale
+import java.time.format.DateTimeFormatter
 
 // Fragment that handles the Home screen UI and data interactions
 class HomeFragment: BaseFragment() {
@@ -237,12 +238,13 @@ class HomeFragment: BaseFragment() {
 
         // Handle if No Event Today
         if (enrichedTodayEvents.isEmpty()) {
-            binding.noEventsTextView.apply {
+            binding.noTodayEventsTextView.apply {
                 text = "No events for today"
                 visibility = View.VISIBLE
             }
+            binding.todaySpecialEvent.visibility = View.GONE
         } else {
-            binding.noEventsTextView.visibility = View.GONE
+            binding.noTodayEventsTextView.visibility = View.GONE
             val itemTodayEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             val itemTodayEventAdapter = EventAdapter { enrichedEventInfo ->
                 openEventDetailFragment(enrichedEventInfo)
@@ -250,38 +252,70 @@ class HomeFragment: BaseFragment() {
 
             itemTodayEventAdapter.setData(enrichedTodayEvents)
 
-            binding.specialsToday.apply {
+            binding.todaySpecialEvent.apply {
                 adapter = itemTodayEventAdapter
                 layoutManager = itemTodayEventLayoutManager
             }
         }
     }
 
-    // Show upcoming special events in the RecyclerView
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun specialEvent(eventData: List<EventData>) {
+        // Formatter matching your server’s "yyyy-MM-dd" strings
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val today = LocalDate.now()
+        Log.d("HomeFragment", "Today's date: $today")
 
-        // Map to get only IsSpecial Event
+        // Map to get only upcoming special events
         val enrichedSpecialEvents = eventData.flatMap { event ->
-            event.event_info.filter { it.isSpecial }.map { eventInfo ->
-                EnrichedEventInfo(eventInfo, event.date)
+            try {
+                val eventDate = LocalDate.parse(event.date, formatter)
+                if (eventDate.isAfter(today)) {
+                    // Now filter for isSpecial inside the event_info list
+                    event.event_info
+                        .filter { it.isSpecial }
+                        .map { info ->
+                            EnrichedEventInfo(info, event.date)
+                        }
+                } else {
+                    emptyList()
+                }
+            } catch (e: Exception) {
+                Log.e("HomeFragment", "Error parsing date: ${event.date}", e)
+                emptyList()
             }
         }
 
-        Log.d("HomeFragment", "Enriched special events: $enrichedSpecialEvents")
+        Log.d("HomeFragment", "Upcoming special events: $enrichedSpecialEvents")
 
-        val sortedSpecialEvents = enrichedSpecialEvents.sortedBy { it.date }
-        val itemSpecialEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        val itemSpecialEventAdapter = EventAdapter { enrichedEventInfo ->
-            openEventDetailFragment(enrichedEventInfo)
-        }
+        if (enrichedSpecialEvents.isEmpty()) {
+            binding.noUpComingEventsTextView.apply {
+                text = "No upcoming special events"
+                visibility = View.VISIBLE
+            }
+            binding.upComingEvents.visibility = View.GONE
+        } else {
+            binding.noUpComingEventsTextView.visibility = View.GONE
+            binding.upComingEvents.visibility = View.VISIBLE
 
-        itemSpecialEventAdapter.setData(sortedSpecialEvents)
+            val sorted = enrichedSpecialEvents.sortedBy {
+                LocalDate.parse(it.date, formatter)
+            }
 
-        binding.upComingEvents.apply {
-            adapter = itemSpecialEventAdapter
-            layoutManager = itemSpecialEventLayoutManager
+            val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            val adapter = EventAdapter { enrichedEventInfo ->
+                openEventDetailFragment(enrichedEventInfo)
+            }.apply {
+                setData(sorted)
+            }
+
+            binding.upComingEvents.apply {
+                this.adapter = adapter
+                this.layoutManager = layoutManager
+            }
         }
     }
+
 
     // Open the detailed view of an event when clicked
     private fun openEventDetailFragment(enrichedEventInfo: EnrichedEventInfo) {

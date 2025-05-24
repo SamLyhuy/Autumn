@@ -93,6 +93,18 @@
                 android:textStyle="bold"
                 android:layout_marginTop="16dp" />
 
+            <TextView
+                android:id="@+id/noUpComingEventsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No events for today"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:visibility="visible"
+                android:layout_gravity="center"
+                android:textStyle="italic"
+                android:layout_marginTop="16dp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/upComingEvents"
                 android:layout_width="match_parent"
@@ -114,7 +126,7 @@
                 android:layout_marginTop="16dp" />
 
             <TextView
-                android:id="@+id/noEventsTextView"
+                android:id="@+id/noTodayEventsTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="No events for today"
@@ -127,7 +139,7 @@
 
             <!-- Popular Food Section -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/specials_today"
+                android:id="@+id/todaySpecialEvent"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="8dp"
