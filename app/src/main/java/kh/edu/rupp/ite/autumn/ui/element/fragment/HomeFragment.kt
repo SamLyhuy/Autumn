@@ -1,16 +1,12 @@
 package kh.edu.rupp.ite.autumn.ui.element.fragment
 
 import EventDetailFragment
-import android.icu.text.SimpleDateFormat
-import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CalendarView
-import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -31,7 +27,6 @@ import kh.edu.rupp.ite.autumn.ui.viewmodel.HomeViewModel
 import kh.edu.rupp.ite.visitme.global.AppEncryptedPref
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.util.Locale
 import java.time.format.DateTimeFormatter
 
 // Fragment that handles the Home screen UI and data interactions

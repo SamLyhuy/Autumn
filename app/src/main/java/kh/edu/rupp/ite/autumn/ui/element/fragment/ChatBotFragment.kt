@@ -15,6 +15,7 @@ import kh.edu.rupp.ite.autumn.data.model.ChatRequest
 import kh.edu.rupp.ite.autumn.data.model.State
 import kh.edu.rupp.ite.autumn.ui.element.adapter.ChatAdapter
 
+
 class ChatBotFragment : BaseFragment() {
     private var _binding: ActivityChatBotBinding? = null
     private val binding get() = _binding!!
