@@ -21,15 +21,10 @@ class EventAdapter(
 
     // Update the dataset and refresh the RecyclerView
     fun setData(data: List<EnrichedEventInfo>){
-//        val filteredData = data.flatMap { it.event_info }.filter { it.isSpecial == true }
-//        this.data = filteredData
-
         this.data = data
         notifyDataSetChanged()
         Log.d("EventAdapter", "Data updated, size: ${data.size}")
     }
-
-    // Inflate the layout for each item
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -37,12 +32,10 @@ class EventAdapter(
         return EventViewHolder(binding, onClick)
     }
 
-    // Return the size of the dataset
     override fun getItemCount(): Int {
         return data.size
     }
 
-    // Bind data to the ViewHolder for the given position
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val eventData = data[position]
         holder.bind(eventData)
@@ -50,7 +43,6 @@ class EventAdapter(
     }
 }
 
-// ViewHolder to bind category data to the UI elements
 class EventViewHolder(
     private val binding: ItemSpecialsTodayBinding,
     private val onClick: (EnrichedEventInfo) -> Unit
@@ -59,20 +51,11 @@ class EventViewHolder(
     // Bind a single category to the UI
     fun bind(eventData: EnrichedEventInfo) {
 
-//        val firstEventInfo = eventData.event_info.firstOrNull()
-//
-//        if (firstEventInfo?.isSpecial == true) {
-//            binding.textTest.visibility = View.VISIBLE
-//        } else {
-//            binding.textTest.visibility = View.GONE
-//        }
-
         Log.d("EventAdapter", "Category bound: ${eventData.date}")
         binding.textTest.text = eventData.date
         Picasso.get().load(eventData.eventInfo.thumbnail).into(binding.eventImg)
         binding.root.setOnClickListener { onClick(eventData) }
         Log.d("EventAdapter", "Clicked action done")
-
     }
 }
 

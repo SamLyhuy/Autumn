@@ -96,7 +96,5 @@
 
     </LinearLayout>
 
-    <!-- Title and Add Button -->
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -70,7 +70,9 @@ class AccountFragment: Fragment() {
                 // pass token to viewModel to get User Info
                 val response = ApiClient.get().apiService.getUserInfo("Bearer $token")
                 Log.d("AccountFragment", "User found")
+
                 val userProfile = response.data?.data
+                Log.d("AccountFragment", "userProfile: $userProfile")
 
                 if (userProfile != null) {
                     // Store the fetched profile data in SharedPreferences

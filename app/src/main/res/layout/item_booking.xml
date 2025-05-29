@@ -25,10 +25,10 @@
         android:layout_marginStart="12dp">
 
         <TextView
-            android:id="@+id/statusText"
+            android:id="@+id/tableID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Approved"
+            android:text="Table"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="16sp" />
