@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:paddingStart="8dp"
+        android:paddingStart="0dp"
         android:paddingEnd="8dp">
 
         <!-- Bot avatar and name/status -->
@@ -33,14 +33,31 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/botName"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FitBot"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/botName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="FitBot"
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <!-- Overflow menu icon -->
+                <ImageButton
+                    android:id="@+id/toolbarOverflow"
+                    android:layout_width="22dp"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="More options"
+                    android:src="@drawable/ic_active"
+                    app:layout_constraintEnd_toEndOf="parent" />
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/botStatus"
                 android:layout_width="wrap_content"
@@ -50,16 +67,18 @@
                 android:textColor="@color/gray" />
         </LinearLayout>
 
-        <!-- Overflow menu icon -->
-        <ImageButton
-            android:id="@+id/toolbarOverflow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_active"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="More options"
-            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.appcompat.widget.Toolbar>
+
+    <View
+        android:id="@+id/toolbarDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toTopOf="@id/chatRecyclerView"/>
 
     <!-- Chat messages list -->
     <androidx.recyclerview.widget.RecyclerView
@@ -68,6 +87,7 @@
         android:layout_height="0dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
+        android:background="@color/white"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toTopOf="@id/inputContainer"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +100,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:background="@color/white"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -88,22 +109,27 @@
         <EditText
             android:id="@+id/messageInput"
             android:layout_width="0dp"
-            android:layout_height="40dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_confirm_button"
-            android:hint="Type a message..."
-            android:padding="8dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/chat_hint"
+            android:inputType="text"
+            android:autofillHints="none"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textColorHint="@color/black"
+            android:textSize="14sp"/>
 
         <ImageButton
             android:id="@+id/sendButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_sending"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/send_description"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Send"
-            android:layout_marginStart="8dp" />
+            android:src="@drawable/ic_sending"
+            />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

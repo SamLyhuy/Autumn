@@ -5,20 +5,7 @@ data class ApiState<T>(
     val message: String?,
     val token: String? = null,
     val data: T?
-) {
-//    companion object {
-//        fun <T> loading(): ApiState<T> {
-//            return ApiState(State.loading, null, null)
-//        }
-//
-//        fun <T> success(data: T): ApiState<T> {
-//            return ApiState(State.success, null, data)
-//        }
-//
-//        fun <T> error(message: String?): ApiState<T> {
-//            return ApiState(State.error, message, null)
-//        }
-//    }
+){
     companion object {
         fun <T> loading(): ApiState<T> {
             return ApiState(State.loading, null, null, null)

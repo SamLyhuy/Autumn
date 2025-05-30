@@ -7,8 +7,8 @@
     <color name="primary">#70B9BE</color>
     <color name="second_primary">#0A2533</color>
 
-    <color name="userBubbleBackground">#3F51B5</color> <!-- Primary color -->
-    <color name="botBubbleBackground">#E0E0E0</color>   <!-- Light gray -->
+    <color name="userBubbleBackground">#FFBDBDBD</color> <!-- Primary color -->
+    <color name="botBubbleBackground">#FF4DB6AC</color>   <!-- Light gray -->
 
 
 

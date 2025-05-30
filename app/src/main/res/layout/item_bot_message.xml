@@ -1,19 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/botContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:orientation="vertical"
-    android:gravity="start">
+    android:gravity="start"
+    android:orientation="horizontal">
 
-    <!-- Optional thumbnail -->
+    <!-- 1) Bot avatar on left -->
     <ImageView
-        android:id="@+id/botMessageImage"
-        android:layout_width="120dp"
-        android:layout_height="80dp"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
-        android:layout_marginBottom="4dp" />
+        android:id="@+id/botAvatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_bot_avatar" />
 
+    <!-- 2) Message bubble -->
     <TextView
         android:id="@+id/botMessageText"
         android:layout_width="wrap_content"
@@ -22,5 +24,4 @@
         android:padding="12dp"
         android:textColor="@color/black"
         android:textSize="14sp" />
-
 </LinearLayout>

@@ -10,5 +10,12 @@
     <string name="available">Available</string>
     <string name="log_out">Log out</string>
 
+    <string name="bot_name">FitBot</string>
+    <string name="bot_status">Always active</string>
+    <string name="chat_hint">Type a message…</string>
+    <string name="send">Send</string>
+    <string name="send_description">Send message</string>
+    <string name="more_options">More options</string>
+
 
 </resources>
