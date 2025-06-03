@@ -35,7 +35,7 @@ class EventActivity: BaseActivity() {
     }
 
     private fun setupListener() {
-        binding.btnSubmitEvent.setOnClickListener {
+        binding.btnSaveEvent.setOnClickListener {
 
         }
     }

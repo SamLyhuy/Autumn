@@ -7,6 +7,11 @@
     android:padding="16dp"
     android:id="@+id/home">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -169,7 +174,7 @@
                     android:layout_weight="1" />
 
                 <View
-                    android:id="@+id/btnCreateNewFood"
+                    android:id="@+id/btnCreateNewFooddd"
                     android:layout_width="46dp"
                     android:layout_height="32dp"
                     android:background="@drawable/ic_create_event"
@@ -177,39 +182,78 @@
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/foodListRecycler"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:layout_marginTop="8dp"
-                tools:listitem="@layout/item_food"/>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <LinearLayout
+                    android:id="@+id/btnCreateNewFood"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    tools:ignore="MissingConstraints">
+
+                    <ImageView
+                        android:layout_width="84dp"
+                        android:layout_height="84dp"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_add_btn" />
+
+                    <!-- Drink Name -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:text="Add"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/foodListRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+
+                    tools:listitem="@layout/item_food"/>
+
+            </LinearLayout>
+
+
 
 
             <!-- Drink List Section -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
+                android:layout_height="28dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
 
                 <!-- Selected date TextView -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="Drink"
                     android:textColor="@color/second_primary"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"
-                    />
+                    android:textStyle="bold" />
+
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
                 <View
-                    android:id="@+id/btnCreateNewDrink"
+                    android:id="@+id/btnCreateNewDrinks"
                     android:layout_width="46dp"
                     android:layout_height="32dp"
                     android:background="@drawable/ic_create_event"
@@ -217,18 +261,56 @@
 
             </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/drinkListRecycler"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:layout_marginTop="8dp"
-                tools:listitem="@layout/item_food" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <LinearLayout
+                    android:id="@+id/btnCreateNewDrink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    tools:ignore="MissingConstraints">
+
+                    <ImageView
+
+                        android:layout_width="84dp"
+                        android:layout_height="84dp"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_add_btn" />
+
+                    <!-- Drink Name -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:gravity="center"
+                        android:text="Add"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/drinkListRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    tools:listitem="@layout/item_food"/>
+
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>
 
 
 
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>

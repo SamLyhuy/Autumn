@@ -25,7 +25,7 @@
         android:layout_marginStart="12dp">
 
         <TextView
-            android:id="@+id/tableID"
+            android:id="@+id/bookingDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Table"
@@ -33,18 +33,12 @@
             android:textColor="@color/black"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/bookingDetails"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Time 20:00, Number of Guests: 6"
-            android:textColor="@color/gray"
-            android:textSize="14sp" />
+
     </LinearLayout>
 
     <!-- Booking Date -->
     <TextView
-        android:id="@+id/bookingDate"
+        android:id="@+id/tableID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="12/3/2024"

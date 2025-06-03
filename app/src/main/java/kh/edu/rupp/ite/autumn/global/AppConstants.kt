@@ -10,6 +10,7 @@ class AppConstants {
         val API_STATUS_SUCCESS_BOOKING = "Booking created successfully!!"
         val API_STATUS_SUCCESS_CREATE_EVENT = "Event has create successfully"
         val API_STATUS_SUCCESS_FOOD = "Food found!!"
+        val API_STATUS_SUCCESS_CREATE_FOOD = "Food created successfully"
     }
 
 

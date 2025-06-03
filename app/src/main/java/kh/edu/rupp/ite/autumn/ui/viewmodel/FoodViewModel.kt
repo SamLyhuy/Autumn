@@ -1,6 +1,5 @@
 package kh.edu.rupp.ite.autumn.ui.viewmodel
 
-
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,49 +7,101 @@ import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
 import kh.edu.rupp.ite.autumn.data.model.ApiState
 import kh.edu.rupp.ite.autumn.data.model.FoodData
+import kh.edu.rupp.ite.autumn.data.model.PostFoodRequest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FoodViewModel: ViewModel() {
+class FoodViewModel : ViewModel() {
 
+    companion object {
+        private const val TAG = "FoodViewModel"
+    }
+
+    // LiveData for fetching a list of food items
     private val _foodData = MutableLiveData<ApiState<List<FoodData>>>()
-
     val foodData get() = _foodData
+
+    // LiveData for fetching a list of drinks
     private val _drinkData = MutableLiveData<ApiState<List<FoodData>>>()
-    val drinkData: MutableLiveData<ApiState<List<FoodData>>> = _drinkData
+    val drinkData get() = _drinkData
+
+    // LiveData for posting a new food item
+    private val _postFood = MutableLiveData<ApiState<FoodData>>()
+    val postFood get() = _postFood
 
 
+    /**
+     * Fetches either “food” or “drink” items from the API.
+     *
+     * @param type "food" or "drink"
+     */
     fun loadingFoodData(type: String) {
-        var apiState = ApiState.loading<List<FoodData>>()
-        _foodData.postValue(apiState)
+        Log.d(TAG, "loadingFoodData() called with type: $type")
+        // Immediately show a loading state
+        _foodData.postValue(ApiState.loading())
 
         viewModelScope.launch {
             try {
+                Log.d(TAG, "Calling API: loadfood($type)")
                 val response = ApiClient.get().apiService.loadfood(type)
 
                 if (response.isSuccessFetchFood()) {
-//                    apiState =ApiState.success(response.data ?: emptyList())
-//                    Log.d("FoodViewModel", "Data fetched successfully: ${response.data}")
+                    val items = response.data ?: emptyList()
+                    Log.d(TAG, "API Success: fetched ${items.size} items for type '$type'")
 
+                    // Post to the proper LiveData
                     if (type == "food") {
-                        _foodData.value = ApiState.success(response.data ?: emptyList())
-                    } else if (type == "drink") {
-                        _drinkData.value = ApiState.success(response.data ?: emptyList())
+                        _foodData.postValue(ApiState.success(items))
+                    } else {
+                        _drinkData.postValue(ApiState.success(items))
                     }
                 } else {
-                    apiState = ApiState.error(response.message)
-                    Log.e("FoodViewModel", "Error fetching data: ${response.message}")
+                    val errorMsg = response.message
+                    Log.e(TAG, "API Error fetching '$type': $errorMsg")
+                    _foodData.postValue(ApiState.error(errorMsg))
                 }
-            }catch (ex: Exception) {
-                apiState = ApiState.error(ex.message)
-                Log.e("FoodViewModel", "Exception occurred: ${ex.message}")
-            }
-            withContext(Dispatchers.Main) {
-                _foodData.postValue(apiState)
+            } catch (ex: Exception) {
+                val message = ex.message ?: "Unknown exception"
+                Log.e(TAG, "Exception in loadingFoodData: $message")
+                _foodData.postValue(ApiState.error(message))
             }
         }
     }
 
 
+    /**
+     * Sends a new food item to the server.
+     *
+     * @param token            Bearer token string (e.g., "abc123")
+     * @param postFoodRequest  Data object containing all fields needed to create a food
+     */
+    fun postFood(token: String, postFoodRequest: PostFoodRequest) {
+        Log.d(TAG, "postFood() called with request: $postFoodRequest")
+        // Immediately show a loading state
+        _postFood.postValue(ApiState.loading())
+
+        viewModelScope.launch {
+            try {
+                Log.d(TAG, "Calling API: postFood(...)")
+                val response = ApiClient.get()
+                    .apiService
+                    .postFood("Bearer $token", postFoodRequest)
+
+                if (response.isSuccessCreateFood()) {
+                    val createdItem = response.data!!
+                    Log.d(TAG, "API Success: created food item with ID=${createdItem.name}")
+                    _postFood.postValue(ApiState.success(createdItem))
+                } else {
+                    val errorMsg = response.message
+                    Log.e(TAG, "API Error posting food: $errorMsg")
+                    _postFood.postValue(ApiState.error(errorMsg))
+                }
+            } catch (ex: Exception) {
+                val message = ex.message ?: "Unknown exception"
+                Log.e(TAG, "Exception in postFood: $message")
+                _postFood.postValue(ApiState.error(message))
+            }
+        }
+    }
 }

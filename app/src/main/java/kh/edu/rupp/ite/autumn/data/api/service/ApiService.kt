@@ -7,6 +7,7 @@ import kh.edu.rupp.ite.autumn.data.model.EventData
 import kh.edu.rupp.ite.autumn.data.model.FoodData
 import kh.edu.rupp.ite.autumn.data.model.LogInResponse
 import kh.edu.rupp.ite.autumn.data.model.PostEventRequest
+import kh.edu.rupp.ite.autumn.data.model.PostFoodRequest
 import kh.edu.rupp.ite.autumn.data.model.RegisterData
 import kh.edu.rupp.ite.autumn.data.model.TableData
 import kh.edu.rupp.ite.autumn.data.model.UserDataProfile
@@ -52,5 +53,11 @@ interface ApiService {
 
     @POST("/ai/chat")
     suspend fun chatAI(@Body request: ChatRequest): ApiResponse<List<FoodData>>
+
+    @POST("/food")
+    suspend fun postFood(
+        @Header("Authorization") token: String,
+        @Body request: PostFoodRequest
+    ): ApiResponse<FoodData>
 
 }

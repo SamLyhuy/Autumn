@@ -27,9 +27,6 @@ class EventFormFragment : BaseFragment() {
     private lateinit var binding: ActivityPostEventBinding
     private val viewModel by viewModels<EventViewModel>()
 
-//    private var selectedThumbnailUri: Uri? = null
-//    private val IMAGE_PICK_CODE = 1001
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,17 +66,12 @@ class EventFormFragment : BaseFragment() {
             onClickDate()
         }
 
-//        binding.btnThumbnail.setOnClickListener {
-//            val intent = Intent(Intent.ACTION_PICK)
-//            intent.type = "image/*"
-//            startActivityForResult(intent, IMAGE_PICK_CODE)
-//        }
 
-        binding.btnBack.setOnClickListener{
+        binding.btnBackEvent.setOnClickListener{
             navigateBack()
         }
 
-        binding.btnSubmitEvent.setOnClickListener {
+        binding.btnSaveEvent.setOnClickListener {
             onEventButtonClick()
         }
     }
@@ -92,19 +84,14 @@ class EventFormFragment : BaseFragment() {
     private fun onEventButtonClick() {
 
         val date = binding.tvDate.text.toString().trim()
-        val name = binding.etNameEvent.text.toString().trim()
-        val time = binding.etTime.text.toString().trim()
-        val description = binding.etDescription.text.toString().trim()
-        val thumbnail = binding.btnThumbnail.text.toString().trim()
+        val name = binding.etEventName.text.toString().trim()
+        val time = binding.etEventTime.text.toString().trim()
+        val description = binding.etEventDescription.text.toString().trim()
+        val thumbnail = binding.tvThumbnail.text.toString().trim()
         val isSpecial = binding.switchIsSpecial.isChecked
 
         Log.d("EventFormFragment", "Got: $date, $name, $time, $description, $isSpecial")
 
-
-//        if (date.isEmpty() || name.isEmpty() || time.isEmpty() || description.isEmpty() || selectedThumbnailUri == null) {
-//            Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
-//            return
-//        }
 
         // Prepare Data
         val postEventRequest = PostEventRequest(

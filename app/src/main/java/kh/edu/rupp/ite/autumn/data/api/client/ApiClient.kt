@@ -1,5 +1,6 @@
 package kh.edu.rupp.ite.autumn.data.api.client
 
+import com.google.gson.GsonBuilder
 import kh.edu.rupp.ite.autumn.data.api.service.ApiService
 import kh.edu.rupp.ite.autumn.global.AppConstants
 import okhttp3.OkHttpClient

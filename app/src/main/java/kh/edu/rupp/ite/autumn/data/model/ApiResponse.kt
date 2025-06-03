@@ -20,6 +20,10 @@ data class ApiResponse<T>(
         return message == AppConstants.API_STATUS_SUCCESS_CREATE_EVENT
     }
 
+    fun isSuccessCreateFood(): Boolean {
+        return message == AppConstants.API_STATUS_SUCCESS_CREATE_FOOD
+    }
+
 
     fun isSuccessFetchFood(): Boolean {
         return message == AppConstants.API_STATUS_SUCCESS_FOOD

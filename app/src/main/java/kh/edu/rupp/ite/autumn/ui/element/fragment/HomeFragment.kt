@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kh.edu.rupp.ite.autumn.R
 import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
 import kh.edu.rupp.ite.autumn.data.model.ApiState
@@ -30,14 +31,23 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 // Fragment that handles the Home screen UI and data interactions
-class HomeFragment: BaseFragment() {
+class HomeFragment : BaseFragment() {
 
     // ViewModels for loading home and food data
     private val homeViewModel by viewModels<HomeViewModel>()
     private val foodViewModel by viewModels<FoodViewModel>()
 
-    // Binding object for accessing views in the layout
+    // Binding object for accessing views
     private lateinit var binding: ActivityHomeBinding
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
+    // Track in-flight loads
+    private var isHomeLoading = false
+    private var isFoodLoading = false
+    private var isDrinkLoading = false
+
+    // Ensure we only do the first‐ever load once
+    private var initialDataLoaded = false
 
     // Inflate the layout for the fragment
     override fun onCreateView(
@@ -45,58 +55,174 @@ class HomeFragment: BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         Log.d("HomeFragment", "onCreateView called")
-        binding = ActivityHomeBinding.inflate(layoutInflater, container, false)
+        binding = ActivityHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    // Initialize UI and observe ViewModel data after the view is created
+    // Only re-check the user role here—do NOT reload the lists on every resume
+    override fun onResume() {
+        super.onResume()
+        checkUserRole()
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         Log.d("HomeFragment", "onViewCreated called")
 
-        // Set up the UI, listeners, and observers
         setupUi()
         setupListener()
         setupObserver()
 
-        // Check user role and load data
-        checkUserRole()
-        homeViewModel.loadingHomeData()
-        foodViewModel.loadingFoodData("food")
-        foodViewModel.loadingFoodData("drink")
+        // First-time load: events, foods, drinks
+        if (!initialDataLoaded) {
+            initialDataLoaded = true
+            checkUserRole()
+            homeViewModel.loadingHomeData()
+            foodViewModel.loadingFoodData("food")
+            foodViewModel.loadingFoodData("drink")
+        }
     }
 
-    // Set up the initial UI elements (to be defined later)
+    // Set up the initial UI elements
     private fun setupUi() {
-        // UI setup can be added here if needed
+        swipeRefreshLayout = binding.swipeRefreshLayout
     }
 
-    // Set up listeners for any UI interactions (to be defined later)
+    // Set up listeners for UI interactions
     private fun setupListener() {
+        swipeRefreshLayout.setOnRefreshListener {
+            refreshData()
+        }
         binding.btnOpenChat.setOnClickListener {
             openChat()
         }
+        binding.btnCreateNewFood.setOnClickListener {
+            navigateToFoodFormFragment()
+        }
+        binding.btnCreateNewDrink.setOnClickListener {
+            navigateToFoodFormFragment()
+        }
+    }
+
+    private fun navigateToFoodFormFragment() {
+        val foodFormFragment = FoodFormFragment()
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.home, foodFormFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     // Set up observers to watch for data changes from ViewModel
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupObserver() {
+        // 1) Observe homeData (events)
         homeViewModel.homeData.observe(viewLifecycleOwner) { state ->
-            handleStateEvent(state)
+            when (state.state) {
+                State.loading -> {
+                    isHomeLoading = true
+                    Log.d("HomeFragment", "homeData → loading; showLoading()")
+                    showLoading()
+                }
+                State.success -> {
+                    isHomeLoading = false
+                    Log.d("HomeFragment", "homeData → success; isHomeLoading=false")
+                    if (!isFoodLoading && !isDrinkLoading && !isHomeLoading) {
+                        Log.d("HomeFragment", "All loads finished → hideLoading() & stop swipe")
+                        hideLoading()
+                        swipeRefreshLayout.isRefreshing = false
+                    }
+                    state.data?.let { list ->
+                        specialEvent(list)
+                        todayEvent(list)
+                    }
+                }
+                State.error -> {
+                    isHomeLoading = false
+                    Log.e("HomeFragment", "homeData → error (${state.message}); isHomeLoading=false")
+                    if (!isFoodLoading && !isDrinkLoading && !isHomeLoading) {
+                        Log.d("HomeFragment", "All loads finished (with error) → hideLoading() & stop swipe")
+                        hideLoading()
+                        swipeRefreshLayout.isRefreshing = false
+                    }
+                    showAlert("Error", state.message ?: "Unexpected Error")
+                }
+                else -> {
+                    Log.w("HomeFragment", "homeData → unhandled state ${state.state}")
+                }
+            }
         }
 
+        // 2) Observe foodData
         foodViewModel.foodData.observe(viewLifecycleOwner) { state ->
-            handleStateFood(state)
+            when (state.state) {
+                State.loading -> {
+                    isFoodLoading = true
+                    Log.d("HomeFragment", "foodData → loading; showLoading()")
+                    showLoading()
+                }
+                State.success -> {
+                    isFoodLoading = false
+                    Log.d("HomeFragment", "foodData → success; isFoodLoading=false")
+                    if (!isHomeLoading && !isDrinkLoading && !isFoodLoading) {
+                        Log.d("HomeFragment", "All loads finished → hideLoading() & stop swipe")
+                        hideLoading()
+                        swipeRefreshLayout.isRefreshing = false
+                    }
+                    populateFoodList(state.data ?: emptyList())
+                }
+                State.error -> {
+                    isFoodLoading = false
+                    Log.e("HomeFragment", "foodData → error (${state.message}); isFoodLoading=false")
+                    if (!isHomeLoading && !isDrinkLoading && !isFoodLoading) {
+                        Log.d("HomeFragment", "All loads finished (with error) → hideLoading() & stop swipe")
+                        hideLoading()
+                        swipeRefreshLayout.isRefreshing = false
+                    }
+                    showAlert("Error", state.message ?: "Unexpected error")
+                }
+                State.none -> {
+                    Log.d("HomeFragment", "foodData → none")
+                }
+            }
         }
 
+        // 3) Observe drinkData
         foodViewModel.drinkData.observe(viewLifecycleOwner) { state ->
-            handleStateDrink(state)
+            when (state.state) {
+                State.loading -> {
+                    isDrinkLoading = true
+                    Log.d("HomeFragment", "drinkData → loading; showLoading()")
+                    showLoading()
+                }
+                State.success -> {
+                    isDrinkLoading = false
+                    Log.d("HomeFragment", "drinkData → success; isDrinkLoading=false")
+                    if (!isHomeLoading && !isFoodLoading && !isDrinkLoading) {
+                        Log.d("HomeFragment", "All loads finished → hideLoading() & stop swipe")
+                        hideLoading()
+                        swipeRefreshLayout.isRefreshing = false
+                    }
+                    populateDrinkList(state.data ?: emptyList())
+                }
+                State.error -> {
+                    isDrinkLoading = false
+                    Log.e("HomeFragment", "drinkData → error (${state.message}); isDrinkLoading=false")
+                    if (!isHomeLoading && !isFoodLoading && !isDrinkLoading) {
+                        Log.d("HomeFragment", "All loads finished (with error) → hideLoading() & stop swipe")
+                        hideLoading()
+                        swipeRefreshLayout.isRefreshing = false
+                    }
+                    showAlert("Error", state.message ?: "Unexpected error")
+                }
+                State.none -> {
+                    Log.d("HomeFragment", "drinkData → none")
+                }
+            }
         }
     }
 
-    // Check user role and determine whether to show admin or user view
+    // Check user role and show admin/user UI elements
     private fun checkUserRole() {
         val token = AppEncryptedPref.get().getToken(requireContext())
         Log.d("HomeFragment", "Token is checking: $token")
@@ -128,41 +254,20 @@ class HomeFragment: BaseFragment() {
         }
     }
 
-    // Handle state changes for food data (loading, success, error)
-    private fun handleStateFood(state: ApiState<List<FoodData>>) {
-        when (state.state) {
-            State.loading -> showLoading()
-            State.success -> {
-                hideLoading()
-                populateFoodList(state.data ?: emptyList())
-            }
-            State.error -> {
-                hideLoading()
-                showAlert("Error", state.message ?: "Unexpected error")
-            }
-            State.none -> TODO()
-        }
+    private fun showUserView() {
+        binding.btnCreateNewFood.isVisible = false
+        binding.btnCreateNewDrink.isVisible = false
     }
 
-    // Handle state changes for drink data (loading, success, error)
-    private fun handleStateDrink(state: ApiState<List<FoodData>>) {
-        when (state.state) {
-            State.loading -> showLoading()
-            State.success -> {
-                hideLoading()
-                populateDrinkList(state.data ?: emptyList())
-            }
-            State.error -> {
-                hideLoading()
-                showAlert("Error", state.message ?: "Unexpected error")
-            }
-            State.none -> TODO()
-        }
+    private fun showAdminView() {
+        binding.btnCreateNewFood.isVisible = true
+        binding.btnCreateNewDrink.isVisible = true
     }
 
     // Populate the list of food items in the RecyclerView
     private fun populateFoodList(foodData: List<FoodData>) {
-        val foodListLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val foodListLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         val foodAdapter = FoodAdapter()
         foodAdapter.setData(foodData)
         binding.foodListRecycler.apply {
@@ -173,7 +278,8 @@ class HomeFragment: BaseFragment() {
 
     // Populate the list of drink items in the RecyclerView
     private fun populateDrinkList(drinkData: List<FoodData>) {
-        val drinkListLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val drinkListLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         val drinkAdapter = FoodAdapter()
         drinkAdapter.setData(drinkData)
         binding.drinkListRecycler.apply {
@@ -182,38 +288,12 @@ class HomeFragment: BaseFragment() {
         }
     }
 
-    // Handle different states of the event data (loading, success, error)
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun handleStateEvent(state: ApiState<List<EventData>>) {
-        when (state.state) {
-            State.loading -> {
-                showLoading()
-                Log.d("HomeFragment", "State: Loading")
-            }
-            State.success -> {
-                hideLoading()
-                Log.d("HomeFragment", "State: Success, Data: ${state.data}")
-                specialEvent(state.data!!)
-                todayEvent(state.data)
-            }
-            State.error -> {
-                hideLoading()
-                Log.e("HomeFragment", "State: Error, Message: ${state.message}")
-                showAlert("Error", state.message ?: "Unexpected Error")
-            }
-            else -> {
-                Log.w("HomeFragment", "Unhandled state: ${state.state}")
-            }
-        }
-    }
-
     // Show today's events in the RecyclerView
     @RequiresApi(Build.VERSION_CODES.O)
     private fun todayEvent(eventData: List<EventData>) {
-        val today = LocalDate.now().toString() // Today's date in yyyy-MM-dd format
+        val today = LocalDate.now().toString() // yyyy-MM-dd
         Log.d("HomeFragment", "Today's date: $today")
 
-        // Map to get only Event Today
         val enrichedTodayEvents = eventData.flatMap { event ->
             try {
                 if (event.date == today) {
@@ -229,9 +309,6 @@ class HomeFragment: BaseFragment() {
             }
         }
 
-        Log.d("HomeFragment", "Today's enriched events: $enrichedTodayEvents")
-
-        // Handle if No Event Today
         if (enrichedTodayEvents.isEmpty()) {
             binding.noTodayEventsTextView.apply {
                 text = "No events for today"
@@ -240,7 +317,8 @@ class HomeFragment: BaseFragment() {
             binding.todaySpecialEvent.visibility = View.GONE
         } else {
             binding.noTodayEventsTextView.visibility = View.GONE
-            val itemTodayEventLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            val itemTodayEventLayoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             val itemTodayEventAdapter = EventAdapter { enrichedEventInfo ->
                 openEventDetailFragment(enrichedEventInfo)
             }
@@ -254,19 +332,17 @@ class HomeFragment: BaseFragment() {
         }
     }
 
+    // Show upcoming special events
     @RequiresApi(Build.VERSION_CODES.O)
     private fun specialEvent(eventData: List<EventData>) {
-        // Formatter matching your server’s "yyyy-MM-dd" strings
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val today = LocalDate.now()
         Log.d("HomeFragment", "Today's date: $today")
 
-        // Map to get only upcoming special events
         val enrichedSpecialEvents = eventData.flatMap { event ->
             try {
                 val eventDate = LocalDate.parse(event.date, formatter)
                 if (eventDate.isAfter(today)) {
-                    // Now filter for isSpecial inside the event_info list
                     event.event_info
                         .filter { it.isSpecial }
                         .map { info ->
@@ -280,8 +356,6 @@ class HomeFragment: BaseFragment() {
                 emptyList()
             }
         }
-
-        Log.d("HomeFragment", "Upcoming special events: $enrichedSpecialEvents")
 
         if (enrichedSpecialEvents.isEmpty()) {
             binding.noUpComingEventsTextView.apply {
@@ -297,7 +371,8 @@ class HomeFragment: BaseFragment() {
                 LocalDate.parse(it.date, formatter)
             }
 
-            val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            val layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             val adapter = EventAdapter { enrichedEventInfo ->
                 openEventDetailFragment(enrichedEventInfo)
             }.apply {
@@ -310,7 +385,6 @@ class HomeFragment: BaseFragment() {
             }
         }
     }
-
 
     // Open the detailed view of an event when clicked
     private fun openEventDetailFragment(enrichedEventInfo: EnrichedEventInfo) {
@@ -337,14 +411,10 @@ class HomeFragment: BaseFragment() {
             .commit()
     }
 
-    // Show or hide views for user or admin based on role
-    private fun showUserView() {
-        binding.btnCreateNewFood.isVisible = false
-        binding.btnCreateNewDrink.isVisible = false
-    }
-
-    private fun showAdminView() {
-        binding.btnCreateNewFood.isVisible = true
-        binding.btnCreateNewDrink.isVisible = true
+    // Pull-to-refresh: re-fetch events, foods, and drinks
+    private fun refreshData() {
+        homeViewModel.loadingHomeData()
+        foodViewModel.loadingFoodData("food")
+        foodViewModel.loadingFoodData("drink")
     }
 }

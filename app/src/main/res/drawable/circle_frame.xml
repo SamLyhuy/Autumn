@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval"
+    android:useLevel="false">
+    <!-- A transparent fill so only the stroke (border) is visible -->
+    <solid android:color="@android:color/transparent" />
+
+    <!-- Adjust border width/color as desired -->
+    <stroke
+        android:width="0dp"
+        android:color="#FF6200EE" />
+</shape>
