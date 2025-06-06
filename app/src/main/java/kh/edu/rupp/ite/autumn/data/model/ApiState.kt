@@ -11,12 +11,12 @@ data class ApiState<T>(
             return ApiState(State.loading, null, null, null)
         }
 
-    fun <T> success(data: T, token: String? = null, message: String? = null): ApiState<T> {
-        return ApiState(State.success, message, token, data)
-    }
+        fun <T> success(data: T, token: String? = null, message: String? = null): ApiState<T> {
+            return ApiState(State.success, message, token, data)
+        }
 
         fun <T> error(message: String?): ApiState<T> {
-            return ApiState(State.error, message, null, null)
+                return ApiState(State.error, message, null, null)
         }
     }
 
