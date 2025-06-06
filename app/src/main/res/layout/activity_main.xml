@@ -16,11 +16,14 @@
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:layout_gravity="bottom"
-        app:menu="@menu/menu"
         android:background="@drawable/bottom_nav_background"
         app:itemIconTint="#374957"
         app:itemTextColor="#374957"
+        app:menu="@menu/menu"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+    <include
+        android:id="@+id/loadingOverlay"
+        layout="@layout/view_loading_overlay" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
