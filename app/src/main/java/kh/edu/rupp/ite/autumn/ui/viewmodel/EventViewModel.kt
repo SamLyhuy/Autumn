@@ -1,58 +1,46 @@
+// EventViewModel.kt
 package kh.edu.rupp.ite.autumn.ui.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
-import kh.edu.rupp.ite.autumn.data.model.ApiState
-import kh.edu.rupp.ite.autumn.data.model.EventData
-import kh.edu.rupp.ite.autumn.data.model.PostEventRequest
+import kh.edu.rupp.ite.autumn.data.model.*
+import kh.edu.rupp.ite.autumn.ui.element.adapter.Event
+import kh.edu.rupp.ite.autumn.data.model.UiMessage
 import kotlinx.coroutines.launch
 
 class EventViewModel : ViewModel() {
 
-    companion object {
-        private const val TAG = "EventViewModel"
-    }
-
-    // LiveData that emits loading/success/error states for posting an Event
+    // LiveData for API success/error
     private val _eventData = MutableLiveData<ApiState<EventData>>()
-    val eventData get() = _eventData
+    val eventData: LiveData<ApiState<EventData>> = _eventData
 
-    /**
-     * Sends a new event to the server.
-     *
-     * @param token            Bearer token string (e.g., "abc123")
-     * @param postEventRequest Data object containing all fields needed to create an event
-     */
-    fun postEvent(token: String, postEventRequest: PostEventRequest) {
-        Log.d(TAG, "postEvent() called with request: $postEventRequest")
-        // 1) Immediately emit “loading” state to observers
+    // LiveData for “server‐response” messages
+    private val _uiMessage = MutableLiveData<Event<UiMessage>>()
+    val uiMessage: LiveData<Event<UiMessage>> = _uiMessage
+
+    fun postEvent(token: String, request: PostEventRequest) {
+        Log.d("EventViewModel", "postEvent() called")
         _eventData.postValue(ApiState.loading())
 
         viewModelScope.launch {
             try {
-                Log.d(TAG, "Calling API: postEvent(...)")
-                val response = ApiClient.get()
-                    .apiService
-                    .postEvent("Bearer $token", postEventRequest)
+                val response = ApiClient.get().apiService.postEvent("Bearer $token", request)
 
-                // 2) Check if API responded with success
                 if (response.isSuccessCreateEvent()) {
-                    val createdEvent = response.data!!
-                    Log.d(TAG, "API Success: created event with title='${createdEvent.event_info}'")
-                    _eventData.postValue(ApiState.success(createdEvent))
+                    // 1) API succeeded → notify observers
+                    _eventData.postValue(ApiState.success(response.data!!))
+                    // 2) Also post a “success” UiMessage for the dialog
+                    _uiMessage.postValue(Event(UiMessage("Event submitted successfully!", true)))
                 } else {
-                    // 3) API returned an error code/message
-                    val errorMsg = response.message
-                    Log.e(TAG, "API Error posting event: $errorMsg")
-                    _eventData.postValue(ApiState.error(errorMsg))
+                    val msg = response.message ?: "Unknown error"
+                    _eventData.postValue(ApiState.error(msg))
+                    _uiMessage.postValue(Event(UiMessage("Failed: $msg", false)))
                 }
             } catch (ex: Exception) {
-                val message = ex.message ?: "Unknown exception"
-                Log.e(TAG, "Exception in postEvent: $message")
-                _eventData.postValue(ApiState.error(message))
+                val msg = ex.message ?: "Network error"
+                _eventData.postValue(ApiState.error(msg))
+                _uiMessage.postValue(Event(UiMessage("Failed: $msg", false)))
             }
         }
     }

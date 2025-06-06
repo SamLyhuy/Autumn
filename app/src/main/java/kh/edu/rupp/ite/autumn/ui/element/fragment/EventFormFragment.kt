@@ -5,6 +5,8 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import kh.edu.rupp.ite.autumn.R
 import kh.edu.rupp.ite.autumn.data.model.ApiState
 import kh.edu.rupp.ite.autumn.data.model.EventData
 import kh.edu.rupp.ite.autumn.data.model.EventInfo
@@ -41,8 +44,8 @@ class EventFormFragment : BaseFragment() {
         //setupUi()
         setUpListener()
         setObserver()
-    }
 
+    }
 
     // Selected Date
     private fun onClickDate() {
@@ -81,14 +84,63 @@ class EventFormFragment : BaseFragment() {
         parentFragmentManager.popBackStack()
     }
 
+
     private fun onEventButtonClick() {
 
+        // 1) Grab field values:
         val date = binding.tvDate.text.toString().trim()
         val name = binding.etEventName.text.toString().trim()
         val time = binding.etEventTime.text.toString().trim()
         val description = binding.etEventDescription.text.toString().trim()
         val thumbnail = binding.tvThumbnail.text.toString().trim()
         val isSpecial = binding.switchIsSpecial.isChecked
+
+        var hasError = false
+
+        // 2) Validate “date” (TextView). If empty, highlight it:
+        if (date.isEmpty()) {
+            binding.tvDate.setBackgroundResource(R.drawable.bg_red)
+            hasError = true
+        }else {
+            binding.tvDate.setBackgroundResource(R.drawable.bg_edit_text)
+        }
+
+        // 3) Validate “name” (EditText). If empty, highlight it:
+        if (name.isEmpty()) {
+            binding.etEventName.setBackgroundResource(R.drawable.bg_red)
+            hasError = true
+        }else {
+            binding.etEventName.setBackgroundResource(R.drawable.bg_edit_text)
+        }
+
+        // 4) Validate “time”
+        if (time.isEmpty()) {
+            binding.etEventTime.setBackgroundResource(R.drawable.bg_red)
+            hasError = true
+        }else {
+            binding.etEventTime.setBackgroundResource(R.drawable.bg_edit_text)
+        }
+
+        // 5) Validate “description”
+        if (description.isEmpty()) {
+            binding.etEventDescription.setBackgroundResource(R.drawable.bg_red)
+            hasError = true
+        }else {
+            binding.etEventDescription.setBackgroundResource(R.drawable.bg_edit_text)
+        }
+
+        // 6) Validate “thumbnail”
+        if (thumbnail.isEmpty()) {
+            binding.tvThumbnail.setBackgroundResource(R.drawable.bg_red)
+            hasError = true
+        }else {
+            binding.tvThumbnail.setBackgroundResource(R.drawable.bg_edit_text)
+        }
+
+        // 7) If any field was invalid, bail out and do not call the network:
+        if (hasError) {
+            return
+        }
 
         Log.d("EventFormFragment", "Got: $date, $name, $time, $description, $isSpecial")
 
@@ -114,8 +166,6 @@ class EventFormFragment : BaseFragment() {
 
     }
 
-
-
     private fun setObserver() {
         viewModel.eventData.observe(viewLifecycleOwner) {
             handleState(it)
@@ -125,21 +175,25 @@ class EventFormFragment : BaseFragment() {
     private fun handleState(state: ApiState<EventData>) {
         when (state.state) {
             State.loading -> {
-                Log.d("EventFormFragment", "Loading...")
+                Log.d("EventFormFragment", "Loading…")
+                showLoading()      // from BaseFragment → shows your loading overlay
             }
             State.success -> {
                 Log.d("EventFormFragment", "Success Response: ${state.data}")
-                Toast.makeText(requireContext(), "Event submitted successfully!", Toast.LENGTH_SHORT).show()
+                hideLoading()
+                parentFragmentManager.popBackStack()
                 navigateBack()
             }
             State.error -> {
                 Log.e("EventFormFragment", "Error Response: ${state.message}")
-                Toast.makeText(requireContext(), "Error: ${state.message}", Toast.LENGTH_SHORT).show()
+                hideLoading()
+                // No Toast here either; the custom dialog will handle error text/icons.
             }
             else -> {
                 Log.w("EventFormFragment", "Unhandled state: ${state.state}")
             }
         }
+        observeServerResponse(viewModel.uiMessage)
     }
 
 
