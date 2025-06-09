@@ -1,6 +1,7 @@
 package kh.edu.rupp.ite.autumn.ui.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,6 +9,8 @@ import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
 import kh.edu.rupp.ite.autumn.data.model.ApiState
 import kh.edu.rupp.ite.autumn.data.model.FoodData
 import kh.edu.rupp.ite.autumn.data.model.PostFoodRequest
+import kh.edu.rupp.ite.autumn.data.model.UiMessage
+import kh.edu.rupp.ite.autumn.ui.element.adapter.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -29,6 +32,10 @@ class FoodViewModel : ViewModel() {
     // LiveData for posting a new food item
     private val _postFood = MutableLiveData<ApiState<FoodData>>()
     val postFood get() = _postFood
+
+    // LiveData for “server‐response” messages
+    private val _uiMessage = MutableLiveData<Event<UiMessage>>()
+    val uiMessage: LiveData<Event<UiMessage>> = _uiMessage
 
 
     /**
@@ -92,15 +99,18 @@ class FoodViewModel : ViewModel() {
                     val createdItem = response.data!!
                     Log.d(TAG, "API Success: created food item with ID=${createdItem.name}")
                     _postFood.postValue(ApiState.success(createdItem))
+                    _uiMessage.postValue(Event(UiMessage("Food Created successfully!", true)))
                 } else {
-                    val errorMsg = response.message
-                    Log.e(TAG, "API Error posting food: $errorMsg")
-                    _postFood.postValue(ApiState.error(errorMsg))
+                    val message = response.message
+                    Log.e(TAG, "API Error posting food: $message")
+                    _postFood.postValue(ApiState.error(message))
+                    _uiMessage.postValue(Event(UiMessage("Failed: $message", false)))
                 }
             } catch (ex: Exception) {
                 val message = ex.message ?: "Unknown exception"
                 Log.e(TAG, "Exception in postFood: $message")
                 _postFood.postValue(ApiState.error(message))
+                _uiMessage.postValue(Event(UiMessage("Failed: $message", false)))
             }
         }
     }

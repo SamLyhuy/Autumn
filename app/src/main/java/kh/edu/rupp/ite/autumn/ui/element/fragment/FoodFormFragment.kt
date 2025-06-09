@@ -48,7 +48,7 @@ class FoodFormFragment : BaseFragment() {
     private fun setUpListener() {
         // Back arrow: pop back stack
         binding.btnBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            navigateBack()
         }
 
         // “Save” button: collect all fields and submit
@@ -74,6 +74,10 @@ class FoodFormFragment : BaseFragment() {
                 Toast.makeText(requireContext(), "Ingredient already added", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun navigateBack() {
+        parentFragmentManager.popBackStack()
     }
 
     private fun addChipToGroup(text: String, chipGroup: ChipGroup) {
@@ -146,22 +150,22 @@ class FoodFormFragment : BaseFragment() {
             when (state.state) {
                 State.loading -> {
                     Log.d("FoodFormFragment", "Loading...")
+                    showLoading()
                 }
                 State.success -> {
                     Log.d("FoodFormFragment", "Success: ${state.data}")
-                    Toast.makeText(requireContext(),
-                        "Food submitted successfully!", Toast.LENGTH_SHORT).show()
-                    parentFragmentManager.popBackStack()
+                    hideLoading()
+                    navigateBack()
                 }
                 State.error -> {
                     Log.e("FoodFormFragment", "Error: ${state.message}")
-                    Toast.makeText(requireContext(),
-                        "Error: ${state.message}", Toast.LENGTH_SHORT).show()
+                    hideLoading()
                 }
                 else -> {
                     Log.w("FoodFormFragment", "Unhandled state: ${state.state}")
                 }
             }
+            observeServerResponse(viewModel.uiMessage)
         }
     }
 }
