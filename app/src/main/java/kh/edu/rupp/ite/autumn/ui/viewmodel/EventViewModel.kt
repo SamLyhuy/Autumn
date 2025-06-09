@@ -33,14 +33,14 @@ class EventViewModel : ViewModel() {
                     // 2) Also post a “success” UiMessage for the dialog
                     _uiMessage.postValue(Event(UiMessage("Event submitted successfully!", true)))
                 } else {
-                    val msg = response.message ?: "Unknown error"
-                    _eventData.postValue(ApiState.error(msg))
-                    _uiMessage.postValue(Event(UiMessage("Failed: $msg", false)))
+                    val message = response.message ?: "Unknown error"
+                    _eventData.postValue(ApiState.error(message))
+                    _uiMessage.postValue(Event(UiMessage("Failed: $message", false)))
                 }
             } catch (ex: Exception) {
-                val msg = ex.message ?: "Network error"
-                _eventData.postValue(ApiState.error(msg))
-                _uiMessage.postValue(Event(UiMessage("Failed: $msg", false)))
+                val message = ex.message ?: "Network error"
+                _eventData.postValue(ApiState.error(message))
+                _uiMessage.postValue(Event(UiMessage("Failed: $message", false)))
             }
         }
     }

@@ -181,7 +181,6 @@ class EventFormFragment : BaseFragment() {
             State.success -> {
                 Log.d("EventFormFragment", "Success Response: ${state.data}")
                 hideLoading()
-                parentFragmentManager.popBackStack()
                 navigateBack()
             }
             State.error -> {
