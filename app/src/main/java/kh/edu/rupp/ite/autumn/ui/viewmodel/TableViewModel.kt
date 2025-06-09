@@ -1,12 +1,15 @@
 package kh.edu.rupp.ite.autumn.ui.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
 import kh.edu.rupp.ite.autumn.data.model.ApiState
 import kh.edu.rupp.ite.autumn.data.model.TableData
+import kh.edu.rupp.ite.autumn.data.model.UiMessage
+import kh.edu.rupp.ite.autumn.ui.element.adapter.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -14,12 +17,15 @@ import kotlinx.coroutines.withContext
 class TableViewModel: ViewModel() {
 
     private val _tableData = MutableLiveData<ApiState<List<TableData>>>()
-
     val tableData get() = _tableData
 
+    // LiveData for “server‐response” messages
+    private val _uiMessage = MutableLiveData<Event<UiMessage>>()
+    val uiMessage get() = _uiMessage
+
     fun loadingTableData(date: String) {
-        var apiState = ApiState.loading<List<TableData>>()
-        _tableData.postValue(apiState)
+
+        _tableData.postValue(ApiState.loading())
         Log.d("TableViewModel", "Loading table data...")
 
         viewModelScope.launch {
@@ -28,20 +34,20 @@ class TableViewModel: ViewModel() {
                 Log.d("TableViewModel", "API Response: ${response}")
 
                 if (response.isSuccessFetchTable()) {
-                    apiState =ApiState.success(response.data ?: emptyList())
-                    Log.d("TableViewModel", "Data fetched successfully: ${response.data}")
+                    // 1) API succeeded → notify observers
+                    _tableData.postValue(ApiState.success(response.data!!))
+                    // 2) Also post a “success” UiMessage for the dialog
+                    _uiMessage.postValue(Event(UiMessage("Event submitted successfully!", true)))
                 } else {
-                    apiState = ApiState.error(response.message)
-                    Log.e("TableViewModel", "Error fetching data: ${response.message}")
+                    val message = response.message ?: "Unknown error"
+                    _tableData.postValue(ApiState.error(message))
+                    _uiMessage.postValue(Event(UiMessage("Failed: $message", false)))
                 }
             }catch (ex: Exception) {
-                apiState = ApiState.error(ex.message)
-                Log.e("TableViewModel", "Exception occurred: ${ex.message}")
-            }
-            withContext(Dispatchers.Main) {
-                _tableData.postValue(apiState)
+                val message = ex.message ?: "Network error"
+                _tableData.postValue(ApiState.error(message))
+                _uiMessage.postValue(Event(UiMessage("Failed: $message", false)))
             }
         }
-
     }
 }

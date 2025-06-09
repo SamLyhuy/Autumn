@@ -28,6 +28,7 @@ import java.util.*
 class EventFormFragment : BaseFragment() {
 
     private lateinit var binding: ActivityPostEventBinding
+
     private val viewModel by viewModels<EventViewModel>()
 
     override fun onCreateView(
@@ -43,7 +44,7 @@ class EventFormFragment : BaseFragment() {
 
         //setupUi()
         setUpListener()
-        setObserver()
+        setUpObserver()
 
     }
 
@@ -166,7 +167,7 @@ class EventFormFragment : BaseFragment() {
 
     }
 
-    private fun setObserver() {
+    private fun setUpObserver() {
         viewModel.eventData.observe(viewLifecycleOwner) {
             handleState(it)
         }
@@ -175,13 +176,12 @@ class EventFormFragment : BaseFragment() {
     private fun handleState(state: ApiState<EventData>) {
         when (state.state) {
             State.loading -> {
-                Log.d("EventFormFragment", "Loading…")
-                showLoading()      // from BaseFragment → shows your loading overlay
+                showLoading()
             }
             State.success -> {
-                Log.d("EventFormFragment", "Success Response: ${state.data}")
                 hideLoading()
                 navigateBack()
+                Log.d("EventFormFragment", "Success Response: ${state.data}")
             }
             State.error -> {
                 Log.e("EventFormFragment", "Error Response: ${state.message}")

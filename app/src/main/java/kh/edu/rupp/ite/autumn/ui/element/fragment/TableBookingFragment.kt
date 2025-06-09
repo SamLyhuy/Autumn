@@ -26,11 +26,12 @@ import java.util.Calendar
 
 class TableBookingFragment : BaseFragment() {
 
+    private lateinit var binding: ActivityTableSetectionBinding
+
     private val tableViewModel by viewModels<TableViewModel>()
     private val bookingViewModel by viewModels<BookingViewModel>()
-    private lateinit var binding: ActivityTableSetectionBinding
-    private var isInitialDataLoaded = false
 
+    private var isInitialDataLoaded = false
     private val selectedTables = mutableSetOf<String>() // To track selected table IDs
 
     override fun onCreateView(
@@ -49,7 +50,7 @@ class TableBookingFragment : BaseFragment() {
 
         setupUi()
         setupListener()
-        setupObserver()
+        setUpObserver()
 
 
     }
@@ -138,7 +139,7 @@ class TableBookingFragment : BaseFragment() {
         Log.d("TableBookingFragment", "Final data to be sent: $tableData")
 
         // Send the booking request via ViewModel
-        bookingViewModel.booking(token, tableData)
+        bookingViewModel.postBooking(token, tableData)
 
 
     }
@@ -161,7 +162,6 @@ class TableBookingFragment : BaseFragment() {
     }
 
     private fun navigateBack() {
-        // Use the appropriate navigation method for your project
         parentFragmentManager.popBackStack() // Navigates back to the previous fragment
     }
 
@@ -176,9 +176,9 @@ class TableBookingFragment : BaseFragment() {
         tableViewModel.loadingTableData(date)
     }
 
-    private fun setupObserver() {
+    private fun setUpObserver() {
         tableViewModel.tableData.observe(viewLifecycleOwner) { state ->
-            handleState(state)
+            handleStateTableLoading(state)
             if (!isInitialDataLoaded && state.state == State.success && state.data != null) {
                 isInitialDataLoaded = true
 
@@ -193,10 +193,13 @@ class TableBookingFragment : BaseFragment() {
                 fetchTableData(formattedDate)
             }
         }
+
         bookingViewModel.bookingData.observe(viewLifecycleOwner) { state ->
-            handleStateA(state)}
+            handleStateTableBooking(state)}
     }
-    private fun handleStateA(state: ApiState<TableData>) {
+
+
+    private fun handleStateTableBooking(state: ApiState<TableData>) {
         when (state.state) {
             State.loading -> {
                 showLoading()
@@ -204,24 +207,26 @@ class TableBookingFragment : BaseFragment() {
             }
             State.success -> {
                 hideLoading()
-                Toast.makeText(context, "Booking successful!", Toast.LENGTH_SHORT).show()
-                // Fetch table data again after successful booking
+
                 val selectedDate = binding.tvDate.text.toString()
                 fetchTableData(selectedDate)
+
+                //Toast.makeText(context, "Booking successful!", Toast.LENGTH_SHORT).show()
                 Log.d("TableBookingFragment", "State: Success, Data: ${state.data}")
             }
             State.error -> {
                 hideLoading()
                 Log.e("TableBookingFragment", "State: Error, Message: ${state.message}")
-                showAlert("TableBookingFragment", state.message ?: "Unexpected Error")
+
             }
             else -> {
                 Log.w("TableBookingFragment", "Unhandled state: ${state.state}")
             }
         }
+        observeServerResponse(bookingViewModel.uiMessage)
     }
 
-    private fun handleState(state: ApiState<List<TableData>>) {
+    private fun handleStateTableLoading(state: ApiState<List<TableData>>) {
         when (state.state) {
             State.loading -> {
                 showLoading()
@@ -243,6 +248,7 @@ class TableBookingFragment : BaseFragment() {
                 Log.w("TableBookingFragment", "Unhandled state: ${state.state}")
             }
         }
+        //observeServerResponse(tableViewModel.uiMessage)
     }
 
 

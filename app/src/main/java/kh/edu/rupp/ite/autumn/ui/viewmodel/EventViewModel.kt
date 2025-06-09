@@ -13,15 +13,16 @@ class EventViewModel : ViewModel() {
 
     // LiveData for API success/error
     private val _eventData = MutableLiveData<ApiState<EventData>>()
-    val eventData: LiveData<ApiState<EventData>> = _eventData
+    val eventData get() = _eventData
 
     // LiveData for “server‐response” messages
     private val _uiMessage = MutableLiveData<Event<UiMessage>>()
     val uiMessage: LiveData<Event<UiMessage>> = _uiMessage
 
     fun postEvent(token: String, request: PostEventRequest) {
-        Log.d("EventViewModel", "postEvent() called")
+
         _eventData.postValue(ApiState.loading())
+        Log.d("EventViewModel", "postEvent() called")
 
         viewModelScope.launch {
             try {
