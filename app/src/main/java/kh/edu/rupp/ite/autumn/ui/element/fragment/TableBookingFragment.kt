@@ -71,6 +71,9 @@ class TableBookingFragment : BaseFragment() {
 
         // Fetch table data for the current date
         fetchTableData(formattedDate)
+
+        // start with no selections
+        selectedTables.clear()
     }
 
 
@@ -84,6 +87,8 @@ class TableBookingFragment : BaseFragment() {
                 val formattedDate = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
                 binding.tvDate.text = formattedDate
                 Log.d("TableBookingFragment", "Date selected: $formattedDate")
+
+                selectedTables.clear()
 
                 // Fetch data after date selection
                 fetchTableData(formattedDate)
