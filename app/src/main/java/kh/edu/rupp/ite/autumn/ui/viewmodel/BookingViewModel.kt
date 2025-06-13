@@ -56,6 +56,7 @@ class BookingViewModel: ViewModel() {
             } catch (ex: Exception) {
                 val message = ex.message ?: "Network error"
                 _bookingData.postValue(ApiState.error(message))
+                _uiMessage.postValue(Event(UiMessage("Failed: $message", false)))
                 Log.e("BookingViewModel", "Exception occurred: ${ex.message}")
             }
 

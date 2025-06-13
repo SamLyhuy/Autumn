@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/botContainer"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
@@ -8,20 +9,35 @@
     android:orientation="horizontal">
 
     <!-- 1) Bot avatar on left -->
-    <ImageView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/botAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:src="@drawable/ic_bot_avatar" />
+        style="@style/Widget.MaterialComponents.FloatingActionButton"
+        app:fabCustomSize="44dp"
+        app:maxImageSize="44dp"
+        app:useCompatPadding="false"
+        android:padding="0dp"
+        app:srcCompat="@drawable/ic_chat_bots"
+        app:tint="@null"
+        app:backgroundTint="@color/second_primary"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="25dp"/>
 
     <!-- 2) Message bubble -->
     <TextView
         android:id="@+id/botMessageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxWidth="250dp"
         android:background="@drawable/bg_bot_bubble"
         android:padding="12dp"
         android:textColor="@color/black"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:ellipsize="none"
+        android:breakStrategy="balanced"
+        />
+
 </LinearLayout>

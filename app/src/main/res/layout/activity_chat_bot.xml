@@ -6,12 +6,14 @@
     android:layout_height="match_parent"
     android:background="#F5F5F5">
 
+
     <!-- Top App Bar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:background="@color/white"
+        android:layout_height="wrap_content"
+        android:paddingVertical="12dp"
+        android:background="#F5F5F5"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:titleTextAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
         app:titleTextColor="@color/black"
@@ -23,11 +25,12 @@
 
         <!-- Bot avatar and name/status -->
         <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:src="@drawable/ic_bot_avatar"
             android:contentDescription="Bot Avatar"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -42,7 +45,7 @@
                     android:id="@+id/botName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="FitBot"
+                    android:text="Cook Bot"
                     android:textSize="18sp"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
@@ -74,7 +77,7 @@
         android:id="@+id/toolbarDivider"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
+        android:background="@color/autumn_divider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
@@ -96,35 +99,44 @@
     <!-- Message input area -->
     <LinearLayout
         android:id="@+id/inputContainer"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
         app:cardCornerRadius="24dp"
         app:cardElevation="4dp"
+        android:paddingBottom="16dp"
+        android:gravity="center"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <EditText
-            android:id="@+id/messageInput"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:hint="@string/chat_hint"
-            android:inputType="text"
-            android:autofillHints="none"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black"
-            android:textSize="14sp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            app:boxStrokeColor="@color/autumn_divider"
+            app:hintTextColor="@color/autumn_hint_text"
+            app:boxCornerRadiusTopStart="24dp"
+            app:boxCornerRadiusTopEnd="24dp"
+            app:boxCornerRadiusBottomStart="24dp"
+            app:boxCornerRadiusBottomEnd="24dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/messageInput"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:hint="What can I help you ?"
+                android:textColor="@color/autumn_primary_text"
+                android:textSize="@dimen/text_size_body"
+                android:inputType="textCapWords"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton
             android:id="@+id/sendButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
             android:layout_marginStart="8dp"
             android:contentDescription="@string/send_description"
             android:background="?attr/selectableItemBackgroundBorderless"

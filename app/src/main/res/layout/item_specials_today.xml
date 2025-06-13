@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="187dp"
         android:gravity="center"
         tools:ignore="MissingConstraints">
@@ -15,10 +16,16 @@
         <!-- Drink Image -->
         <ImageView
             android:id="@+id/event_img"
-            android:layout_width="296dp"
-            android:layout_height="187dp"
+            android:layout_width="295dp"
+            android:layout_height="165dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/sunny_24px" />
+            android:src="@drawable/sunny_24px"
+            android:background="@drawable/bg_card_event_holder"
+            android:clipToOutline="true"
+            android:outlineProvider="background"
+            tools:ignore="MissingConstraints"/>
+
+
 
         <!-- Text at Bottom Left -->
         <TextView
@@ -28,6 +35,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:text="hello"
+            android:visibility="gone"
             android:textSize="16sp"
             android:textColor="@color/primary"
             android:background="@drawable/bg_table_available" />

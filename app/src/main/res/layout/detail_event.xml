@@ -6,119 +6,161 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.element.activity.MainActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:padding="16dp"
+    android:id="@+id/eventDetail">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!-- Header: Back + Title -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/eventHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="12dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            tools:layout_editor_absoluteX="-136dp"
-            tools:layout_editor_absoluteY="0dp"
-            android:padding="16dp">
+        <ImageView
+            android:id="@+id/btnBackEvent"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="Back"
+            android:src="@drawable/ic_arrow_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-            <RelativeLayout
+        <TextView
+            android:id="@+id/tvScreenTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Event Information"
+            android:textColor="@color/autumn_primary_text"
+            android:textSize="@dimen/text_size_h2"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/btnBackEvent"
+            app:layout_constraintTop_toTopOf="@id/btnBackEvent"
+            app:layout_constraintBottom_toBottomOf="@id/btnBackEvent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ScrollView
+            android:id="@+id/eventScroll"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintTop_toBottomOf="@id/eventHeader"
+            app:layout_constraintBottom_toTopOf="@+id/btnBooking"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@id/eventHeader"
+                app:layout_constraintBottom_toTopOf="@+id/btnBackEvent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                >
+
+
 
                 <ImageView
-                    android:id="@+id/btnBack"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_back"
-                    android:contentDescription="Back Icon"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true" />
-
-                <TextView
-                    android:id="@+id/bookingTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Event Detail"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_toEndOf="@id/btnBack"
-                    android:layout_centerInParent="true"
+                    android:id="@+id/eventImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/bg_card_event_holder"
+                    android:outlineProvider="background"
+                    android:clipToOutline="true"
+                    android:src="@drawable/sunny_24px"
                     />
 
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/eventImage"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:layout_marginTop="16dp"/>
-
-            <TextView
-                android:id="@+id/eventName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:text="Event Name"
-                android:textSize="30sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/isSpecial"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="4dp"
-                android:text="isSpecial"
-                android:textStyle="bold"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="4dp">
-
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/eventName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Time: "
-                    android:textStyle="bold"/>
+                    android:paddingTop="8dp"
+                    android:text="Event Name"
+                    android:textSize="@dimen/text_size_h1"
+                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/eventTime"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="XXXXXX" />
+                    android:orientation="horizontal"
+                    android:layout_marginTop="1dp">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Date  : "
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_size_body"/>
 
+                    <TextView
+                        android:id="@+id/eventDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="XXXXXX"
+                        android:textSize="@dimen/text_size_body"/>
 
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="4dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Description: "
-                    android:textStyle="bold"/>
+                    android:orientation="horizontal"
+                    android:layout_marginTop="1dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Time : "
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_size_body"/>
+
+                    <TextView
+                        android:id="@+id/eventTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="XXXXXX"
+                        android:textSize="@dimen/text_size_body"/>
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/eventDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textSize="@dimen/text_size_body"
                     android:text="XXXXXXXXX" />
 
             </LinearLayout>
+        </ScrollView>
+
+
+    <!-- Save Button (fixed at bottom) -->
+    <Button
+        android:id="@+id/btnBooking"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="5dp"
+        android:backgroundTint="@color/autumn_link"
+        android:text="Booking Now"
+        android:textColor="@color/autumn_background"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 
 
-
-        </LinearLayout>
-    </ScrollView>
 
 
 

@@ -1,63 +1,77 @@
 package kh.edu.rupp.ite.autumn.ui.element.adapter
 
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView.Adapter
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kh.edu.rupp.ite.autumn.data.model.EnrichedEventInfo
-import kh.edu.rupp.ite.autumn.databinding.ItemEventBinding
-import kh.edu.rupp.ite.autumn.databinding.ItemFoodBinding
 import kh.edu.rupp.ite.autumn.databinding.ItemSpecialsTodayBinding
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
+/**
+ * A RecyclerView adapter that can operate in infinite-loop mode (for upcoming events)
+ * or finite mode (for today’s events) based on the `infinite` flag.
+ */
 class EventAdapter(
+    private val dataList: List<EnrichedEventInfo>,
+    private val infinite: Boolean = true,
     private val onClick: (EnrichedEventInfo) -> Unit
-) : Adapter<EventViewHolder>() {
+) : RecyclerView.Adapter<EventAdapter.EventViewHolder>() {
 
-    // Dataset for the adapter
-    private var data = emptyList<EnrichedEventInfo>()
-
-    // Update the dataset and refresh the RecyclerView
-    fun setData(data: List<EnrichedEventInfo>){
-        this.data = data
-        notifyDataSetChanged()
-        Log.d("EventAdapter", "Data updated, size: ${data.size}")
+    override fun getItemCount(): Int = when {
+        dataList.isEmpty() -> 0
+        infinite -> Int.MAX_VALUE
+        else -> dataList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = ItemSpecialsTodayBinding.inflate(layoutInflater, parent, false)
+        val binding = ItemSpecialsTodayBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return EventViewHolder(binding, onClick)
     }
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
-
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
-        val eventData = data[position]
-        holder.bind(eventData)
-        Log.d("EventAdapter", "Binding data at position: $position, Category: ${eventData.date}")
+        // choose real index depending on infinite vs finite
+        val index = if (infinite) position % dataList.size else position
+        val info = dataList[index]
+        holder.bind(info)
+        Log.d(
+            "EventAdapter",
+            "Binding position=$position (realIndex=$index), date=${info.date}"
+        )
+    }
+
+    inner class EventViewHolder(
+        private val binding: ItemSpecialsTodayBinding,
+        private val onClick: (EnrichedEventInfo) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun bind(eventInfo: EnrichedEventInfo) {
+            // parse & format date
+            val inputFmt = DateTimeFormatter.ISO_LOCAL_DATE
+            val outputFmt = DateTimeFormatter.ofPattern("d MMM", Locale.getDefault())
+            val date = LocalDate.parse(eventInfo.date, inputFmt)
+            binding.textTest.text = date.format(outputFmt)
+
+            // load image
+            Picasso.get()
+                .load(eventInfo.eventInfo.thumbnail)
+                .into(binding.eventImg)
+
+            // click action
+            binding.root.setOnClickListener { onClick(eventInfo) }
+        }
     }
 }
-
-class EventViewHolder(
-    private val binding: ItemSpecialsTodayBinding,
-    private val onClick: (EnrichedEventInfo) -> Unit
-): ViewHolder(binding.root) {
-
-    // Bind a single category to the UI
-    fun bind(eventData: EnrichedEventInfo) {
-
-        Log.d("EventAdapter", "Category bound: ${eventData.date}")
-        binding.textTest.text = eventData.date
-        Picasso.get().load(eventData.eventInfo.thumbnail).into(binding.eventImg)
-        binding.root.setOnClickListener { onClick(eventData) }
-        Log.d("EventAdapter", "Clicked action done")
-    }
-}
-
-
-

@@ -54,8 +54,10 @@ class ChatViewModel : ViewModel() {
                 }
 
             }  catch (ex: Exception) {
+                val errorResponse = "Please try again !"
                 // Handle any exceptions during the API call
-                apiState = ApiState.error(ex.message)
+                apiState = ApiState.error(errorResponse)
+                //apiState = ApiState.error(ex.message)
                 Log.e("ChatViewModel", "Exception occurred: ${ex.message}")
             }
 

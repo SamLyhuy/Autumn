@@ -3,100 +3,112 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android/tools"
+    xmlns:tools2="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:id="@+id/event"
-    tools:context=".ui.EventActivity">
+    tools:context=".ui.EventActivity"
+    >
 
-    <!-- Wrap content in SwipeRefreshLayout -->
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:orientation="vertical">
 
-        <!-- Add ScrollView for scrolling -->
-        <ScrollView
+        <TextView
+            android:id="@+id/tvTopBarTitle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:layout_height="wrap_content"
+            android:text="Event"
+            android:textSize="@dimen/text_size_display"
+            android:paddingVertical="12dp"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_dark"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-            <LinearLayout
-                android:id="@+id/calendar"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools2:ignore="MissingConstraints">
+
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp"
-                android:visibility="visible">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Event"
-                    android:textStyle="bold"
-                    android:textSize="30dp"/>
-
-                <CalendarView
-                    android:id="@+id/calendarViewUser"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/circle_gray"
-                    android:dateTextAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:firstDayOfWeek="1"
-                    android:showWeekNumber="false"
-                    android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Small" />
+                android:layout_height="match_parent"
+                android:fillViewport="true">
 
                 <LinearLayout
+                    android:id="@+id/calendar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
+                    android:orientation="vertical"
+                    >
 
+                    <!-- remove the old "Event" TextView here -->
 
-                    <!-- Selected date TextView -->
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <CalendarView
+                        android:id="@+id/calendarViewUser"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Event list: "
-                        android:textColor="@android:color/black"
-                        android:textSize="20sp"
-                        android:textStyle="normal"
-                        android:layout_gravity="center"
-                         />
-                    <TextView
-                        android:id="@+id/SelectedDateUser"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="xxxx-xx-xx"
-                        android:textColor="@android:color/black"
-                        android:textSize="20sp"
-                        android:layout_gravity="center"
-                        />
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/circle_gray"
+                        android:dateTextAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:firstDayOfWeek="1"
+                        android:showWeekNumber="false"
+                        android:weekDayTextAppearance="@style/TextAppearance.AppCompat.Small" />
 
-                    <View
-                        android:id="@+id/btnCreateNewEvent"
-                        android:layout_width="46dp"
-                        android:layout_height="32dp"
-                        android:background="@drawable/ic_create_event"
-                        android:visibility="visible" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Event list | "
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp"
+                            android:textStyle="normal"
+                            android:layout_gravity="center"/>
+
+                        <TextView
+                            android:id="@+id/SelectedDateUser"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="xxxx-xx-xx"
+                            android:textColor="@android:color/black"
+                            android:textSize="20sp"
+                            android:layout_gravity="center"/>
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <View
+                            android:id="@+id/btnCreateNewEvent"
+                            android:layout_width="46dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/ic_create_event"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvEventList"
+                        android:layout_width="match_parent"
+                        android:layout_height="500dp"
+                        android:layout_marginTop="16dp"
+                        tools:listitem="@layout/item_event" />
 
                 </LinearLayout>
+            </ScrollView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </LinearLayout>
 
-                <!-- Event list RecyclerView -->
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvEventList"
-                    android:layout_width="match_parent"
-                    android:layout_height="500dp"
-                    android:layout_marginTop="16dp"
-                    tools:listitem="@layout/item_event" />
-
-            </LinearLayout>
-        </ScrollView>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

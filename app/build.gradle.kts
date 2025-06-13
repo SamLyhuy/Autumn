@@ -16,11 +16,14 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildFeatures {
         viewBinding = true
     }
+
 
     buildTypes {
         release {
@@ -66,6 +69,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     implementation("com.airbnb.android:lottie:5.2.0")
     implementation ("androidx.cardview:cardview:1.0.0")
+    implementation ("com.google.android.flexbox:flexbox:3.0.0")
+
 
 
 

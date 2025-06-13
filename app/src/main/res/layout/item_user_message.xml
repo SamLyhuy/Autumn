@@ -12,10 +12,14 @@
         android:id="@+id/userMessageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:maxWidth="250dp"
         android:background="@drawable/bg_user_bubble"
         android:padding="12dp"
-        android:textColor="@color/white"
-        android:textSize="14sp" />
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:ellipsize="none"
+        android:breakStrategy="balanced"
+        />
 
     <!-- 2) User avatar on the right -->
     <ImageView

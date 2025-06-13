@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import kh.edu.rupp.ite.autumn.R
 import kh.edu.rupp.ite.autumn.data.model.FoodData
 import kh.edu.rupp.ite.autumn.databinding.DialogFoodDetailBinding
 import kh.edu.rupp.ite.autumn.databinding.ItemFoodBinding
@@ -60,7 +61,7 @@ class FoodViewHolder(
     }
 
     /** Inflates & shows the same dialog_food_detail.xml you already created */
-    private fun showDetailDialog() {
+    private fun showDetailDialogA() {
         val ctx = binding.root.context
         val dlgBind = DialogFoodDetailBinding
             .inflate(LayoutInflater.from(ctx))
@@ -82,4 +83,70 @@ class FoodViewHolder(
         dlgBind.btnFoodDetailClose.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
+    private fun showDetailDialogs() {
+        val ctx = binding.root.context
+        // Make sure this binding class matches your updated dialog_food_detail.xml
+        val dlgBind = DialogFoodDetailBinding.inflate(LayoutInflater.from(ctx))
+
+        // Populate the dialog’s views
+        Picasso.get()
+            .load(foodItem.thumbnail)
+            .into(dlgBind.ivFoodDetailImage)
+
+        dlgBind.tvFoodDetailName.text = foodItem.name
+        dlgBind.tvFoodDetailType.text = "${foodItem.type}"
+        dlgBind.tvFoodDetailPrice.text = "$${"%.2f".format(foodItem.price)}"
+        dlgBind.tvFoodDetailDescription.text = foodItem.description
+
+        // if ingredients is a List<String>
+        dlgBind.tvFoodDetailIngredients.text =
+            "${foodItem.ingredients?.joinToString(", ")}"
+
+        dlgBind.tvFoodDetailCuisine.text = "${foodItem.cuisine}"
+        dlgBind.tvFoodDetailPricePreparationTime.text =
+            "${foodItem.preparationTime}"
+
+        // Build & show the dialog
+        val dialog = AlertDialog.Builder(ctx)
+            .setView(dlgBind.root)
+
+            .create()
+
+        dlgBind.btnFoodDetailClose.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+    }
+    private fun showDetailDialog() {
+        val ctx = binding.root.context
+        val dlgBind = DialogFoodDetailBinding.inflate(LayoutInflater.from(ctx))
+
+        // Populate views
+        Picasso.get()
+            .load(foodItem.thumbnail)
+            .into(dlgBind.ivFoodDetailImage)
+
+        dlgBind.tvFoodDetailName.text = foodItem.name
+        dlgBind.tvFoodDetailType.text = foodItem.type
+        dlgBind.tvFoodDetailPrice.text = "$${"%.2f".format(foodItem.price)}"
+        dlgBind.tvFoodDetailDescription.text = foodItem.description
+        dlgBind.tvFoodDetailIngredients.text = foodItem.ingredients?.joinToString(", ")
+        dlgBind.tvFoodDetailCuisine.text = foodItem.cuisine
+        dlgBind.tvFoodDetailPricePreparationTime.text = foodItem.preparationTime
+
+        // Build dialog
+        val dialog = AlertDialog.Builder(ctx)
+            .setView(dlgBind.root)
+            .create()
+
+        // Show first...
+        dialog.show()
+
+        // ...then apply your 20dp radius + 2dp #AEDFF7 stroke drawable
+        dialog.window
+            ?.setBackgroundDrawableResource(R.drawable.bg_dialog_food_detail)
+
+        // Close button
+        dlgBind.btnFoodDetailClose.setOnClickListener { dialog.dismiss() }
+    }
+
+
 }

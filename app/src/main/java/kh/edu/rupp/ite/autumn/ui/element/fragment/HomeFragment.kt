@@ -3,7 +3,10 @@ package kh.edu.rupp.ite.autumn.ui.element.fragment
 import EventDetailFragment
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +15,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kh.edu.rupp.ite.autumn.R
 import kh.edu.rupp.ite.autumn.data.api.client.ApiClient
@@ -49,6 +54,45 @@ class HomeFragment : BaseFragment() {
     // Ensure we only do the first‐ever load once
     private var initialDataLoaded = false
 
+
+    // 1) Handler + Runnable for auto-scroll
+    private lateinit var upcomingHandler: Handler
+    private val scrollInterval = 4000L
+    private val scrollRunnable = object : Runnable {
+        override fun run() {
+            Log.d("HomeFragment", "run() fired")
+            val lm = binding.upComingEvents.layoutManager as LinearLayoutManager
+            // Use the fully-visible item to avoid half-visible glitches:
+            val current = lm.findFirstCompletelyVisibleItemPosition()
+                .takeIf { it != RecyclerView.NO_POSITION }
+                ?: lm.findFirstVisibleItemPosition()
+
+            // Just advance by one—no modulo needed:
+            val next = current + 1
+
+            binding.upComingEvents.smoothScrollToPosition(next)
+            upcomingHandler.postDelayed(this, scrollInterval)
+        }
+
+    }
+
+    private val snapHelper = PagerSnapHelper()
+
+    override fun onResume() {
+        super.onResume()
+        checkUserRole()
+
+        // start auto-scroll once views are laid out
+        upcomingHandler.postDelayed(scrollRunnable, scrollInterval)
+        Log.d("HomeFragment", "→ onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // stop to avoid leaks
+        Log.d("HomeFragment", "→ onPause – removing callbacks")
+        upcomingHandler.removeCallbacks(scrollRunnable)
+    }
     // Inflate the layout for the fragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,10 +104,8 @@ class HomeFragment : BaseFragment() {
     }
 
     // Only re-check the user role here—do NOT reload the lists on every resume
-    override fun onResume() {
-        super.onResume()
-        checkUserRole()
-    }
+
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,7 +124,19 @@ class HomeFragment : BaseFragment() {
             foodViewModel.loadingFoodData("food")
             foodViewModel.loadingFoodData("drink")
         }
+
+
+        // 1) One-time: horizontal LayoutManager + snap helper
+        binding.upComingEvents.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        snapHelper.attachToRecyclerView(binding.upComingEvents)
+
+        // 2) Prepare your Handler
+        upcomingHandler = Handler(Looper.getMainLooper())
+
     }
+
+
 
     // Set up the initial UI elements
     private fun setupUi() {
@@ -93,9 +147,6 @@ class HomeFragment : BaseFragment() {
     private fun setupListener() {
         swipeRefreshLayout.setOnRefreshListener {
             refreshData()
-        }
-        binding.btnOpenChat.setOnClickListener {
-            openChat()
         }
         binding.btnCreateNewFood.setOnClickListener {
             navigateToFoodFormFragment()
@@ -291,100 +342,110 @@ class HomeFragment : BaseFragment() {
     // Show today's events in the RecyclerView
     @RequiresApi(Build.VERSION_CODES.O)
     private fun todayEvent(eventData: List<EventData>) {
-        val today = LocalDate.now().toString() // yyyy-MM-dd
+        val today = LocalDate.now()
         Log.d("HomeFragment", "Today's date: $today")
 
+        // build today’s list by comparing LocalDate objects
         val enrichedTodayEvents = eventData.flatMap { event ->
-            try {
-                if (event.date == today) {
-                    event.event_info.map { eventInfo ->
-                        EnrichedEventInfo(eventInfo, event.date)
+            runCatching {
+                // parse your event.date into LocalDate
+                val eventDate = LocalDate.parse(event.date, DateTimeFormatter.ISO_LOCAL_DATE)
+                if (eventDate.isEqual(today)) {
+                    event.event_info.map { info ->
+                        EnrichedEventInfo(info, event.date)
                     }
-                } else {
-                    emptyList()
-                }
-            } catch (e: Exception) {
-                Log.e("HomeFragment", "Error processing event: ${event.date}", e)
-                emptyList()
-            }
+                } else emptyList()
+            }.getOrDefault(emptyList())
         }
+
+        Log.d("HomeFragment", "Found ${enrichedTodayEvents.size} events for today")
 
         if (enrichedTodayEvents.isEmpty()) {
             binding.noTodayEventsTextView.apply {
                 text = "No events for today"
+                // set your custom card-style background
+                setBackgroundResource(R.drawable.bg_card_no_event_holder)
+                // center the text inside the view
+                gravity = Gravity.CENTER
+                textAlignment = View.TEXT_ALIGNMENT_CENTER
+
                 visibility = View.VISIBLE
             }
             binding.todaySpecialEvent.visibility = View.GONE
-        } else {
-            binding.noTodayEventsTextView.visibility = View.GONE
-            val itemTodayEventLayoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            val itemTodayEventAdapter = EventAdapter { enrichedEventInfo ->
-                openEventDetailFragment(enrichedEventInfo)
-            }
+            return
+        }
 
-            itemTodayEventAdapter.setData(enrichedTodayEvents)
+        binding.noTodayEventsTextView.visibility = View.GONE
+        binding.todaySpecialEvent.visibility = View.VISIBLE
 
-            binding.todaySpecialEvent.apply {
-                adapter = itemTodayEventAdapter
-                layoutManager = itemTodayEventLayoutManager
+        // set up a simple horizontal list (no looping)
+        binding.todaySpecialEvent.apply {
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+            adapter = EventAdapter(enrichedTodayEvents, false) { info ->
+                openEventDetailFragment(info)
             }
         }
     }
 
+
+
     // Show upcoming special events
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun specialEvent(eventData: List<EventData>) {
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val today = LocalDate.now()
-        Log.d("HomeFragment", "Today's date: $today")
 
-        val enrichedSpecialEvents = eventData.flatMap { event ->
-            try {
-                val eventDate = LocalDate.parse(event.date, formatter)
-                if (eventDate.isAfter(today)) {
-                    event.event_info
-                        .filter { it.isSpecial }
-                        .map { info ->
-                            EnrichedEventInfo(info, event.date)
-                        }
-                } else {
-                    emptyList()
-                }
-            } catch (e: Exception) {
-                Log.e("HomeFragment", "Error parsing date: ${event.date}", e)
-                emptyList()
-            }
+        val enriched = eventData.flatMap { ev ->
+            runCatching {
+                val d = LocalDate.parse(ev.date, fmt)
+                if (d.isAfter(today))
+                    ev.event_info.filter { it.isSpecial }
+                        .map { EnrichedEventInfo(it, ev.date) }
+                else emptyList()
+            }.getOrDefault(emptyList())
         }
 
-        if (enrichedSpecialEvents.isEmpty()) {
+        if (enriched.isEmpty()) {
             binding.noUpComingEventsTextView.apply {
                 text = "No upcoming special events"
+                // set your custom card-style background
+                setBackgroundResource(R.drawable.bg_card_event_holder)
+                // center the text inside the view
+                gravity = Gravity.CENTER
+                textAlignment = View.TEXT_ALIGNMENT_CENTER
+
                 visibility = View.VISIBLE
             }
             binding.upComingEvents.visibility = View.GONE
-        } else {
-            binding.noUpComingEventsTextView.visibility = View.GONE
-            binding.upComingEvents.visibility = View.VISIBLE
+            return
+        }
 
-            val sorted = enrichedSpecialEvents.sortedBy {
-                LocalDate.parse(it.date, formatter)
-            }
+        binding.noUpComingEventsTextView.visibility = View.GONE
+        binding.upComingEvents.visibility = View.VISIBLE
 
-            val layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            val adapter = EventAdapter { enrichedEventInfo ->
-                openEventDetailFragment(enrichedEventInfo)
-            }.apply {
-                setData(sorted)
-            }
+        // sort your real list
+        val sorted = enriched.sortedBy { LocalDate.parse(it.date, fmt) }
 
-            binding.upComingEvents.apply {
-                this.adapter = adapter
-                this.layoutManager = layoutManager
-            }
+        // 3) infinite-loop adapter
+        // For upcoming events (infinite):
+        val upcomingAdapter = EventAdapter(sorted, true) { info ->
+            openEventDetailFragment(info)
+        }
+        binding.upComingEvents.apply {
+            layoutManager = LinearLayoutManager(requireContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false)
+            adapter = upcomingAdapter
+            // center jump, etc.
         }
     }
+
+
 
     // Open the detailed view of an event when clicked
     private fun openEventDetailFragment(enrichedEventInfo: EnrichedEventInfo) {

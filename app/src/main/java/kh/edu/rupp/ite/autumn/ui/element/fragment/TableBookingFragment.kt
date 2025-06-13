@@ -297,6 +297,9 @@ class TableBookingFragment : BaseFragment() {
                         tableId.contains("C") -> tableView.setBackgroundResource(R.drawable.six_seat_unavailable)
                         tableId.contains("D") -> tableView.setBackgroundResource(R.drawable.eight_seat_unavailable)
                     }
+                    // 2) disable all clicking
+                    tableView.isEnabled = false
+                    tableView.setOnClickListener(null)
                 } else {
                     // Table is available, set the appropriate available background based on type
                     when {
@@ -307,6 +310,8 @@ class TableBookingFragment : BaseFragment() {
                     }
 
                     // Set OnClickListener for toggle selection
+                    // Ensure it’s enabled and install your toggle-selection listener
+                    tableView.isEnabled = true
                     tableView.setOnClickListener {
                         if (selectedTables.contains(tableId)) {
                             // Table is already selected, deselect it

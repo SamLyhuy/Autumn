@@ -12,6 +12,7 @@ import kh.edu.rupp.ite.autumn.ui.viewmodel.ChatViewModel
 import kh.edu.rupp.ite.autumn.data.model.ChatMessage
 import kh.edu.rupp.ite.autumn.data.model.ChatRequest
 import kh.edu.rupp.ite.autumn.data.model.State
+import kh.edu.rupp.ite.autumn.ui.element.activity.MainActivity
 import kh.edu.rupp.ite.autumn.ui.element.adapter.ChatAdapter
 
 class ChatBotFragment : BaseFragment() {
@@ -180,6 +181,7 @@ class ChatBotFragment : BaseFragment() {
         Log.d(TAG, "setupListener: attaching click listeners")
         binding.toolbar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
+            (requireActivity() as? MainActivity)?.closeChat()
         }
         binding.sendButton.setOnClickListener {
             val msg = binding.messageInput.text.toString().trim()

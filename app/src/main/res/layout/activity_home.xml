@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
-    android:padding="16dp"
     android:id="@+id/home">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -23,70 +22,42 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Greeting Section -->
-            <RelativeLayout
-                android:id="@+id/welcome_notification"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
                     <LinearLayout
-                        android:id="@+id/hello_text"
+                        android:id="@+id/welcome_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingVertical="12dp"
                         >
-
                         <ImageView
-                            android:layout_width="34dp"
-                            android:layout_height="34dp"
-                            android:src="@drawable/ic_sun" />
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:background="@mipmap/ic_launcher_round"
+                            android:textColor="@color/autumn_secondary_text"
+                            android:textSize="@dimen/text_size_display"
+                             />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Autumn"
-                            android:layout_marginLeft="5dp"
-                            android:textSize="25dp"
-                            android:textStyle="bold"
-                            android:textColor="@color/second_primary"/>
+                            android:text="Welcome"
+                            android:textColor="@color/second_primary"
+                            android:textSize="@dimen/text_size_display"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/ic_notifications_button" />
                     </LinearLayout>
 
-                </RelativeLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    >
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-                    <ImageView
-                        android:id="@+id/btnOpenChat"
-                        android:layout_width="34dp"
-                        android:layout_height="34dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_chatbot_button" />
-                    <View
-                        android:layout_width="4dp"
-                        android:layout_height="0dp"
-                         />
-                    <ImageView
-                        android:layout_width="34dp"
-                        android:layout_height="34dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_notifications_button" />
-                </LinearLayout>
-
-
-
-            </RelativeLayout>
 
             <!-- Upcoming Events Section -->
             <TextView
@@ -96,7 +67,8 @@
                 android:textColor="@color/second_primary"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="10dp"
+                android:visibility="visible"/>
 
             <TextView
                 android:id="@+id/noUpComingEventsTextView"
@@ -108,14 +80,16 @@
                 android:visibility="visible"
                 android:layout_gravity="center"
                 android:textStyle="italic"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="10dp"
+                />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/upComingEvents"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:scaleType="centerCrop"
+                android:overScrollMode="never"
                 tools:listitem="@layout/item_specials_today" />
 
             <!-- Today's Specials Section -->
@@ -128,7 +102,7 @@
                 android:textSize="18sp"
                 android:textColor="@color/second_primary"
                 android:textStyle="bold"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="10dp" />
 
             <TextView
                 android:id="@+id/noTodayEventsTextView"
@@ -140,14 +114,14 @@
                 android:visibility="visible"
                 android:layout_gravity="center"
                 android:textStyle="italic"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="10dp" />
 
             <!-- Popular Food Section -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/todaySpecialEvent"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:scaleType="centerCrop"
                 tools:listitem="@layout/item_specials_today" />
 
@@ -168,17 +142,6 @@
                     android:textStyle="bold"
                     android:layout_gravity="center"
                     />
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <View
-                    android:id="@+id/btnCreateNewFooddd"
-                    android:layout_width="46dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/ic_create_event"
-                    android:visibility="visible" />
 
             </LinearLayout>
 
@@ -220,8 +183,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/foodListRecycler"
                     android:layout_width="match_parent"
-                    android:layout_height="140dp"
-
+                    android:layout_height="wrap_content"
                     tools:listitem="@layout/item_food"/>
 
             </LinearLayout>
@@ -232,32 +194,21 @@
             <!-- Drink List Section -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="28dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
 
 
                 <!-- Selected date TextView -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:text="Drink"
                     android:textColor="@color/second_primary"
                     android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <View
-                    android:id="@+id/btnCreateNewDrinks"
-                    android:layout_width="46dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/ic_create_event"
-                    android:visibility="visible" />
+                    android:textStyle="bold"
+                    android:layout_gravity="center"
+                    />
 
             </LinearLayout>
 
@@ -300,7 +251,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/drinkListRecycler"
                     android:layout_width="match_parent"
-                    android:layout_height="140dp"
+                    android:layout_height="wrap_content"
                     tools:listitem="@layout/item_food"/>
 
             </LinearLayout>
@@ -313,4 +264,4 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

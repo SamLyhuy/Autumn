@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="16dp"
+    >
 
     <LinearLayout
         android:orientation="vertical"
@@ -13,42 +14,170 @@
             android:id="@+id/ivFoodDetailImage"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:contentDescription="@android:string/ok" />
+
+        <TextView
+            android:id="@+id/tvFoodDetailDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_body_small"
+            android:textStyle="italic"
+            android:layout_marginTop="4dp"
+            android:text="Description" />
+
+        <View
+            android:id="@+id/toolbarDivider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/autumn_divider" />
 
         <TextView
             android:id="@+id/tvFoodDetailName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="@dimen/text_size_h2"
             android:textStyle="bold"
             android:layout_marginTop="12dp"
             android:text="Food Name" />
 
-        <TextView
-            android:id="@+id/tvFoodDetailType"
-            android:layout_width="match_parent"
+        <!-- TYPE -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textColor="#666"
-            android:layout_marginTop="4dp"
-            android:text="Food Type" />
+            android:layout_marginTop="4dp">
 
-        <TextView
-            android:id="@+id/tvFoodDetailPrice"
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="Type"
+                android:textSize="@dimen/text_size_body"
+                android:textColor="#666" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textSize="@dimen/text_size_body" />
+
+            <TextView
+                android:id="@+id/tvFoodDetailType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_body"
+                android:textColor="#666" />
+        </LinearLayout>
+
+        <!-- PRICE -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:textSize="@dimen/text_size_body" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textSize="@dimen/text_size_body" />
+
+            <TextView
+                android:id="@+id/tvFoodDetailPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_body" />
+        </LinearLayout>
+
+        <!-- INGREDIENTS -->
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:layout_marginTop="4dp"
-            android:text="Price" />
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="Ingredients"
+                android:textSize="@dimen/text_size_body" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textSize="@dimen/text_size_body" />
+
+            <TextView
+                android:id="@+id/tvFoodDetailIngredients"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/text_size_body" />
+        </LinearLayout>
+
+        <!-- CUISINE -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="Cuisine"
+                android:textSize="@dimen/text_size_body" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textSize="@dimen/text_size_body" />
+
+            <TextView
+                android:id="@+id/tvFoodDetailCuisine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_body" />
+        </LinearLayout>
+
+        <!-- PREPARATION TIME -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="Time"
+                android:textSize="@dimen/text_size_body" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:textSize="@dimen/text_size_body" />
+
+            <TextView
+                android:id="@+id/tvFoodDetailPricePreparationTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_body" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/btnFoodDetailClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Close"
-            android:layout_gravity="end"
-            android:layout_marginTop="16dp" />
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/autumn_link"
+            android:textColor="@color/autumn_background"/>
 
     </LinearLayout>
 </ScrollView>

@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="99dp"
     android:layout_marginBottom="8dp"
-    android:background="@drawable/card_background"
     android:padding="8dp"
     >
 
@@ -14,61 +13,52 @@
         android:id="@+id/eventImage"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:src="@drawable/card_background"
+        android:background="@drawable/bg_card_event_holder"
+        android:outlineProvider="background"
+        android:clipToOutline="true"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:scaleType="centerCrop"/>
+        android:scaleType="fitCenter"/>
 
     <TextView
         android:id="@+id/eventTitle"
-        android:layout_width="0dp"
+        android:layout_width="196dp"
         android:layout_height="wrap_content"
-        android:textSize="14dp"
+        android:textSize="16dp"
         android:layout_marginLeft="20dp"
+
         android:text="Event Title"
         android:textStyle="normal"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@id/eventImage"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+         />
 
-    <TextView
-        android:id="@+id/eventTime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:text="Time"
-        android:textSize="14dp"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/gray"
-        android:drawableStart="@drawable/ic_calender"
-        app:layout_constraintStart_toEndOf="@id/eventImage"
-        app:layout_constraintTop_toBottomOf="@id/eventTitle"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/eventDescription"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
+        android:layout_width="196dp"
+        android:layout_height="53dp"
         android:layout_marginLeft="20dp"
-        android:text="19 March 2024"
-        android:textSize="14sp"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/gray"
-        app:layout_constraintStart_toEndOf="@id/eventImage"
-        app:layout_constraintTop_toBottomOf="@id/eventTime"
         android:ellipsize="end"
-        android:maxLines="1"
-        android:singleLine="true" />
+        android:maxLines="4"
+        android:singleLine="false"
+        android:text="eventDescription"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/eventImage"
+        app:layout_constraintTop_toBottomOf="@+id/eventTitle" />
 
-    <ImageView
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:background="@drawable/ic_arrow_forward"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        android:id="@+id/eventTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Event Title"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="normal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

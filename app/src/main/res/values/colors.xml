@@ -7,8 +7,8 @@
     <color name="primary">#70B9BE</color>
     <color name="second_primary">#0A2533</color>
 
-    <color name="userBubbleBackground">#FFBDBDBD</color> <!-- Primary color -->
-    <color name="botBubbleBackground">#FF4DB6AC</color>   <!-- Light gray -->
+    <color name="userBubbleBackground">#F2F8FF</color> <!-- Primary color -->
+    <color name="botBubbleBackground">#EDD8B2</color>   <!-- Light gray -->
 
 
 
@@ -22,4 +22,20 @@
     <color name="success_green">#FF4CAF50</color> <!-- Green for success messages -->
     <color name="disabled_gray">#FFBDBDBD</color> <!-- Gray for disabled elements -->
     <color name="transparent">#00000000</color> <!-- Fully transparent -->
+
+    <!-- Core palette -->
+    <color name="autumn_background">#FFFFFF</color>
+    <color name="autumn_primary_text">#000000</color>      <!-- pure black -->
+    <color name="autumn_secondary_text">#593C13</color>    <!-- Coffee Brown -->
+    <color name="autumn_link">#E76F51</color>              <!-- Pumpkin Orange -->
+    <color name="autumn_accent">#F4A261</color>            <!-- Mustard Yellow -->
+
+    <!-- States & overlays -->
+    <color name="autumn_hint_text">#99593C13</color>       <!-- 60% Coffee Brown -->
+    <color name="autumn_disabled_text">#613E2723</color>   <!-- 38% Dark Chestnut -->
+    <color name="autumn_divider">#203E2723</color>         <!-- 12% Dark Chestnut -->
+
+    <!-- Feedback colors -->
+    <color name="autumn_error">#B7410E</color>             <!-- Rust Red -->
+    <color name="autumn_success">#6B8E23</color>           <!-- Olive Green -->
 </resources>

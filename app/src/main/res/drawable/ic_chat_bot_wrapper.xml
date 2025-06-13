@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 50% gray circle behind -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#80000000"/>
+            <size android:width="48dp" android:height="48dp"/>
+        </shape>
+    </item>
+
+    <!-- your PNG icon on top -->
+    <item android:gravity="center">
+        <bitmap
+            android:src="@drawable/ic_chat_bot"
+            android:antialias="true"
+            android:filter="true"
+            android:dither="true" />
+    </item>
+</layer-list>

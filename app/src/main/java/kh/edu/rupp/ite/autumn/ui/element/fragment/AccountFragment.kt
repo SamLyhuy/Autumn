@@ -139,7 +139,8 @@ class AccountFragment: Fragment() {
         binding.lytLogIn.isVisible = false
 
         binding.profileName.text = profile.name
-        binding.profileEmailPhone.text = profile.email_phone_number()
+        binding.profileEmail.text = profile.email
+        binding.profilePhone.text = profile.phonenumber
 
     }
 
