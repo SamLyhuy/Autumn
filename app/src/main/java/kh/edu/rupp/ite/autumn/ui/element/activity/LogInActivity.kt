@@ -65,7 +65,7 @@ class LogInActivity: BaseActivity() {
         val intent = Intent(this, SignUpActivity::class.java)
         //startActivity(intent)
         activityResultLauncher.launch(intent)
-        finish()
+        //finish()
     }
 
 

@@ -130,8 +130,9 @@ class AccountFragment: Fragment() {
 
         // Navigate to login screen
         val intent = Intent(requireContext(), LogInActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        requireContext().startActivity(intent)
+//        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//        requireContext().startActivity(intent)
+        activityLogInResult.launch(intent)
     }
 
     private fun showProfile(profile: Profile) {
