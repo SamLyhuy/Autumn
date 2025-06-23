@@ -130,7 +130,7 @@
                 android:hint="What can I help you ?"
                 android:textColor="@color/autumn_primary_text"
                 android:textSize="@dimen/text_size_body"
-                android:inputType="textCapWords"/>
+                android:inputType="text"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton
