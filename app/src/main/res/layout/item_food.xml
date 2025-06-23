@@ -19,7 +19,7 @@
             android:id="@+id/productImage"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:scaleType="fitCenter"
+            android:scaleType="fitXY"
             android:background="@drawable/circle_frame"
             android:clipToOutline="true"
             android:src="@drawable/sunny_24px" />
